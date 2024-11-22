@@ -1,0 +1,154 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row">
+    <div class="row pt-2">
+        <div class="col-11">
+            <p class="h5">电站管理 </p>
+        </div>
+        <div class="col-1 ">
+            <a asp-controller="PowerStationManagement" asp-action="AddPowerStation" class="btn btn-primary d-inline-flex align-items-center">
+                创建电站
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row pt-3 justify-content-center">
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="floatingSelect1" class="col-form-label">电站状态：</label>
+        </div>
+        <div class="col-2">
+            <select class="form-select" id="floatingSelect1">
+                <option value="1">全部</option>
+                <option value="2">在线</option>
+                <option value="3">离线</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="floatingSelect2" class="col-form-label mb-0">客户：</label>
+        </div>
+        <div class="col-2">
+            <select class="form-select" id="floatingSelect2">
+                <option value="1">测试1</option>
+                <option value="2">测试2</option>
+                <option value="3">测试3</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <input type="text" class="form-control" placeholder="电站名称">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="button">查询</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-secondary" type="button">重置</button>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-12">
+        <table id="table" class="table table-responsive"
+               data-toggle="table"
+               data-search="false"
+               data-pagination="true">
+            <thead class="thead-light">
+                <tr>
+                    <th>序号</th>
+                    <th>电站名称</th>
+                    <th>系统数量</th>
+                    <th>装机功率（MW）</th>
+                    <th>装机容量（MWh）</th>
+                    <th>客户</th>
+                    <th>电站地址</th>
+                    <th>投运时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 80; i++) {
+                    <tr>
+                        <td>@i</td>
+                        <td>张+@i</td>
+                        <td>软件工程师</td>
+                        <td>研发部</td>
+                        <td><span>研发部</span></td>
+                        <td>研发部</td>
+                        <td>研发部</td>
+                        <td>研发部</td>
+                        <td class="gap-1">
+                            <button class="badge rounded-pill text-bg-info" data-bs-toggle="modal" data-bs-target="#exampleModal" data-name="张+@i">查看</button>
+                            <button class="badge rounded-pill text-bg-info">修改</button>
+                            <button class="badge rounded-pill text-bg-info">删除</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title fs-5" id="exampleModalLabel">查看电站</h5>
+            </div>
+            <div class="modal-body py-0">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">基础信息</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">更多信息</button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row pt-2">
+                            <div class="col-3">电站图片</div>
+                            <div class="col-9"><img src="~/images/e-box.png" /></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">电站名称</div>
+                            <div class="col-9" id="stationName">测试111</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">装机功率</div>
+                            <div class="col-9">888kw</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">装机容量</div>
+                            <div class="col-9">666</div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                </div>
+            </div>
+            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+                <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+        // 监听所有的“查看”按钮点击事件
+        $("button[data-bs-target='#exampleModal']").click(function () {
+            // 获取当前按钮所在行的第二个 <td> 的值
+            const stationName = $(this).closest("tr").find("td:nth-child(2)").text();
+
+            // 将值加载到模态框中的 #stationName 元素中
+            $("#stationName").text(`${stationName}`);
+        });
+    });
+
+</script>
+}

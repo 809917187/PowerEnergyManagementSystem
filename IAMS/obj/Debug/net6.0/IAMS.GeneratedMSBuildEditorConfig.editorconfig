@@ -19,6 +19,14 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNzXExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/project/IAMS/IAMS/Views/Access/_ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjZXNzXF9DaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/project/IAMS/IAMS/Views/BigScreen/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlnU2NyZWVuXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/project/IAMS/IAMS/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -27,12 +35,28 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/project/IAMS/IAMS/Views/PowerStationManagement/AddPowerStation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG93ZXJTdGF0aW9uTWFuYWdlbWVudFxBZGRQb3dlclN0YXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/project/IAMS/IAMS/Views/PowerStationManagement/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG93ZXJTdGF0aW9uTWFuYWdlbWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/project/IAMS/IAMS/Views/PowerStationOverview/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG93ZXJTdGF0aW9uT3ZlcnZpZXdcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/project/IAMS/IAMS/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/project/IAMS/IAMS/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/project/IAMS/IAMS/Views/StationSystem/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGlvblN5c3RlbVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/project/IAMS/IAMS/Views/_ViewImports.cshtml]
