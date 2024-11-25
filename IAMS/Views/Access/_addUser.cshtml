@@ -1,0 +1,70 @@
+﻿<!-- Modal -->
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title fs-5 " id="exampleModalLabel">添加用户</h5>
+            </div>
+            <div class="modal-body py-0">
+                <div class="tab-content pt-3">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <form>
+                            <div class="mb-3">
+                                <label for="Email" class="form-label">邮箱/账号</label>
+                                <input type="text" class="form-control" id="Email">
+                                <div class="invalid-feedback">
+                                    请输入邮箱.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Password" class="form-label">密码</label>
+                                <input type="password" class="form-control" id="Password" required>
+                                <div class="invalid-feedback">
+                                    请输入密码.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="PasswordDC" class="form-label">确认新密码</label>
+                                <input type="password" class="form-control" id="PasswordDC" required>
+                                <div class="invalid-feedback">
+                                    请输入密码.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Name" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="Name" required>
+                                <div class="invalid-feedback">
+                                    请输入姓名.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="PhoneNumber" class="form-label">电话</label>
+                                <input type="text" class="form-control" id="PhoneNumber" required>
+                                <div class="invalid-feedback">
+                                    请输入电话.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="RoleCode" class="form-label">角色</label>
+                                <select class="form-select" id="RoleCode" required>
+                                    <option value="">Choose...</option>
+                                    <option value="2">普通用户</option>
+                                    <option value="1">管理员</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    请选择角色.
+                                </div>
+                            </div>
+                            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+                                <button type="button" class="btn btn-lg btn-primary" id="addUserSubmit">确认</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

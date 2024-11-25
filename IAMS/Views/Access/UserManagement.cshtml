@@ -1,0 +1,55 @@
+﻿@using IAMS.Models.User;
+@model IAMS.ViewModels.Access.UserManagementViewModels;
+
+
+
+<div class="row pt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <span class="pr-2">用户管理</span>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">添加用户</button>
+            </div>
+            <div class="card-body">
+                <table id="table"
+                       class="table table-bordered table-striped text-center"
+                       data-toggle="table"
+                       data-search="true"
+                       data-pagination="true">
+                    <thead>
+                        <tr>
+                            <th data-field="id">编号</th>
+                            <th data-field="Name">姓名</th>
+                            <th data-field="RoleName">角色</th>
+                            <th data-field="Email">邮箱</th>
+                            <th data-field="PhoneNumber">电话</th>
+                            <th data-field="Operate">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (UserInfo user in Model.userInfos) {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>@user.Name</td>
+                                <td>@user.RoleName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td><a class="badge rounded-pill bg-danger">删除</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Views/Access/_addUser.cshtml")
+
+@section Scripts{
+ <script>
+    var addUserUrl = '@Url.Action("AddUser", "Access")';
+</script>
+<script src="~/js/Shared/addUser.js"></script>
+ }
+

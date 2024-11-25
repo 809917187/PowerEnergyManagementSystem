@@ -137,7 +137,6 @@
     <Folder Include="Middlewares\" />
     <Folder Include="Models\Access\" />
     <Folder Include="Repository\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
