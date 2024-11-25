@@ -71,7 +71,7 @@ namespace IAMS.Service {
 
                     // 定义 SQL 查询
                     string query = "SELECT " +
-                        "user.id, user.email,user.password,user.name,user.phone_number,user.role_code,user.create_time,role.role_name " +
+						"user.id, user.email,user.password,user.name,user.phone_number,user.role_code,user.create_time,role.role_name,user.is_delete " +
                         "FROM user,role " +
                         "WHERE user.role_code=role.role_code ";
 
@@ -89,8 +89,9 @@ namespace IAMS.Service {
                                     PhoneNumber = reader.IsDBNull(reader.GetOrdinal("phone_number")) ? null : reader.GetString("phone_number"),
                                     RoleCode = reader.GetInt32("id"),
                                     RoleName = reader.GetString("role_name"),
-                                    CreateTime = reader.GetDateTime("create_time")
-                                });
+                                    CreateTime = reader.GetDateTime("create_time"),
+                                    IsDelete = reader.GetBoolean("is_delete"),
+								});
                             }
                         }
                     }
@@ -165,6 +166,22 @@ namespace IAMS.Service {
                     }
                 }
             } catch (Exception ex) {
+                return false;
+            }
+        }
+
+        public bool DeleteUser(int userId) {
+            try {
+                using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                    conn.Open();
+                    string sql = "UPDATE user SET is_delete=1 WHERE id=@id";
+                    using (MySqlCommand cmd = new MySqlCommand(sql,conn)) {
+                        cmd.Parameters.AddWithValue("@id", userId);
+                        int row = cmd.ExecuteNonQuery();
+                        return row > 0;
+                    }
+                }
+            } catch (Exception er) {
                 return false;
             }
         }
