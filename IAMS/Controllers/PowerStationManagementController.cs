@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IAMS.Models.PowerStation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IAMS.Controllers {
     public class PowerStationManagementController : Controller {
@@ -6,9 +7,14 @@ namespace IAMS.Controllers {
             return View();
         }
 
-
+        [HttpGet]
         public IActionResult AddPowerStation() {
             return View();
+        }
+
+        public IActionResult AddPowerStation([FromForm] PowerStationInfo model) {
+
+            return Ok(new { message = "文件上传成功" });
         }
     }
 }

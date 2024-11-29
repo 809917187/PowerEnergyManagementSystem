@@ -25,62 +25,62 @@
 <div class="row pt-2">
     <div class="col-12">
         <h6 class="mb-3 fw-bold">基础信息</h6>
-        <form class="needs-validation" novalidate="">
+        <form class="needs-validation" novalidate="" enctype="multipart/form-data" >
             <div class="row g-3 pt-2">
                 <div class="col-4">
-                    <label for="StationName" class="form-label">电站名称<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="StationName" value="" required>
+                    <label for="Name" class="form-label">电站名称<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="" required>
                     <div class="invalid-feedback">
                         请输入电站名称
                     </div>
                 </div>
                 <div class="col-4">
-                    <label for="StationOwner" class="form-label">电站业主</label>
-                    <input type="text" class="form-control" id="StationOwner" value="">
+                    <label for="Owner" class="form-label">电站业主</label>
+                    <input type="text" class="form-control" name="Owner" value="">
                 </div>
                 <div class="col-4">
-                    <label for="StationPhoneNumber" class="form-label">电站联系电话</label>
-                    <input type="text" class="form-control" id="StationPhoneNumber" value="">
+                    <label for="Phone" class="form-label">电站联系电话</label>
+                    <input type="text" class="form-control" name="Phone" value="">
                 </div>
             </div>
             <div class="row g-3 pt-2">
                 <div class="col-4">
                     <label for="InstalledPower" class="form-label">装机功率(MW)</label>
-                    <input type="text" class="form-control" id="InstalledPower" value="">
+                    <input type="text" class="form-control" name="InstalledPower"  value="">
                 </div>
                 <div class="col-4">
                     <label for="InstalledCapacity" class="form-label">装机容量(MWh)</label>
-                    <input type="text" class="form-control" id="InstalledCapacity" value="">
+                    <input type="text" class="form-control" name="InstalledCapacity" value="">
                 </div>
                 <div class="col-4">
-                    <label for="OperationalTime" class="form-label">投运时间</label>
-                    <input type="date" class="form-control" id="OperationalTime" value="">
+                    <label for="StartTime" class="form-label">投运时间</label>
+                    <input type="date" class="form-control" name="StartTime" value="">
                 </div>
             </div>
             <div class="row g-3 pt-2">
                 <label class="form-label">电站地址</label>
                 <div class="col-2">
-                    <select class="form-select" id="Country" placeholder="选择国家">
+                    <select class="form-select" name="Country" placeholder="选择国家">
                         <option value="">选择国家</option>
                     </select>
                 </div>
                 <div class="col-2">
-                    <select class="form-select" id="State">
+                    <select class="form-select" name="State">
                         <option value="">选择省/州</option>
                     </select>
                 </div>
                 <div class="col-2">
-                    <select class="form-select" id="City">
+                    <select class="form-select" name="City">
                         <option value="">选择市</option>
                     </select>
                 </div>
                 <div class="col-2">
-                    <select class="form-select" id="Region">
+                    <select class="form-select" name="Region">
                         <option value="">选择区</option>
                     </select>
                 </div>
                 <div class="col-4">
-                    <input type="text" class="form-control" id="Address" placeholder="详细地址">
+                    <input type="text" class="form-control" name="LocationDetails" placeholder="详细地址">
                 </div>
             </div>
             <div class="row g-3 pt-2">
@@ -88,13 +88,13 @@
                 <div class="col-4">
                     <div class="input-group">
                         <span class="input-group-text">经度：</span>
-                        <input type="text" class="form-control" id="Longitude">
+                        <input type="text" class="form-control" name="Longitude">
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="input-group">
                         <span class="input-group-text">纬度：</span>
-                        <input type="text" class="form-control" id="Latitude">
+                        <input type="text" class="form-control" name="Latitude">
                     </div>
                 </div>
                 <div class="col-1">
@@ -106,7 +106,7 @@
                 <label class="form-label">电站图片(上传的图片大小不得超过5M，支持PNG、JPG格式，最多可上传 5 张图片)</label>
                 <div class="col-12">
                     <div class="file-loading">
-                        <input id="StationImage" name="StationImage" type="file" multiple accept="image">
+                        <input id="StationImages" name="StationImages" type="file" multiple accept="image">
                     </div>
                 </div>
             </div>
@@ -114,34 +114,33 @@
             <h6 class="mb-3 fw-bold pt-3">更多信息</h6>
             <div class="row g-3 pt-2">
                 <div class="col-4">
-                    <label for="KVA" class="form-label">变压器容量(kVA)</label>
-                    <input type="text" class="form-control" id="KVA" value="">
+                    <label for="TransformerCapacity" class="form-label">变压器容量(kVA)</label>
+                    <input type="text" class="form-control" name="TransformerCapacity" value="">
                 </div>
                 <div class="col-4">
                     <label for="TransformerInfo" class="form-label">变压器信息</label>
-                    <input type="text" class="form-control" id="TransformerInfo" value="">
+                    <input type="text" class="form-control" name="TransformerInfo" value="">
                 </div>
                 <div class="col-4">
-                    <label for="JunctionInfo" class="form-label">并网点信息</label>
-                    <select class="form-select" id="JunctionInfo">
-                        <option value="">请选择</option>
-                        <option value="">有光伏</option>
-                        <option value="">无光伏</option>
-                        <option value="">有并网点</option>
-                        <option value="">无并网点</option>
-                        <option value="">其他</option>
+                    <label for="NetworkInfo" class="form-label">并网点信息</label>
+                    <select class="form-select" name="NetworkInfo">
+                        <option value="0">请选择</option>
+                        <option value="1">有光伏</option>
+                        <option value="2">无光伏</option>
+                        <option value="3">有并网点</option>
+                        <option value="4">无并网点</option>
+                        <option value="5">其他</option>
                     </select>
                 </div>
-
             </div>
             <div class="row g-3 pt-2">
                 <div class="col-4">
                     <label for="Installer" class="form-label">安装人</label>
-                    <input type="text" class="form-control" id="Installer" value="">
+                    <input type="text" class="form-control" name="Installer" value="">
                 </div>
                 <div class="col-4">
                     <label for="InstallerPhone" class="form-label">安装人联系号码</label>
-                    <input type="text" class="form-control" id="InstallerPhone" value="">
+                    <input type="text" class="form-control" name="InstallerPhone" value="">
                 </div>
 
             </div>
@@ -149,7 +148,7 @@
                 <label class="form-label">安装图片</label>
                 <div class="col-12">
                     <div class="file-loading">
-                        <input id="InstallImage" name="InstallImage" type="file" multiple accept="image">
+                        <input id="StationInstallImages" name="StationInstallImages" type="file" multiple accept="image">
                     </div>
                 </div>
             </div>
@@ -170,19 +169,39 @@
 <script src="~/bootstrap-fileinput/js/fileinput.js"></script>
 <script src="~/bootstrap-fileinput/themes/bs5/theme.js"></script>
 <script>
-    $("#StationImage").fileinput({
-        theme: "bs5",
-        uploadUrl: "/file-upload-batch/2",
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        overwriteInitial: false,
-        initialPreviewAsData: true,
-        maxFileSize: 5000,
-        removeFromPreviewOnError: true
+    //$("#StationImages").fileinput({
+    //    theme: "bs5",
+    //    uploadUrl: "/file-upload-batch/2",
+    //    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    //    overwriteInitial: false,
+    //    initialPreviewAsData: true,
+    //    maxFileSize: 10000,
+    //    removeFromPreviewOnError: true,
+    //    initialPreview: [
+            
+    //    ],
+    //    initialPreviewConfig: [
+            
+    //    ] // the key will be dynamically replaced  
+    //});
+    $("#StationImages").fileinput({
+        theme: "bs5",          
+        uploadUrl: "@Url.Action("UploadStationImage", "PowerStationManagement")",
+        allowedFileExtensions: ['jpg', 'png'],   // 允许上传的文件类型：jpg 和 png
+        overwriteInitial: false,                 // 不覆盖已有的文件
+        initialPreviewAsData: true,              // 将初始预览的内容作为数据处理
+        maxFileSize: 5000,                       // 限制文件大小为 5MB
+        removeFromPreviewOnError: true,          // 文件加载错误时，从预览中移除
+        showPreview: true,                       // 显示文件预览
+        showUpload: false,                       // 禁用上传按钮
+        showCaption: false,                      // 不显示文件名
+        uploadAsync: false                       // 禁用异步上传
     });
-    $("#InstallImage").fileinput({
+
+    $("#StationInstallImages").fileinput({
         theme: "bs5",
-        uploadUrl: "/file-upload-batch/2",
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        //uploadUrl: "/file-upload-batch/2",
+        allowedFileExtensions: ['jpg', 'png'],
         overwriteInitial: false,
         initialPreviewAsData: true,
         maxFileSize: 5000,
@@ -295,6 +314,29 @@
               })()
 
 
+        $('form').submit(function(event) {
+            event.preventDefault();  // 阻止表单提交
+    
+            var formData = new FormData(this);  // 获取表单数据
+
+            $.ajax({
+                url: '@Url.Action("AddPowerStation", "PowerStationManagement")',
+                type: 'POST',
+                data: formData,
+                processData: false,  // 必须设置为 false，才能正确发送 FormData
+                contentType: false,  // 必须设置为 false，才能正确发送 FormData
+                success: function(response) {
+                    if (response.message) {
+                        // 在页面上显示返回的消息
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('上传失败');
+                }
+            });
+        });
+        
 
     });
 

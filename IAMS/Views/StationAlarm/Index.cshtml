@@ -1,0 +1,172 @@
+﻿<div class="row pt-3">
+    <div class="col-2">
+        <select id="example-select" class="selectpicker fw-bold" data-live-search="true">
+            <option selected>江苏无锡市1号电站</option>
+            <option>选项2</option>
+            <option>选项3</option>
+            <option>选项4</option>
+        </select>
+    </div>
+    @*<div class="col-10">
+        <a class="btn btn-secondary" asp-controller="StationAlarm" uiactions="AlarmHistory"></a>
+    </div>*@
+</div>
+
+<div class="row pt-3 justify-content-center">
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label for="deviceType" class="col-form-label">设备类型：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="deviceType" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">PCS</option>
+                <option value="3">电表</option>
+                <option value="4">空调</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="alarmLevel" class="col-form-label mb-0">告警等级：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="alarmLevel" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">未分级</option>
+                <option value="3">一般</option>
+                <option value="4">重要</option>
+                <option value="5">严重</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="alarmType" class="col-form-label mb-0">告警类型：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="alarmType" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">设备</option>
+                <option value="3">业务</option>
+                <option value="4">通讯</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="errorStatus" class="col-form-label mb-0">故障状态：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="errorStatus" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">发生中</option>
+                <option value="3">已结束</option>
+            </select>
+        </div>
+    </div>
+    <div class="row g-2 align-items-center pb-2">
+        <div class="col-auto">
+            <label for="solveSuggestion" class="col-form-label">处理建议：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="solveSuggestion" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">运维处理</option>
+                <option value="3">无需处理</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="timeRange" class="col-form-label">时间范围：</label>
+        </div>
+        <div class="col-3">
+            <input class="flatpickr flatpickr-input form-control" id="timeRange" type="text">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="button">查询</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-secondary" type="button">重置</button>
+        </div>
+    </div>
+    <hr />
+    <div class="row g-2 align-items-center pb-2">
+        <div class="col-auto">
+            <label for="solveSuggestion" class="col-form-label">站点系统：</label>
+        </div>
+        <div class="col-2">
+            <select class="selectpicker fw-bold" id="solveSuggestion" multiple>
+                <option value="1" selected>全部</option>
+                <option value="2">主机1</option>
+                <option value="3">主机2</option>
+                <option value="3">主机3</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="row g-2 align-items-center pb-1">
+        <strong>告警统计</strong>
+    </div>
+    <div class="row g-2 pb-2">
+        <div class="col-4" id="chart_alarm_level" style="height:400px;border-right: 2px solid #ccc;">
+        </div>
+        <div class="col-4" id="chart_alarm_type" style="height:400px;border-right: 2px solid #ccc;">
+        </div>
+        <div class="col-4" id="chart_device_type" style="height:400px;">
+        </div>
+    </div>
+    <hr />
+    <div class="row g-2 align-items-center pb-1">
+        <strong>告警列表</strong>
+    </div>
+    <div class="row g-2 align-items-center pb-1">
+        <table class="table" style="height: 399px;">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">设备名称</th>
+                    <th scope="col">告警等级</th>
+                    <th scope="col">告警类型</th>
+                    <th scope="col">告警标题</th>
+                    <th scope="col">客户告警</th>
+                    <th scope="col">站点系统</th>
+                    <th scope="col">故障状态</th>
+                    <th scope="col">处理建议</th>
+                    <th scope="col">告警开始时间</th>
+                    <th scope="col">告警结束时间</th>
+                    <th scope="col">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+<script>
+$(document).ready(function() {
+    flatpickr("#timeRange", {
+        dateFormat: "Y-m-d",
+        mode: "range"
+    });
+
+    $('#table').bootstrapTable({
+        
+    });
+});
+
+    
+</script>
+<script src="~/js/StationAlarm/chart_alarm_level.js"></script>
+<script src="~/js/StationAlarm/chart_alarm_type.js"></script>
+<script src="~/js/StationAlarm/chart_device_type.js"></script>
+
+}
