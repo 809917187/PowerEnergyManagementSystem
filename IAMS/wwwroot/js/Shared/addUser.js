@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
-    $('#table').bootstrapTable(); // 手动初始化表格
-
+    
     $('#addUserSubmit').on('click', function () {
         var newPassword = $('#Password').val();
         var newPasswordDC = $('#PasswordDC').val();
@@ -18,6 +17,14 @@
             RoleCode: $('#RoleCode').val()
         };
 
+        // 校验属性是否为空
+        for (var key in formData) {
+            if (!formData[key]) { // 检查值是否为空、undefined 或 null
+                //alert(key + ' 不能为空！');
+                return;
+            }
+        }
+
         // 提交表单数据到服务器
         $.ajax({
             url: addUserUrl, // 后端接口地址
@@ -29,6 +36,7 @@
                     alert(response.message);
                     // 关闭模态框
                     $('#addUser').modal('hide');
+                    location.reload();
                 } else {
                     alert("错误: " + response.message);
                 }

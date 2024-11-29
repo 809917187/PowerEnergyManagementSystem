@@ -1,4 +1,5 @@
-﻿using IAMS.Models.User;
+﻿using IAMS.Common;
+using IAMS.Models.User;
 using IAMS.Service;
 using IAMS.ViewModels.Access;
 using Microsoft.AspNetCore.Authentication;
@@ -17,6 +18,7 @@ namespace IAMS.Controllers {
 
         [HttpGet]
         public IActionResult Login() {
+            /*Console.WriteLine(Utility.GetEncryptPassword("123"));*/
             ClaimsPrincipal claimUser = HttpContext.User;
 
             if (claimUser.Identity.IsAuthenticated) {
@@ -32,7 +34,7 @@ namespace IAMS.Controllers {
                 List<Claim> claims = new List<Claim>() {
                     new Claim(ClaimTypes.NameIdentifier,modelLogin.Email),
                     new Claim("RoleName",user.RoleName),
-                    new Claim("Name",user.Name),
+                    new Claim("Name",user.Name==null?"":user.Name),
                     new Claim("Role",user.RoleCode.ToString()),
                     new Claim("UserId",user.Id.ToString())
                 };
@@ -95,6 +97,15 @@ namespace IAMS.Controllers {
             }
         }
 
+        [HttpPost]
+        public IActionResult DeleteUser(int id) {
+
+            if (_userService.DeleteUser(id)) {
+                return Json(new { success = true, message = "删除成功！" });
+            } else {
+                return Json(new { success = false, message = "删除失败。" });
+            }
+        }
 
         [HttpGet]
         public IActionResult UserManagement() {
