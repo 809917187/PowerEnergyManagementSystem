@@ -1,0 +1,67 @@
+﻿
+<div class="row pt-3">
+	<strong>电量报表</strong>
+</div>
+
+<div class="row pt-2">
+	<div class="bd-example m-0 border-0">
+		<div class="alert alert-success" role="alert">
+			<h6 class="alert-heading"><i class="bi bi-info-circle-fill bs-primary pr-3"></i>站点汇总展示所有站点报表数据，支持按日展示31天，按月展示一年内数据。</h6>
+		</div>
+	</div>
+</div>
+
+<div class="row pt-3">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">站点汇总</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="false">单站报表</a>
+		</li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+			@* @await Html.PartialAsync("~/Views/ElectricityReport/_StationSummary.cshtml", Model) *@
+			@await Html.PartialAsync("~/Views/ElectricityReport/_StationSummary.cshtml")
+			
+		</div>
+
+		<div class="tab-pane" id="single" role="tabpanel" aria-labelledby="single-tab">
+			@await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReport.cshtml")
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<script src="~/js/ElectricityReport/singleStationReportByRange.js"></script>
+	<script>
+		$('#myTab a').on('click', function (e) {
+			e.preventDefault()
+			$(this).tab('show')
+		})
+		$('#pills-tab a').on('click', function (e) {
+			e.preventDefault()
+			$(this).tab('show')
+		})
+		
+
+		flatpickr("#SummaryTimeRange", {
+			dateFormat: "Y-m-d",
+			mode: "range",
+		});
+		flatpickr("#SingleReportTimeTimeRange", {
+			dateFormat: "Y-m-d",
+			mode: "range",
+		});
+
+		
+
+	</script>
+	
+	
+}

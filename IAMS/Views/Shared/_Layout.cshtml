@@ -45,7 +45,7 @@
         </div>
 
         <div class="row flex-grow-1 overflow-hidden">
-            <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+            <div style="width: 280px;">
                 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     <span class="fs-4">Sidebar</span>
                 </a>
@@ -104,6 +104,16 @@
                         </a>
                     </li>
                     <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
+                        统计报表
+                    </li>
+                    <li>
+                        <a class="nav-link @(currentController == "ElectricityReport" && currentAction == "Index" ? "active" : "")"
+                           asp-controller="ElectricityReport" asp-action="Index">
+                            <i class="bi bi-battery-half pe-none me-2" width="16" height="16"></i>
+                            电量报表
+                        </a>
+                    </li>
+                    <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
                         系统管理
                     </li>
                     <li>
@@ -140,7 +150,7 @@
                 </div>
             </div>
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 flex-grow-1 overflow-auto">
+            <main class="col ms-sm-auto col-lg-10 px-md-4 flex-grow-1 overflow-auto">
                 @RenderBody()
             </main>
         </div>
