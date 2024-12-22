@@ -9,7 +9,7 @@
     </div>
     @*<div class="col-10">
         <a class="btn btn-secondary" asp-controller="StationAlarm" uiactions="AlarmHistory"></a>
-    </div>*@
+        </div>*@
 </div>
 
 <div class="row pt-3 justify-content-center">
@@ -152,18 +152,18 @@
 
 @section Scripts{
 <script>
-$(document).ready(function() {
-    flatpickr("#timeRange", {
-        dateFormat: "Y-m-d",
-        mode: "range"
+    $(document).ready(function() {
+        flatpickr("#timeRange", {
+            dateFormat: "Y-m-d",
+            mode: "range"
+        });
+
+        $('#table').bootstrapTable({
+
+        });
     });
 
-    $('#table').bootstrapTable({
-        
-    });
-});
 
-    
 </script>
 <script src="~/js/StationAlarm/chart_alarm_level.js"></script>
 <script src="~/js/StationAlarm/chart_alarm_type.js"></script>

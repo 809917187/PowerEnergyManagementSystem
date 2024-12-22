@@ -7,31 +7,55 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Middlewares\**" />
+    <Compile Remove="Repository\**" />
     <Compile Remove="wwwroot\sb-admin\**" />
+    <Content Remove="Middlewares\**" />
+    <Content Remove="Repository\**" />
     <Content Remove="wwwroot\sb-admin\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Repository\**" />
     <EmbeddedResource Remove="wwwroot\sb-admin\**" />
+    <None Remove="Middlewares\**" />
+    <None Remove="Repository\**" />
     <None Remove="wwwroot\sb-admin\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Access\VMLogin.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="Views\Access\Index.cshtml" />
-    <Content Remove="wwwroot\bootstrap_template\dashboard.css" />
-    <Content Remove="wwwroot\bootstrap_template\dashboard.js" />
-    <Content Remove="wwwroot\bootstrap_template\sidebars.css" />
-    <Content Remove="wwwroot\bootstrap_template\sidebars.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Access\Login.cshtml" />
+    <None Include="Views\Access\UserManagement.cshtml" />
+    <None Include="Views\Access\_addUser.cshtml" />
+    <None Include="Views\Access\_ChangePassword.cshtml" />
+    <None Include="Views\BigScreen\Index.cshtml" />
+    <None Include="Views\DeviceMonitor\Index.cshtml" />
     <None Include="Views\ElectricityReport\Index.cshtml" />
     <None Include="Views\ElectricityReport\_SingleStationReport.cshtml" />
     <None Include="Views\ElectricityReport\_SingleStationReportByDay.cshtml" />
     <None Include="Views\ElectricityReport\_SingleStationReportByRange.cshtml" />
     <None Include="Views\ElectricityReport\_StationSummary.cshtml" />
+    <None Include="Views\EnergyManagement\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
     <None Include="Views\MultiStationOverview\Index.cshtml" />
+    <None Include="Views\PowerStationManagement\AddPowerStation.cshtml" />
+    <None Include="Views\PowerStationManagement\EditPowerStation.cshtml" />
+    <None Include="Views\PowerStationManagement\Index.cshtml" />
+    <None Include="Views\PowerStationManagement\_IndexViewDetailsModal.cshtml" />
+    <None Include="Views\PowerStationOverview\Index.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\StationAlarm\AlarmHistory.cshtml" />
+    <None Include="Views\StationAlarm\Index.cshtml" />
+    <None Include="Views\StationSystem\Index.cshtml" />
+    <None Include="Views\TemplateManagement\AddTemplate.cshtml" />
+    <None Include="Views\TemplateManagement\EditPriceTemplate.cshtml" />
+    <None Include="Views\TemplateManagement\Index.cshtml" />
+    <None Include="Views\TemplateManagement\_IndexViewDetailsModal.cshtml" />
     <None Include="wwwroot\big-screen\js\area_echarts.js" />
     <None Include="wwwroot\big-screen\js\china.js" />
     <None Include="wwwroot\big-screen\js\echarts.min.js" />
@@ -127,17 +151,54 @@
     <None Include="wwwroot\bootstrap-fileinput\themes\gly\theme.js" />
     <None Include="wwwroot\bootstrap-fileinput\themes\gly\theme.min.js" />
     <None Include="wwwroot\bootstrap-icons\fonts\bootstrap-icons.woff2" />
+    <None Include="wwwroot\bootstrap-select\bootstrap-select.min.js" />
+    <None Include="wwwroot\bootstrap-table\bootstrap-table.min.js" />
+    <None Include="wwwroot\bootstrap_template\dashboard.js" />
+    <None Include="wwwroot\bootstrap_template\dashboard\dashboard.js" />
+    <None Include="wwwroot\bootstrap_template\sidebars.js" />
+    <None Include="wwwroot\bootstrap_template\sidebars\sidebars.js" />
+    <None Include="wwwroot\echarts\echarts.min.js" />
+    <None Include="wwwroot\flatpickr\flatpickr.min.js" />
+    <None Include="wwwroot\js\ElectricityReport\singleStationReportByRange.js" />
+    <None Include="wwwroot\js\EnergyManagement\chart_plan_power.js" />
+    <None Include="wwwroot\js\PowerStationManagement\add_power_station.js" />
+    <None Include="wwwroot\js\PowerStationManagement\delete_powerstation.js" />
+    <None Include="wwwroot\js\PowerStationManagement\edit_powerstation.js" />
+    <None Include="wwwroot\js\PowerStationManagement\see_details.js" />
+    <None Include="wwwroot\js\PriceTemplate\add_price_template.js" />
+    <None Include="wwwroot\js\PriceTemplate\add_row.js" />
+    <None Include="wwwroot\js\PriceTemplate\delete_template.js" />
+    <None Include="wwwroot\js\PriceTemplate\edit_price_template.js" />
+    <None Include="wwwroot\js\PriceTemplate\see_details.js" />
+    <None Include="wwwroot\js\ProfitReport\singleProfitReportByRange.js" />
+    <None Include="wwwroot\js\Shared\addUser.js" />
+    <None Include="wwwroot\js\Shared\changePassword.js" />
+    <None Include="wwwroot\js\Shared\deleteUser.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\StationAlarm\chart_alarm_level.js" />
+    <None Include="wwwroot\js\StationAlarm\chart_alarm_type.js" />
+    <None Include="wwwroot\js\StationAlarm\chart_device_type.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="MySql.Data" Version="9.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middlewares\" />
-    <Folder Include="Models\Access\" />
-    <Folder Include="Repository\" />
+    <Folder Include="wwwroot\images\stationImages\" />
+    <Folder Include="wwwroot\images\userPictures\" />
   </ItemGroup>
 
 </Project>

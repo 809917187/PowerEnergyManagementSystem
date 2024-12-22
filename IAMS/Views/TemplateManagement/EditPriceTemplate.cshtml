@@ -1,0 +1,123 @@
+﻿@model IAMS.Models.PriceTemplate.PriceTemplateInfo
+
+<div class="row pt-2">
+    <div class="col-11">
+        <a asp-controller="TemplateManagement" asp-action="Index">模板中心</a><span>></span>修改模板
+    </div>
+</div>
+
+<div class="row pt-5">
+    <div class="col-12">
+        <h6 class="mb-3 fw-bold">基础信息</h6>
+        <form class="needs-validation" novalidate="" enctype="multipart/form-data">
+            <div class="row pt-2">
+                <div class="col-6">
+                    <label for="Name" class="form-label">模板名称<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+                    <div class="invalid-feedback">
+                        请输入电站名称
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="Tag" class="form-label">标签名称</label>
+                    <input type="text" class="form-control" id="Tag" name="Tag" value="@Model.Tag">
+                </div>
+            </div>
+            <hr class="my-4">
+            <h6 class="mb-3 fw-bold pt-3">时段编辑</h6>
+            <button type="button" class="btn btn-primary btn-sm" onclick="addRowForTime()">新增行</button>
+            <div class="row g-3 pt-2">
+                <table class="table table-bordered" id="timeTable">
+                    <thead>
+                        <tr>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>时段</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < @Model.timeFrameInfos.Count; i++) {
+                            <tr>
+                                <td>
+                                    <select class="form-select time_select start_time" onchange="validateTime(this)">
+                                        <option value="@Model.timeFrameInfos[i].StartTimeStr">@Model.timeFrameInfos[i].StartTimeStr</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select time_select end_time" onchange="validateTime(this)">
+                                        <option value="@Model.timeFrameInfos[i].EndTimeStr">@Model.timeFrameInfos[i].EndTimeStr</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-select time_type ">
+                                        @foreach (var map in @Model.TimeFrameTypeCode2Name) {
+                                            if (@Model.timeFrameInfos[i].TimeFrameType == map.Key) {
+                                                <option value="@map.Key" selected>@map.Value</option>
+                                            } else {
+                                                <option value="@map.Key">@map.Value</option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" type="button" onclick="deleteRowForTime(this)">删除</button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <hr class="my-4">
+            <h6 class="mb-3 fw-bold pt-3">电价编辑</h6>
+            <div class="row g-3 pt-2">
+                <table class="table table-bordered" id="priceTable">
+                    <thead>
+                        <tr>
+                            <th>时段</th>
+                            <th>买入电价(元/kWh)</th>
+                            <th>卖出电价(元/kWh)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var map in @Model.TimeFrameTypeCode2Name) {
+                            <tr>
+                                <td>
+                                    <select class="form-select time_frame_type" disabled>
+                                        <option value="@map.Key" selected>@map.Value</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="@Model.TimeFrame2BuyPrice[@map.Key]" class="form-control buy_price">
+                                </td>
+                                <td>
+                                    <input type="text" value="@Model.TimeFrame2SalePrice[@map.Key]" class="form-control sale_price">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row pt-3 mb-3">
+                <div class="col-1 mx-auto">
+                    <input type="hidden" value="@Model.Id" id="templateId" >
+                    <button class="w-100 btn btn-primary btn-lg" type="button" id="sendRequest">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+<script>
+    var EditTemplate = '@Url.Action("UpdatePriceTemplate", "TemplateManagement")';
+    var TemplateIndex = '@Url.Action("Index", "TemplateManagement")';
+</script>
+<script src="~/js/PriceTemplate/add_row.js"></script>
+<script src="~/js/PriceTemplate/edit_price_template.js"></script>
+}

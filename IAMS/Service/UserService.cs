@@ -55,7 +55,7 @@ namespace IAMS.Service {
                 }
             } catch (Exception ex) {
                 Console.WriteLine($"Error: {ex.Message}");
-                
+
             }
             return null;
         }
@@ -71,7 +71,7 @@ namespace IAMS.Service {
 
                     // 定义 SQL 查询
                     string query = "SELECT " +
-						"user.id, user.email,user.password,user.name,user.phone_number,user.role_code,user.create_time,role.role_name,user.is_delete " +
+                        "user.id, user.email,user.password,user.name,user.phone_number,user.role_code,user.create_time,role.role_name,user.is_delete " +
                         "FROM user,role " +
                         "WHERE user.role_code=role.role_code ";
 
@@ -81,7 +81,7 @@ namespace IAMS.Service {
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
                                 // 读取每一行数据
-                                users.Add(new UserInfo {
+                                users.Add(new UserInfo() {
                                     Id = reader.GetInt32("id"),
                                     Email = reader.GetString("email"),
                                     Password = reader.GetString("password"),
@@ -91,7 +91,7 @@ namespace IAMS.Service {
                                     RoleName = reader.GetString("role_name"),
                                     CreateTime = reader.GetDateTime("create_time"),
                                     IsDelete = reader.GetBoolean("is_delete"),
-								});
+                                });
                             }
                         }
                     }
@@ -152,19 +152,46 @@ namespace IAMS.Service {
             }
         }
 
-        public bool UpdatePassword(string oldPassword, string newPassword, int userId) {
+        public bool IsPasswordCorrect(int userId, string password) {
             try {
                 using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
                     conn.Open();
-                    string sql = "UPDATE user SET password=@new_password WHERE id = @id AND password=@old_password";
+
+                    string sql = "SELECT password FROM user WHERE id=@id";
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn)) {
-                        cmd.Parameters.AddWithValue("@old_password", Utility.GetEncryptPassword(oldPassword));
-                        cmd.Parameters.AddWithValue("@new_password", Utility.GetEncryptPassword(newPassword));
                         cmd.Parameters.AddWithValue("@id", userId);
-                        int row = cmd.ExecuteNonQuery();
-                        return row > 0;
+                        using (MySqlDataReader dr = cmd.ExecuteReader()) {
+                            if (dr.Read()) {
+                                return Utility.IsPasswordCorrect(dr.GetString(0), password);
+                            } else {
+                                return false;
+                            }
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+
+        public bool UpdatePassword(string oldPassword, string newPassword, int userId) {
+            try {
+                if (this.IsPasswordCorrect(userId, oldPassword)) {
+                    using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                        conn.Open();
+
+                        string sql = "UPDATE user SET password=@new_password WHERE id = @id";
+                        using (MySqlCommand cmd = new MySqlCommand(sql, conn)) {
+                            cmd.Parameters.AddWithValue("@new_password", Utility.GetEncryptPassword(newPassword));
+                            cmd.Parameters.AddWithValue("@id", userId);
+                            int row = cmd.ExecuteNonQuery();
+                            return row > 0;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+
             } catch (Exception ex) {
                 return false;
             }
@@ -175,7 +202,7 @@ namespace IAMS.Service {
                 using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
                     conn.Open();
                     string sql = "UPDATE user SET is_delete=1 WHERE id=@id";
-                    using (MySqlCommand cmd = new MySqlCommand(sql,conn)) {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn)) {
                         cmd.Parameters.AddWithValue("@id", userId);
                         int row = cmd.ExecuteNonQuery();
                         return row > 0;

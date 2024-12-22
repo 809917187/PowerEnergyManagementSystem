@@ -1,0 +1,78 @@
+﻿@model List<IAMS.Models.PriceTemplate.PriceTemplateInfo>
+
+<div class="row pt-2">
+    <div class="col-11">
+        <p class="h5">模板中心</p>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-auto">
+                        <strong>电价模板</strong>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <a class="btn btn-primary" asp-controller="TemplateManagement" asp-action="AddTemplate">创建模板</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <table class="table table-striped"
+                           data-toggle="table"
+                           data-search="true"
+                           data-pagination="true">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">序号</th>
+                                <th scope="col">模板名称</th>
+                                <th scope="col">标签</th>
+                                <th scope="col">创建人</th>
+                                <th scope="col">创建时间</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.Count; i++) {
+                                <tr>
+                                    <th scope="row">@(i+1)</th>
+                                    <td>@Model[i].Name</td>
+                                    <td>@Model[i].Tag</td>
+                                    <td>@Model[i].CreaterName</td>
+                                    <td>@Model[i].CreateTime.ToString("yyyy/MM/dd")</td>
+                                    <td>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="@Model[i].Id">查看</button>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#binding" data-id="XXX">主动绑定</button>
+                                        <a class="btn btn-outline-primary btn-sm" asp-controller="TemplateManagement" asp-action="EditPriceTemplate" asp-route-id="@Model[i].Id">编辑</a>
+                                        <button class="btn btn-outline-primary btn-sm" onclick="deletePriceTemplate(@Model[i].Id)">删除</button>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Views/TemplateManagement/_IndexViewDetailsModal.cshtml")
+
+@section Scripts{
+<script>
+    var deletePriceTemplateUrl = '@Url.Action("DeletePriceTemplate","TemplateManagement")';
+    var seeDetailsUrl = '@Url.Action("GetPriceTemplateById","TemplateManagement")';
+</script>
+<script src="~/js/PriceTemplate/delete_template.js"></script>
+<script src="~/js/PriceTemplate/see_details.js"></script>
+<script>
+    $('#table').bootstrapTable({
+
+      });
+</script>
+}

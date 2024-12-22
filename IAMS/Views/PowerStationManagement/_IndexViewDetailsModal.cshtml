@@ -1,0 +1,82 @@
+﻿
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title fs-5" id="detailModalLabel">查看电站</h5>
+            </div>
+            <div class="modal-body py-0">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">基础信息</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">更多信息</button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row pt-2">
+                            <div class="col-3">电站图片：</div>
+                            <div class="col-9" id="powerStationImages"><img src="~/images/e-box.png" /></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">电站名称：</div>
+                            <div class="col-9" id="stationName"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">装机功率：</div>
+                            <div class="col-9" id="installPower">888kw</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">装机容量：</div>
+                            <div class="col-9" id="installedCapacity">666</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">电站地址：</div>
+                            <div class="col-9" id="address">666</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">投运时间：</div>
+                            <div class="col-9" id="startTime">666</div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">联系电话：</div>
+                            <div class="col-9" id="phone">666</div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row pt-2">
+                            <div class="col-3">安装图片：</div>
+                            <div class="col-9" id="powerStationInstallImages"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">并网点信息：</div>
+                            <div class="col-9" id="networkInfo"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">变压器信息：</div>
+                            <div class="col-9" id="transformerInfo"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">变压器容量：</div>
+                            <div class="col-9" id="transformerCapacity"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">安装人：</div>
+                            <div class="col-9" id="installer"></div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-3">安装人电话：</div>
+                            <div class="col-9" id="installerPhone"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+                <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

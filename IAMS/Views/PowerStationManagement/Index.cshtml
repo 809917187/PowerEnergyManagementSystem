@@ -1,8 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<IAMS.Models.PowerStation.PowerStationInfo>
+
 <div class="row">
     <div class="row pt-2">
         <div class="col-11">
@@ -69,20 +66,20 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < 80; i++) {
+                @for(int i=0;i<Model.Count;i++){
                     <tr>
-                        <td>@i</td>
-                        <td>张+@i</td>
-                        <td>软件工程师</td>
-                        <td>研发部</td>
-                        <td><span>研发部</span></td>
-                        <td>研发部</td>
-                        <td>研发部</td>
-                        <td>研发部</td>
+                        <td>@(i+1)</td>
+                        <td>@Model[i].Name</td>
+                        <td>X</td>
+                        <td>@Model[i].InstalledPower</td>
+                        <td>@Model[i].InstalledCapacity</td>
+                        <td>@Model[i].Owner</td>
+                        <td>@Model[i].LocationDetails</td>
+                        <td>@Model[i].StartTime</td>
                         <td class="gap-1">
-                            <button class="badge rounded-pill text-bg-info" data-bs-toggle="modal" data-bs-target="#exampleModal" data-name="张+@i">查看</button>
-                            <button class="badge rounded-pill text-bg-info">修改</button>
-                            <button class="badge rounded-pill text-bg-info">删除</button>
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="@Model[i].Id">查看</button>
+                            <a class="btn btn-outline-primary btn-sm"  asp-controller="PowerStationManagement" asp-action="EditPowerStation" asp-route-id="@Model[i].Id">修改</a>
+                            <button class="btn btn-outline-primary btn-sm" onclick="deleteStation(@Model[i].Id)">删除</button>
                         </td>
                     </tr>
                 }
@@ -91,64 +88,15 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-4 shadow">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title fs-5" id="exampleModalLabel">查看电站</h5>
-            </div>
-            <div class="modal-body py-0">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">基础信息</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">更多信息</button>
-                    </li>
-                </ul>
-                <div class="tab-content pt-3" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row pt-2">
-                            <div class="col-3">电站图片</div>
-                            <div class="col-9"><img src="~/images/e-box.png" /></div>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col-3">电站名称</div>
-                            <div class="col-9" id="stationName">测试111</div>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col-3">装机功率</div>
-                            <div class="col-9">888kw</div>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col-3">装机容量</div>
-                            <div class="col-9">666</div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-                </div>
-            </div>
-            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
-                <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("~/Views/PowerStationManagement/_IndexViewDetailsModal.cshtml")
 
 @section Scripts{
 <script>
-    $(document).ready(function () {
-        // 监听所有的“查看”按钮点击事件
-        $("button[data-bs-target='#exampleModal']").click(function () {
-            // 获取当前按钮所在行的第二个 <td> 的值
-            const stationName = $(this).closest("tr").find("td:nth-child(2)").text();
-
-            // 将值加载到模态框中的 #stationName 元素中
-            $("#stationName").text(`${stationName}`);
-        });
-    });
+    var addPowerStationUrl = '@Url.Action("AddPowerStation", "PowerStationManagement")';
+    var seeDetailsUrl = '@Url.Action("GetPowerStationInfoById", "PowerStationManagement")';
+    var deletePowerStationUrl = '@Url.Action("DeletePowerStation", "PowerStationManagement")';
 
 </script>
+<script src="~/js/PowerStationManagement/see_details.js"></script>
+<script src="~/js/PowerStationManagement/delete_powerstation.js"></script>
 }

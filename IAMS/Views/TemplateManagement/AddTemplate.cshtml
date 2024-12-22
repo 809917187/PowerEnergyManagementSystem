@@ -1,0 +1,92 @@
+﻿@model Dictionary<int, string>
+
+<div class="row pt-2">
+    <div class="col-11">
+        <a asp-controller="TemplateManagement" asp-action="Index">模板中心</a><span>></span>创建模板
+    </div>
+</div>
+
+<div class="row pt-5">
+    <div class="col-12">
+        <h6 class="mb-3 fw-bold">基础信息</h6>
+        <form class="needs-validation" novalidate="" enctype="multipart/form-data">
+            <div class="row pt-2">
+                <div class="col-6">
+                    <label for="Name" class="form-label">模板名称<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="Price Template1" required>
+                    <div class="invalid-feedback">
+                        请输入电站名称
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="Tag" class="form-label">标签名称</label>
+                    <input type="text" class="form-control" id="Tag" name="Tag" value="Tag1">
+                </div>
+            </div>
+            <hr class="my-4">
+            <h6 class="mb-3 fw-bold pt-3">时段编辑</h6>
+            <button type="button" class="btn btn-primary btn-sm" onclick="addRowForTime()">新增行</button>
+            <div class="row g-3 pt-2">
+                <table class="table table-bordered" id="timeTable">
+                    <thead>
+                        <tr>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>时段</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <hr class="my-4">
+            <h6 class="mb-3 fw-bold pt-3">电价编辑</h6>
+            <div class="row g-3 pt-2">
+                <table class="table table-bordered" id="priceTable">
+                    <thead>
+                        <tr>
+                            <th>时段</th>
+                            <th>买入电价(元/kWh)</th>
+                            <th>卖出电价(元/kWh)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var map in Model) {
+                            <tr>
+                                <td>
+                                    <select class="form-select time_frame_type" disabled>
+                                        <option value="@map.Key" selected>@map.Value</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="0" class="form-control buy_price">
+                                </td>
+                                <td>
+                                    <input type="text" value="0" class="form-control sale_price">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row pt-3 mb-3">
+                <div class="col-1 mx-auto">
+                    <button class="w-100 btn btn-primary btn-lg" type="button" id="sendRequest">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+<script>
+    var AddTemplate = '@Url.Action("AddTemplate", "TemplateManagement")';
+    var TemplateIndex = '@Url.Action("Index", "TemplateManagement")'
+</script>
+<script src="~/js/PriceTemplate/add_row.js"></script>
+<script src="~/js/PriceTemplate/add_price_template.js"></script>
+
+}

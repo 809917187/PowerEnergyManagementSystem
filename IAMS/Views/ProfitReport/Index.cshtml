@@ -1,0 +1,217 @@
+﻿
+<div class="row pt-3">
+	<strong>电量报表</strong>
+</div>
+
+<div class="row pt-2">
+	<div class="bd-example m-0 border-0">
+		<div class="alert alert-success" role="alert">
+			<h6 class="alert-heading"><i class="bi bi-info-circle-fill bs-primary pr-3"></i>站点汇总展示所有站点报表数据，支持按日展示31天，按月展示一年内数据。</h6>
+		</div>
+	</div>
+</div>
+
+<div class="row pt-3">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">站点汇总</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="false">单站报表</a>
+		</li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div class="tab-pane active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+			<div class="row pt-3">
+				<div class="col-auto">
+					<span>时间范围：</span>
+				</div>
+				<div class="col-3">
+					<input type="date" class="form-control" id="SummaryTimeRange" value="">
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-primary" type="button">查询</button>
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-outline-secondary" type="button">重置</button>
+				</div>
+				<div class="col-auto ms-auto">
+					<button class="btn btn-primary" type="button">导出报表</button>
+				</div>
+			</div>
+			<div class="row pt-3">
+				<table class="table table-bordered text-center">
+					<thead class="table-light">
+						<tr>
+							<th rowspan="2" class="align-middle">站点名称</th>
+							<th colspan="6">充电量 (kWh)</th>
+							<th colspan="6">放电量 (kWh)</th>
+							<th rowspan="2" class="align-middle">实际收益</th>
+						</tr>
+						<tr>
+							<th>尖</th>
+							<th>峰</th>
+							<th>平</th>
+							<th>谷</th>
+							<th>深谷</th>
+							<th>总</th>
+							<th>尖</th>
+							<th>峰</th>
+							<th>平</th>
+							<th>谷</th>
+							<th>深谷</th>
+							<th>总</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>江苏无锡市1号电站</td>
+							<td>88888.0</td>
+							<td>12,501.0</td>
+							<td>465,529.0</td>
+							<td>491,733.0</td>
+							<td>970,553.0</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+						</tr>
+						<tr>
+							<td>江苏无锡市2号电站</td>
+							<td>54.0</td>
+							<td>12,501.0</td>
+							<td>465,529.0</td>
+							<td>491,733.0</td>
+							<td>970,553.0</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+						</tr>
+						<tr>
+							<td>江苏无锡市3号电站</td>
+							<td>54.0</td>
+							<td>12,501.0</td>
+							<td>465,529.0</td>
+							<td>491,733.0</td>
+							<td>970,553.0</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+							<td>9,996.0</td>
+							<td>789,235.0</td>
+							<td>799,231.0</td>
+							<td>89.01</td>
+						</tr>
+						<tr class="table-secondary fw-bold">
+							<td>总计</td>
+							<td>420,241.6</td>
+							<td>444,594.3</td>
+							<td>894,141.3</td>
+							<td>883,389.7</td>
+							<td>2,643,384.3</td>
+							<td>894,141.3</td>
+							<td>883,389.7</td>
+							<td>2,643,384.3</td>
+							<td>830,839.5</td>
+							<td>830,839.5</td>
+							<td>2,021,421.1</td>
+							<td>2,852,260.6</td>
+							<td>88.71</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="single" role="tabpanel" aria-labelledby="single-tab">
+			<div class="row pt-3">
+				<div class="col-auto d-flex align-items-center">
+					<span>选择站点：</span>
+				</div>
+				<div class="col-2">
+					<select class="form-select" id="SingleReportStation">
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+					</select>
+				</div>
+				<div class="col-auto d-flex align-items-center">
+					<span>报表类型：</span>
+				</div>
+				<div class="col-2">
+					<select class="form-select" id="SingleReportStation">
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+						<option value="">江苏无锡市1号电站</option>
+					</select>
+				</div>
+				<div class="col-auto d-flex align-items-center">
+					<span>时间范围：</span>
+				</div>
+				<div class="col-3">
+					<input type="date" class="form-control" id="SingleTimeRange" value="">
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-primary" type="button">查询</button>
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-outline-secondary" type="button">重置</button>
+				</div>
+				<div class="col-auto ms-auto">
+					<button class="btn btn-primary" type="button">导出报表</button>
+				</div>
+			</div>
+			<div class="row pt-3">
+				<div class="col-max" id="profit_chart" style="height:350px;">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<script src="~/js/ProfitReport/singleProfitReportByRange.js"></script>
+	<script>
+		$('#myTab a').on('click', function (e) {
+			e.preventDefault()
+			$(this).tab('show')
+		})
+		$('#pills-tab a').on('click', function (e) {
+			e.preventDefault()
+			$(this).tab('show')
+		})
+
+
+		flatpickr("#SummaryTimeRange", {
+			dateFormat: "Y-m-d",
+			mode: "range",
+		});
+		flatpickr("#SingleTimeRange", {
+			dateFormat: "Y-m-d",
+			mode: "range",
+		});
+
+
+
+	</script>
+
+
+}

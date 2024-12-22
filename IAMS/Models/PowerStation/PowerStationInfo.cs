@@ -2,8 +2,8 @@
     public class PowerStationInfo {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Owner { get; set; }
-        public string Phone { get; set; }
+        public string Owner { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
         public float InstalledPower { get; set; }
         public float InstalledCapacity { get; set; }
         public DateTime StartTime { get; set; }
@@ -19,9 +19,10 @@
         public string NetworkInfo { get; set; } = string.Empty;
         public string Installer { get; set; } = string.Empty;
         public string InstallerPhone { get; set; } = string.Empty;
-        public List<IFormFile> StationImages { get; set; }= new List<IFormFile>();
+        public List<IFormFile> StationImages { get; set; } = new List<IFormFile>();
+        public List<string> StationImagesFilePath { get; set; } = new List<string>();
         public List<IFormFile> StationInstallImages { get; set; } = new List<IFormFile>();
-
+        public List<string> StationInstallImagesFilePath { get; set; } = new List<string>();
 
     }
 }

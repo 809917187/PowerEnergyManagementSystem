@@ -8,7 +8,8 @@
 		<div class="card">
 			<div class="card-header">
 				<span class="pr-2">用户管理</span>
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">添加用户</button>
+				<button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addUser">添加用户</button>
+				<button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#changePassword">修改密码</button>
 			</div>
 			<div class="card-body">
 				<table id="table"
@@ -47,6 +48,7 @@
 </div>
 
 @await Html.PartialAsync("~/Views/Access/_addUser.cshtml")
+ @await Html.PartialAsync("~/Views/Access/_ChangePassword.cshtml")
 
 @section Scripts{
 
@@ -58,5 +60,6 @@
 	</script>
 	<script src="~/js/Shared/addUser.js"></script>
 	<script src="~/js/Shared/deleteUser.js"></script>
+	<script src="~/js/Shared/changePassword.js"></script>
  }
 

@@ -1,13 +1,11 @@
-﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-
+﻿
 <div class="row pt-2">
     <div class="col-11">
         <p class="h5">多站总览 <span class="badge text-bg-warning">2024-11-15</span></p>
     </div>
     @*<div class="col-auto">
         <button type="button" class="btn btn-primary">创建电站</button>
-    </div>*@
+        </div>*@
 </div>
 
 <div class="row pt-2">
@@ -70,7 +68,7 @@
                     <div class="col-7">
                         <h6>收益统计</h6>
                     </div>
-                    <div class="col-2">
+                    <div class="col-auto">
                         <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
                             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                                 <ul class="navbar-nav me-auto mb-lg-0">
@@ -87,9 +85,11 @@
                             </div>
                         </nav>
                     </div>
-                    <div class="col-3 d-flex align-items-center">
+                    <div class="col-auto d-flex align-items-center">
                         <label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
-                        <input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
+                    </div>
+                    <div class="col d-flex align-items-center">
+                        <input type="text" id="daterange" class="flatpickr flatpickr-input form-control" />
                     </div>
                 </div>
             </div>
@@ -146,21 +146,13 @@
 
 @section Scripts{
 
-<!-- Daterangepicker JS -->
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
 <script>
     $(document).ready(function () {
 
-    $('#daterange').daterangepicker({
-        timePicker: true,  // 启用时间选择器
-        timePicker24Hour: true,  // 24小时制
-        timePickerSeconds: false,  // 显示秒
-        locale: {
-            format: 'YYYY-MM-DD'  // 日期和时间格式
-        }
-    });
+        flatpickr("#daterange", {
+            dateFormat: "Y-m-d",
+            mode: "range"
+        });
 
 
         var chartDom = document.getElementById('earnings_chart1');

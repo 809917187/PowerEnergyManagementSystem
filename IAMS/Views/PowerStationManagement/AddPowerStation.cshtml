@@ -1,13 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
-<link rel="stylesheet" href="~/bootstrap-fileinput/css/fileinput.min.css">
-
-
+﻿
 <div class="row pt-2">
     <div class="col-11">
         <a asp-controller="PowerStationManagement" asp-action="Index">电站管理</a><span>></span>创建电站
@@ -25,65 +16,57 @@
 <div class="row pt-2">
     <div class="col-12">
         <h6 class="mb-3 fw-bold">基础信息</h6>
-        <form class="needs-validation" novalidate="" enctype="multipart/form-data" >
-            <div class="row g-3 pt-2">
+        <form class="needs-validation" novalidate="" enctype="multipart/form-data">
+            <div class="row pt-2">
                 <div class="col-4">
                     <label for="Name" class="form-label">电站名称<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="Name" name="Name" value="" required>
+                    <input type="text" class="form-control" id="Name" name="Name" value="dz1" required>
                     <div class="invalid-feedback">
                         请输入电站名称
                     </div>
                 </div>
                 <div class="col-4">
                     <label for="Owner" class="form-label">电站业主</label>
-                    <input type="text" class="form-control" name="Owner" value="">
+                    <input type="text" class="form-control" name="Owner" value="Owner">
                 </div>
                 <div class="col-4">
                     <label for="Phone" class="form-label">电站联系电话</label>
-                    <input type="text" class="form-control" name="Phone" value="">
+                    <input type="text" class="form-control" name="Phone" value="18888888888">
                 </div>
             </div>
             <div class="row g-3 pt-2">
                 <div class="col-4">
                     <label for="InstalledPower" class="form-label">装机功率(MW)</label>
-                    <input type="text" class="form-control" name="InstalledPower"  value="">
+                    <input type="text" class="form-control" name="InstalledPower" value="11.11">
                 </div>
                 <div class="col-4">
                     <label for="InstalledCapacity" class="form-label">装机容量(MWh)</label>
-                    <input type="text" class="form-control" name="InstalledCapacity" value="">
+                    <input type="text" class="form-control" name="InstalledCapacity" value="22.22">
                 </div>
                 <div class="col-4">
                     <label for="StartTime" class="form-label">投运时间</label>
-                    <input type="date" class="form-control" name="StartTime" value="">
+                    <input type="date" class="form-control" name="StartTime"  id="StartTime" value="">
                 </div>
             </div>
-            <div class="row g-3 pt-2">
+            <div class="row pt-2">
                 <label class="form-label">电站地址</label>
                 <div class="col-2">
-                    <select class="form-select" name="Country" placeholder="选择国家">
-                        <option value="">选择国家</option>
-                    </select>
+                     <input type="text" class="form-control" name="Country" placeholder ="国家">
                 </div>
                 <div class="col-2">
-                    <select class="form-select" name="State">
-                        <option value="">选择省/州</option>
-                    </select>
+                    <input type="text" class="form-control" name="State" placeholder ="省/州">
                 </div>
                 <div class="col-2">
-                    <select class="form-select" name="City">
-                        <option value="">选择市</option>
-                    </select>
+                    <input type="text" class="form-control" name="City" placeholder ="市">
                 </div>
                 <div class="col-2">
-                    <select class="form-select" name="Region">
-                        <option value="">选择区</option>
-                    </select>
+                    <input type="text" class="form-control" name="Region" placeholder ="区">
                 </div>
                 <div class="col-4">
                     <input type="text" class="form-control" name="LocationDetails" placeholder="详细地址">
                 </div>
             </div>
-            <div class="row g-3 pt-2">
+            <div class="row pt-2">
                 <label class="form-label">经纬度</label>
                 <div class="col-4">
                     <div class="input-group">
@@ -97,9 +80,9 @@
                         <input type="text" class="form-control" name="Latitude">
                     </div>
                 </div>
-                <div class="col-1">
+                @*<div class="col-1">
                     <button class="w-100 btn btn-primary btn-lg">获取位置</button>
-                </div>
+                </div>*@
             </div>
 
             <div class="row g-3 pt-2">
@@ -124,12 +107,12 @@
                 <div class="col-4">
                     <label for="NetworkInfo" class="form-label">并网点信息</label>
                     <select class="form-select" name="NetworkInfo">
-                        <option value="0">请选择</option>
-                        <option value="1">有光伏</option>
-                        <option value="2">无光伏</option>
-                        <option value="3">有并网点</option>
-                        <option value="4">无并网点</option>
-                        <option value="5">其他</option>
+                        <option value="">请选择</option>
+                        <option value="有光伏">有光伏</option>
+                        <option value="无光伏">无光伏</option>
+                        <option value="有并网点">有并网点</option>
+                        <option value="无并网点">无并网点</option>
+                        <option value="其他">其他</option>
                     </select>
                 </div>
             </div>
@@ -152,7 +135,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="row pt-3 mb-3">
                 <div class="col-1 mx-auto">
                     <button class="w-100 btn btn-primary btn-lg" type="submit">确定</button>
@@ -163,184 +146,13 @@
 </div>
 
 @section Scripts{
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<!-- 引入 jQuery 和 Intl-tel-input JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script src="~/bootstrap-fileinput/js/fileinput.js"></script>
-<script src="~/bootstrap-fileinput/themes/bs5/theme.js"></script>
+
 <script>
-    //$("#StationImages").fileinput({
-    //    theme: "bs5",
-    //    uploadUrl: "/file-upload-batch/2",
-    //    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    //    overwriteInitial: false,
-    //    initialPreviewAsData: true,
-    //    maxFileSize: 10000,
-    //    removeFromPreviewOnError: true,
-    //    initialPreview: [
-            
-    //    ],
-    //    initialPreviewConfig: [
-            
-    //    ] // the key will be dynamically replaced  
-    //});
-    $("#StationImages").fileinput({
-        theme: "bs5",          
-        uploadUrl: "@Url.Action("UploadStationImage", "PowerStationManagement")",
-        allowedFileExtensions: ['jpg', 'png'],   // 允许上传的文件类型：jpg 和 png
-        overwriteInitial: false,                 // 不覆盖已有的文件
-        initialPreviewAsData: true,              // 将初始预览的内容作为数据处理
-        maxFileSize: 5000,                       // 限制文件大小为 5MB
-        removeFromPreviewOnError: true,          // 文件加载错误时，从预览中移除
-        showPreview: true,                       // 显示文件预览
-        showUpload: false,                       // 禁用上传按钮
-        showCaption: false,                      // 不显示文件名
-        uploadAsync: false                       // 禁用异步上传
-    });
-
-    $("#StationInstallImages").fileinput({
-        theme: "bs5",
-        //uploadUrl: "/file-upload-batch/2",
-        allowedFileExtensions: ['jpg', 'png'],
-        overwriteInitial: false,
-        initialPreviewAsData: true,
-        maxFileSize: 5000,
-        removeFromPreviewOnError: true
-    });
+    var addPowerStationUrl = '@Url.Action("AddPowerStation", "PowerStationManagement")';
+    var powerStationIndexUrl = '@Url.Action("Index", "PowerStationManagement")';
 </script>
-<script>
-    $(document).ready(function () {
-
-        const geoNamesBaseURL = "http://api.geonames.org/";
-        const username = "zhangwei"; // 请替换为你的 GeoNames 用户名
-
-        const $countrySelect = $('#Country');
-        const $stateSelect = $('#State');
-        const $citySelect = $('#City');
-        const $regionSelect = $('#Region');
-
-        // 1. 获取国家列表
-        $.ajax({
-          url: `${geoNamesBaseURL}countryInfoJSON?username=${username}&lang=zh`,
-          method: 'GET',
-          success: function(data) {
-            $.each(data.geonames, function(index, country) {
-              $countrySelect.append(`<option value="${country.geonameId}">${country.countryName}</option>`);
-            });
-          }
-        });
-
-        // 2. 国家选择事件，加载省/州
-        $countrySelect.on('change', function() {
-          const countryId = $(this).val();
-          $stateSelect.html('<option value="">选择省/州</option>');
-          $citySelect.html('<option value="">选择市</option>');
-          $regionSelect.html('<option value="">选择区</option>');
-
-          if (countryId) {
-            $.ajax({
-              url: `${geoNamesBaseURL}childrenJSON?geonameId=${countryId}&username=${username}&lang=zh`,
-              method: 'GET',
-              success: function(data) {
-                $.each(data.geonames, function(index, state) {
-                  $stateSelect.append(`<option value="${state.geonameId}">${state.name}</option>`);
-                });
-              }
-            });
-          }
-        });
-
-        // 3. 省/州选择事件，加载市
-        $stateSelect.on('change', function() {
-          const stateId = $(this).val();
-          $citySelect.html('<option value="">选择市</option>');
-          $regionSelect.html('<option value="">选择区</option>');
-
-          if (stateId) {
-            $.ajax({
-              url: `${geoNamesBaseURL}childrenJSON?geonameId=${stateId}&username=${username}&lang=zh`,
-              method: 'GET',
-              success: function(data) {
-                $.each(data.geonames, function(index, city) {
-                  $citySelect.append(`<option value="${city.geonameId}">${city.name}</option>`);
-                });
-              }
-            });
-          }
-        });
-
-        // 4. 市选择事件，加载区
-        $citySelect.on('change', function() {
-          const cityId = $(this).val();
-          $regionSelect.html('<option value="">选择区</option>');
-
-          if (cityId) {
-            $.ajax({
-              url: `${geoNamesBaseURL}childrenJSON?geonameId=${cityId}&username=${username}&lang=zh`,
-              method: 'GET',
-              success: function(data) {
-                $.each(data.geonames, function(index, region) {
-                  $regionSelect.append(`<option value="${region.geonameId}">${region.name}</option>`);
-                });
-              }
-            });
-          }
-        });
-
-              // 初始化 Flatpickr
-              flatpickr("#OperationalTime", {
-                dateFormat: "Y-m-d"
-              });
-
-
-              // Example starter JavaScript for disabling form submissions if there are invalid fields
-              (() => {
-                'use strict'
-
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                const forms = document.querySelectorAll('.needs-validation')
-
-                // Loop over them and prevent submission
-                Array.from(forms).forEach(form => {
-                  form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                      event.preventDefault()
-                      event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                  }, false)
-                })
-              })()
-
-
-        $('form').submit(function(event) {
-            event.preventDefault();  // 阻止表单提交
-    
-            var formData = new FormData(this);  // 获取表单数据
-
-            $.ajax({
-                url: '@Url.Action("AddPowerStation", "PowerStationManagement")',
-                type: 'POST',
-                data: formData,
-                processData: false,  // 必须设置为 false，才能正确发送 FormData
-                contentType: false,  // 必须设置为 false，才能正确发送 FormData
-                success: function(response) {
-                    if (response.message) {
-                        // 在页面上显示返回的消息
-                        alert(response.message);
-                    }
-                },
-                error: function() {
-                    alert('上传失败');
-                }
-            });
-        });
-        
-
-    });
+<script src="~/js/PowerStationManagement/add_power_station.js"></script>
 
 
 
-</script>
 }

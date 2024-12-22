@@ -1,0 +1,152 @@
+﻿@model IAMS.Models.PowerStation.PowerStationInfo
+
+<div class="row pt-5">
+    <div class="col-11">
+        <a asp-controller="PowerStationManagement" asp-action="Index">电站管理</a><span>></span>编辑电站
+    </div>
+</div>
+
+<div class="row pt-2">
+    <div class="col-12">
+        <h6 class="mb-3 fw-bold">基础信息</h6>
+        <form class="needs-validation" novalidate="" enctype="multipart/form-data">
+            <input type="hidden" id="deleteImages" name="deleteImages" />
+            <div class="row pt-2">
+                <div class="col-4">
+                    <label for="Name" class="form-label">电站名称<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+                </div>
+                <div class="col-4">
+                    <label for="Owner" class="form-label">电站业主</label>
+                    <input type="text" class="form-control" name="Owner" value="@Model.Owner">
+                </div>
+                <div class="col-4">
+                    <label for="Phone" class="form-label">电站联系电话</label>
+                    <input type="text" class="form-control" name="Phone" value="@Model.Phone">
+                </div>
+            </div>
+            <div class="row g-3 pt-2">
+                <div class="col-4">
+                    <label for="InstalledPower" class="form-label">装机功率(MW)</label>
+                    <input type="text" class="form-control" name="InstalledPower" value="@Model.InstalledPower">
+                </div>
+                <div class="col-4">
+                    <label for="InstalledCapacity" class="form-label">装机容量(MWh)</label>
+                    <input type="text" class="form-control" name="InstalledCapacity" value="@Model.InstalledCapacity">
+                </div>
+                <div class="col-4">
+                    <label for="StartTime" class="form-label">投运时间</label>
+                    <input type="date" class="form-control" name="StartTime" value="@Model.StartTime.ToString("yyyy-MM-dd")">
+                </div>
+            </div>
+            <div class="row pt-2">
+                <label class="form-label">电站地址</label>
+                <div class="col-2">
+                    <input type="text" class="form-control" name="Country" placeholder="国家" value="@Model.Country">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" name="State" placeholder="省/州" value="@Model.State">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" name="City" placeholder="市" value="@Model.City">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" name="Region" placeholder="区" value="@Model.Region">
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="LocationDetails" placeholder="详细地址" value="@Model.LocationDetails">
+                </div>
+            </div>
+            <div class="row pt-2">
+                <label class="form-label">经纬度</label>
+                <div class="col-4">
+                    <div class="input-group">
+                        <span class="input-group-text">经度：</span>
+                        <input type="text" class="form-control" name="Longitude" value="@Model.Longitude">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="input-group">
+                        <span class="input-group-text">纬度：</span>
+                        <input type="text" class="form-control" name="Latitude" value="@Model.Latitude">
+                    </div>
+                </div>
+                @*<div class="col-1">
+                    <button class="w-100 btn btn-primary btn-lg">获取位置</button>
+                    </div>*@
+            </div>
+
+            <div class="row g-3 pt-2">
+                <label class="form-label">电站图片(上传的图片大小不得超过5M，支持PNG、JPG格式，最多可上传 5 张图片)</label>
+                <div class="col-12 removeUpload">
+                    <div class="file-loading">
+                        <input id="StationImages" name="StationImages" type="file" multiple accept="image">
+                    </div>
+                </div>
+            </div>
+            @*<hr class="my-4">*@
+            <h6 class="mb-3 fw-bold pt-3">更多信息</h6>
+            <div class="row g-3 pt-2">
+                <div class="col-4">
+                    <label for="TransformerCapacity" class="form-label">变压器容量(kVA)</label>
+                    <input type="text" class="form-control" name="TransformerCapacity" value="@Model.TransformerCapacity">
+                </div>
+                <div class="col-4">
+                    <label for="TransformerInfo" class="form-label">变压器信息</label>
+                    <input type="text" class="form-control" name="TransformerInfo" value="@Model.TransformerInfo">
+                </div>
+                <div class="col-4">
+                    <label for="NetworkInfo" class="form-label">并网点信息</label>
+                    <select class="form-select" name="NetworkInfo" id="NetworkInfo">
+                        <option value="0">请选择</option>
+                        <option value="1">有光伏</option>
+                        <option value="2">无光伏</option>
+                        <option value="3">有并网点</option>
+                        <option value="4">无并网点</option>
+                        <option value="5">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-3 pt-2">
+                <div class="col-4">
+                    <label for="Installer" class="form-label">安装人</label>
+                    <input type="text" class="form-control" name="Installer" value="@Model.Installer">
+                </div>
+                <div class="col-4">
+                    <label for="InstallerPhone" class="form-label">安装人联系号码</label>
+                    <input type="text" class="form-control" name="InstallerPhone" value="@Model.InstallerPhone">
+                </div>
+
+            </div>
+            <div class="row g-3 pt-2 removeUpload">
+                <label class="form-label">安装图片</label>
+                <div class="col-12">
+                    <div class="file-loading">
+                        <input id="StationInstallImages" name="StationInstallImages" type="file" multiple accept="image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-3 mb-3">
+                <div class="col-1 mx-auto">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+    var editPowerStationUrl = '@Url.Action("EditPowerStation", "PowerStationManagement")';
+    var deletePowerStationImageUrl = '@Url.Action("DeletePowerStationImage", "PowerStationManagement")';
+    var powerStationIndexUrl = '@Url.Action("Index", "PowerStationManagement")';
+    var stationImageUrls = @Html.Raw(Json.Serialize(Model.StationImagesFilePath));
+    var stationInstallImageUrls = @Html.Raw(Json.Serialize(Model.StationInstallImagesFilePath));
+    var selectedNetworkValue = @(String.IsNullOrWhiteSpace(@Model.NetworkInfo)?"0":@Model.NetworkInfo); 
+
+</script>
+
+<script src="~/js/PowerStationManagement/edit_powerstation.js"></script>
+
+}
