@@ -1,8 +1,8 @@
-﻿<!-- Latest compiled and minified CSS -->
+﻿@model IAMS.Models.StationSystem.EnergyStorageStackControlInfo
 
 <div class="row pt-3">
     <div class="col-2">
-        <select id="example-select" class="selectpicker fw-bold" data-live-search="true">
+        <select id="example-select" class="form-select fw-bold" data-live-search="true">
             <option selected>江苏无锡市1号电站</option>
             <option>选项2</option>
             <option>选项3</option>
@@ -10,7 +10,7 @@
         </select>
     </div>
     <div class="col-2">
-        <select id="example-select" class="selectpicker fw-bold" data-live-search="true" @*title="请选择一个选项"*@>
+        <select id="example-select" class="form-select fw-bold" data-live-search="true" @*title="请选择一个选项"*@>
             <option selected>主机(XXXXX)</option>
             <option>选项2</option>
             <option>选项3</option>
@@ -31,39 +31,39 @@
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
                                 <p>今日充电量</p>
-                                <p><strong class="fs-3">1310</strong>kWh</p>
+                                <p><strong class="fs-3">@Model.DailyChargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
-                                <p>今日充电量</p>
-                                <p><strong class="fs-3">1310</strong>kWh</p>
+                                <p>今日放电量</p>
+                                <p><strong class="fs-3">@Model.DailyDischargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
-                                <p>今日充电量</p>
-                                <p><strong class="fs-3">1310</strong>kWh</p>
+                                <p>累计充电量</p>
+                                <p><strong class="fs-3">@Model.TotalChargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
-                                <p>今日充电量</p>
-                                <p><strong class="fs-3">1310</strong>kWh</p>
+                                <p>累计放电量</p>
+                                <p><strong class="fs-3">@Model.TotalDischargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
-                                <p>今日充电量</p>
-                                <p><strong class="fs-3">1310</strong>kWh</p>
+                                <p>电池堆SOC</p>
+                                <p><strong class="fs-3">@Model.SOC.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
@@ -119,13 +119,13 @@
                             <div class="card-body">
                                 <div class="row g-3">
                                     <div class="col-auto">
-                                        最大充电功率：<strong>????</strong> kW
+                                        最大充电功率：<strong>@Model.MaxChargePower.ToString("F2")</strong> kW
                                     </div>
                                     <div class="col-auto">
-                                        最大充电功率：<strong>????</strong> kW
+                                        最大放电功率：<strong>@Model.MaxDischargePower.ToString("F2")</strong> kW
                                     </div>
                                     <div class="col-auto">
-                                        最大负载功率：<strong>????</strong> kW
+                                        最大负载功率：<strong>@Model.MaxLoadPower.ToString("F2")</strong> kW
                                     </div>
                                 </div>
                                 <div class="row p-2">
@@ -346,7 +346,6 @@
             defaultDate: null,   // 默认为空
           });
 
-        $('.selectpicker').selectpicker(); // 初始化 Bootstrap Select
 
         var chartDom = document.getElementById('power_trend');
         var myChart = echarts.init(chartDom);

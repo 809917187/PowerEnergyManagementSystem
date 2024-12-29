@@ -1,7 +1,8 @@
-﻿
+﻿@model IAMS.ViewModels.Home.MultiPowerStationOverviewViewModel
+
 <div class="row pt-2">
     <div class="col-11">
-        <p class="h5">多站总览 <span class="badge text-bg-warning">2024-11-15</span></p>
+        <p class="h5">多站总览 <span class="badge text-bg-warning">@DateTime.Now.ToString("yyyy-MM-dd")</span></p>
     </div>
     @*<div class="col-auto">
         <button type="button" class="btn btn-primary">创建电站</button>
@@ -12,7 +13,7 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                PIM 总数
+                站点总数
                 <ul class="list-unstyled mt-3 mb-4">
                     <li><h3 class="card-title pricing-card-title">2</h3></li>
                     <li>在线5 个, 离线0个, 待运维0个</li>
