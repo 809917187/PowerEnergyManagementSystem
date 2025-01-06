@@ -1,8 +1,11 @@
+using IAMS.MQTT;
 using IAMS.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string connectionString = builder.Configuration.GetConnectionString("gq");
+MQTTHelper.SetConnectionString(connectionString);
 
 
 // Add services to the container.
@@ -20,6 +23,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPowerStationService, PowerStationService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IStationSystemService, StationSystemService>();
+builder.Services.AddHostedService<TimedBackgroundService>();
 
 var app = builder.Build();
 

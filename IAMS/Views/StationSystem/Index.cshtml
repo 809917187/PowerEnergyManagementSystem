@@ -47,7 +47,7 @@
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
                                 <p>累计充电量</p>
-                                <p><strong class="fs-3">@Model.TotalChargeCapacity.ToString("F2")</strong>kWh</p>
+                                <p><strong class="fs-3">@Model.CumulativeChargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
                                 <p>累计放电量</p>
-                                <p><strong class="fs-3">@Model.TotalDischargeCapacity.ToString("F2")</strong>kWh</p>
+                                <p><strong class="fs-3">@Model.CumulativeDischargeCapacity.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <div class="bd-example m-0 border-0">
                             <div class="alert alert-light" role="alert">
                                 <p>电池堆SOC</p>
-                                <p><strong class="fs-3">@Model.SOC.ToString("F2")</strong>kWh</p>
+                                <p><strong class="fs-3">@Model.StateOfCharge.ToString("F2")</strong>kWh</p>
                             </div>
                         </div>
                     </div>
@@ -119,13 +119,13 @@
                             <div class="card-body">
                                 <div class="row g-3">
                                     <div class="col-auto">
-                                        最大充电功率：<strong>@Model.MaxChargePower.ToString("F2")</strong> kW
+                                        最大充电功率：<strong>@Model.MaximumAllowedChargePower.ToString("F2")</strong> kW
                                     </div>
                                     <div class="col-auto">
-                                        最大放电功率：<strong>@Model.MaxDischargePower.ToString("F2")</strong> kW
+                                        最大放电功率：<strong>@Model.MaximumAllowedDischargePower.ToString("F2")</strong> kW
                                     </div>
                                     <div class="col-auto">
-                                        最大负载功率：<strong>@Model.MaxLoadPower.ToString("F2")</strong> kW
+                                        最大负载功率：<strong>XXX</strong> kW
                                     </div>
                                 </div>
                                 <div class="row p-2">

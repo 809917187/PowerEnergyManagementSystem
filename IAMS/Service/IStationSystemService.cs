@@ -7,7 +7,7 @@ namespace IAMS.Service {
          根据sn码查询站点对应的数据
          */
         public EnergyStorageStackControlInfo GetEnergyStorageStackControlInfo(string sn);
-        public bool SaveEnergyStorageStackControlInfo(EnergyStorageStackControlInfo energyStorageStackControlInfo);
+        public bool SaveEnergyStorageStackControlInfo(List<EnergyStorageStackControlInfo> energyStorageStackControlInfos);
 
     }
 }
