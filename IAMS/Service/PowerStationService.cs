@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using IAMS.Models.PowerStation;
+using IAMS.MQTT;
+using IAMS.MQTT.Model;
 using MySql.Data.MySqlClient;
 using System.Text;
 
@@ -56,6 +58,9 @@ namespace IAMS.Service {
                         cmd.ExecuteNonQuery();
 
                         cmd.CommandText = "DELETE FROM power_station_install_images WHERE power_station_id=@id";
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "UPDATE energy_storage_cabinet_array SET power_station_id = null WHERE power_station_id=@id";
                         cmd.ExecuteNonQuery();
 
                         // 提交事务
@@ -129,6 +134,68 @@ namespace IAMS.Service {
             }
 
             return powerStationInfos;
+        }
+
+        public List<PowerStationRootInfo> GetAllEnergyStorageCabinetArray() {
+            List<PowerStationRootInfo> ret = new List<PowerStationRootInfo>();
+            try {
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    // 定义 SQL 查询
+                    string query = "SELECT power_station_id,json_structure FROM energy_storage_cabinet_array";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        // 执行查询并读取结果
+                        using (MySqlDataReader reader = command.ExecuteReader()) {
+                            while (reader.Read()) {
+                                PowerStationRootInfo powerStationRootInfo = new PowerStationRootInfo();
+                                if (reader.IsDBNull(reader.GetOrdinal("power_station_id"))) {
+                                    continue;
+                                } else {
+                                    powerStationRootInfo.PowerStationId = reader.GetInt32("power_station_id");
+                                    powerStationRootInfo.rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"));
+                                    ret.Add(powerStationRootInfo);
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return ret;
+        }
+        public List<PowerStationRootInfo> GetEnergyStorageCabinetArrayById(int PowerStationId) {
+            List<PowerStationRootInfo> ret = new List<PowerStationRootInfo>();
+            try {
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    // 定义 SQL 查询
+                    string query = "SELECT json_structure FROM energy_storage_cabinet_array WHERE power_station_id=@id";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        command.Parameters.AddWithValue("@id", PowerStationId);
+                        // 执行查询并读取结果
+                        using (MySqlDataReader reader = command.ExecuteReader()) {
+                            while (reader.Read()) {
+                                PowerStationRootInfo powerStationRootInfo = new PowerStationRootInfo() {
+                                    PowerStationId = PowerStationId,
+                                    rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"))
+                                };
+                                ret.Add(powerStationRootInfo);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            return ret;
         }
 
         public List<string> GetAllStationImages(int PowerStationId) {

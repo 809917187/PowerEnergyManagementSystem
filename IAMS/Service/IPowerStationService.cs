@@ -1,4 +1,5 @@
 ﻿using IAMS.Models.PowerStation;
+using IAMS.MQTT.Model;
 
 namespace IAMS.Service {
     public interface IPowerStationService {
@@ -9,6 +10,7 @@ namespace IAMS.Service {
         public bool UpdateStationInfo(PowerStationInfo powerStationInfo);
         public bool AddPowerSatationInfo(PowerStationInfo powerStationInfo);
         public bool DeletePowerSatationInfo(int PowerStationId);
-
+        public List<PowerStationRootInfo> GetEnergyStorageCabinetArrayById(int PowerStationId);
+        public List<PowerStationRootInfo> GetAllEnergyStorageCabinetArray();
     }
 }

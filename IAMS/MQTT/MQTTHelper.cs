@@ -34,6 +34,69 @@ namespace IAMS.MQTT {
             return true;
         }
 
+        public static bool SaveRootDataToDBInfo() {
+            string json = MQTTHelper.GetRootData();
+            MQTTHelper.SaveRootInfo(json);
+            return true;
+        }
+
+        public static List<Structure> FindStructuresBydevTypeAndmenuTree(Structure root, int devType, int menuTree) {
+            var result = new List<Structure>();
+
+            if (root == null) return result;
+
+            // 检查当前节点
+            if (root.devType == devType && root.menuTree == menuTree) {
+                result.Add(root);
+            }
+
+            // 遍历子节点
+            if (root.child != null) {
+                foreach (var childNode in root.child) {
+                    result.AddRange(FindStructuresBydevTypeAndmenuTree(childNode, devType, menuTree));
+                }
+            }
+
+            return result;
+        }
+
+        public static RootDataFromMqtt ConvertRootInfoToObject(string json) {
+            RootDataFromMqtt root = new RootDataFromMqtt();
+            try {
+                root = JsonSerializer.Deserialize<RootDataFromMqtt>(json);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+
+            return root;
+
+        }
+
+        /*
+         存储到energy_storage_cabinet_array表
+         */
+        public static bool SaveRootInfo(string json) {
+            if (string.IsNullOrWhiteSpace(json)) {
+                return false;
+            }
+
+            try {
+                RootDataFromMqtt root = MQTTHelper.ConvertRootInfoToObject(json);
+                using (var connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+                    const string sql = "INSERT INTO energy_storage_cabinet_array (name,json_structure) VALUES (@name,@json_structure)";
+                    using (MySqlCommand cmd = new MySqlCommand(sql, connection)) {
+                        cmd.Parameters.AddWithValue("@name", root.structure.name);
+                        cmd.Parameters.AddWithValue("@json_structure", json);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            } catch (Exception e) {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+        }
 
         public static bool SavePcsInfo(List<PCSInfo> infos) {
             if (infos == null || infos.Count == 0) {
@@ -509,6 +572,16 @@ VALUES (
 
         public static string GetPeriodData() {
             string filePath = Path.Combine(AppContext.BaseDirectory, "Assets", "JsonFile", "period.json");
+            // 读取文件内容
+            if (File.Exists(filePath)) {
+                return File.ReadAllText(filePath).Replace("\r\n", "").Replace("\n", ""); ;
+            } else {
+                return String.Empty;
+            }
+        }
+
+        public static string GetRootData() {
+            string filePath = Path.Combine(AppContext.BaseDirectory, "Assets", "JsonFile", "root.json");
             // 读取文件内容
             if (File.Exists(filePath)) {
                 return File.ReadAllText(filePath).Replace("\r\n", "").Replace("\n", ""); ;

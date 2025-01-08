@@ -1,4 +1,6 @@
-﻿namespace IAMS.Models.PowerStation {
+﻿using IAMS.MQTT.Model;
+
+namespace IAMS.Models.PowerStation {
     public class PowerStationInfo {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -24,5 +26,6 @@
         public List<IFormFile> StationInstallImages { get; set; } = new List<IFormFile>();
         public List<string> StationInstallImagesFilePath { get; set; } = new List<string>();
 
+        public List<RootDataFromMqtt> EnergyStorageCabinetList { get; set; } = new List<RootDataFromMqtt>();
     }
 }
