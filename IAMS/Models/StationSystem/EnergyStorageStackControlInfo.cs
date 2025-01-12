@@ -2,8 +2,8 @@
 
 namespace IAMS.Models.StationSystem {
     public class EnergyStorageStackControlInfo: DeviceDataBaseInfo {
-        public bool DeviceEnabled { get; set; } //	设备启用	0
-        public bool DeviceOnline { get; set; }  //	设备在线	1
+        public bool IsEnabled { get; set; } //	设备启用	0
+        public bool IsOnline { get; set; }  //	设备在线	1
         public double TotalVoltage { get; set; } = 0;   //	总压	2
         public double TotalCurrent { get; set; } = 0;   //	总电流	3
         public double StateOfCharge { get; set; } = 0;  //	SOC	4

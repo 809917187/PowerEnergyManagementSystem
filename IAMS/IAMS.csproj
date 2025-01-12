@@ -46,6 +46,7 @@
     <None Include="Views\PowerStationManagement\Index.cshtml" />
     <None Include="Views\PowerStationManagement\_IndexViewDetailsModal.cshtml" />
     <None Include="Views\PowerStationOverview\Index.cshtml" />
+    <None Include="Views\ProfitReport\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
@@ -56,6 +57,8 @@
     <None Include="Views\TemplateManagement\EditPriceTemplate.cshtml" />
     <None Include="Views\TemplateManagement\Index.cshtml" />
     <None Include="Views\TemplateManagement\_IndexViewDetailsModal.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
     <None Include="wwwroot\big-screen\js\area_echarts.js" />
     <None Include="wwwroot\big-screen\js\china.js" />
     <None Include="wwwroot\big-screen\js\echarts.min.js" />

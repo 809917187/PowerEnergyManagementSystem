@@ -84,7 +84,11 @@ namespace IAMS.MQTT {
                 RootDataFromMqtt root = MQTTHelper.ConvertRootInfoToObject(json);
                 using (var connection = new MySqlConnection(_connectionString)) {
                     connection.Open();
-                    const string sql = "INSERT INTO energy_storage_cabinet_array (name,json_structure) VALUES (@name,@json_structure)";
+                    const string sql = "" +
+                        "INSERT INTO energy_storage_cabinet_array (name,json_structure) " +
+                        "VALUES (@name,@json_structure) " +
+                        "ON DUPLICATE KEY UPDATE " +
+                        "json_structure = @json_structure";
                     using (MySqlCommand cmd = new MySqlCommand(sql, connection)) {
                         cmd.Parameters.AddWithValue("@name", root.structure.name);
                         cmd.Parameters.AddWithValue("@json_structure", json);
@@ -242,7 +246,7 @@ namespace IAMS.MQTT {
                     const string insertQuery = @"
     INSERT INTO device_energy_storage_stack_control_info (
     upload_time, dev_type, dev_name, dev_id, sn, 
-    device_enabled, device_online, total_voltage, total_current, state_of_charge, state_of_health,
+    is_enabled, is_online, total_voltage, total_current, state_of_charge, state_of_health,
     state_of_energy, rated_total_voltage, rated_capacity, remaining_capacity, rated_energy,
     remaining_energy, total_number_of_slave_units_bmu, online_number_of_slave_units_bmu,
     total_number_of_batteries, online_number_of_batteries, total_number_of_temperature_sensors,
@@ -261,7 +265,7 @@ namespace IAMS.MQTT {
 )
 VALUES (
     @UploadTime, @DevType, @DevName, @DevId, @Sn, 
-    @DeviceEnabled, @DeviceOnline, @TotalVoltage, @TotalCurrent, @StateOfCharge, @StateOfHealth,
+    @IsEnabled, @IsOnline, @TotalVoltage, @TotalCurrent, @StateOfCharge, @StateOfHealth,
     @StateOfEnergy, @RatedTotalVoltage, @RatedCapacity, @RemainingCapacity, @RatedEnergy,
     @RemainingEnergy, @TotalNumberOfSlaveUnitsBMU, @OnlineNumberOfSlaveUnitsBMU,
     @TotalNumberOfBatteries, @OnlineNumberOfBatteries, @TotalNumberOfTemperatureSensors,
@@ -505,8 +509,8 @@ VALUES (
                         DevName = deviceName,
                         DevId = dataFromMqtt.devId,
                         Sn = dataFromMqtt.sn,
-                        DeviceEnabled = GetBoolean(0),
-                        DeviceOnline = GetBoolean(1),
+                        IsEnabled = GetBoolean(0),
+                        IsOnline = GetBoolean(1),
                         TotalVoltage = GetDouble(2),
                         TotalCurrent = GetDouble(3),
                         StateOfCharge = GetDouble(4),

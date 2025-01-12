@@ -2,6 +2,7 @@
 using IAMS.Models.PowerStation;
 using IAMS.MQTT;
 using IAMS.MQTT.Model;
+using IAMS.ViewModels.StationSystem;
 using MySql.Data.MySqlClient;
 using System.Text;
 
@@ -168,6 +169,8 @@ namespace IAMS.Service {
             }
             return ret;
         }
+
+
         public List<PowerStationRootInfo> GetEnergyStorageCabinetArrayById(int PowerStationId) {
             List<PowerStationRootInfo> ret = new List<PowerStationRootInfo>();
             try {
@@ -319,5 +322,7 @@ namespace IAMS.Service {
                 command.ExecuteNonQuery();
             }
         }
-    }
+
+		
+	}
 }

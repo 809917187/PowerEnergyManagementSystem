@@ -1,447 +1,358 @@
 ﻿@using IAMS.Models.PowerStation;
+@using IAMS.Models.StationSystem;
 @model IAMS.ViewModels.StationSystem.StationSystemIndexViewModel
 
 <div class="row pt-3">
-	<div class="col-2">
-		<select id="example-select" class="form-select fw-bold" data-live-search="true">
-			@foreach (PowerStationInfo ps in Model.PowerStationInfos) {
-				if (Model.selectedPowerStation.Id == ps.Id) {
-					<option value="@ps.Id" selected>@ps.Name</option>
-				} else {
-					<option value="@ps.Id">@ps.Name</option>
-				}
-			}
-		</select>
-	</div>
-	<div class="col-2">
-		<select id="example-select" class="form-select fw-bold" data-live-search="true" @*title="请选择一个选项"*@>
-			@foreach(var cabinet in Model.EnergyStorageCabinets)  {
-				if (Model.selectedEnergyStorageCabinet.rootDataFromMqtt.structure.name == @cabinet.rootDataFromMqtt.structure.name) {
-					<option value="@cabinet.rootDataFromMqtt.structure.name" selected>@cabinet.rootDataFromMqtt.structure.name</option>
-				} else {
-					<option value="@cabinet.rootDataFromMqtt.structure.name">@cabinet.rootDataFromMqtt.structure.name</option>
-				}
-			}
-		</select>
-	</div>
+    <div class="col-2">
+        <select id="example-select" class="form-select fw-bold" data-live-search="true">
+            @foreach (PowerStationInfo ps in Model.PowerStationInfos) {
+                if (Model.selectedPowerStation.Id == ps.Id) {
+                    <option value="@ps.Id" selected>@ps.Name</option>
+                } else {
+                    <option value="@ps.Id">@ps.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-2">
+        <select id="energy_storage_cabinet_name" class="form-select fw-bold" data-live-search="true" @*title="请选择一个选项"*@>
+            @foreach (var cabinet in Model.EnergyStorageCabinets) {
+                if (Model.selectedEnergyStorageCabinet.rootDataFromMqtt.structure.name == @cabinet.rootDataFromMqtt.structure.name) {
+                    <option value="@cabinet.rootDataFromMqtt.structure.name" selected>@cabinet.rootDataFromMqtt.structure.name</option>
+                } else {
+                    <option value="@cabinet.rootDataFromMqtt.structure.name">@cabinet.rootDataFromMqtt.structure.name</option>
+                }
+            }
+        </select>
+    </div>
 </div>
 
 <div class="row pt-3">
-	<div class="col-9">
-		<div class="card">
-			<div class="card-header">
-				<strong>实时数据</strong>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col">
-						<div class="bd-example m-0 border-0">
-							<div class="alert alert-light" role="alert">
-								<p>今日充电量</p>
-								<p><strong class="fs-3">@Model.pcsInfos.Sum(s=>s.DailyChargeAmount).ToString("F2")</strong>kWh</p>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="bd-example m-0 border-0">
-							<div class="alert alert-light" role="alert">
-								<p>今日放电量</p>
-								<p><strong class="fs-3">@Model.pcsInfos.Sum(s=>s.DailyDischargeAmount).ToString("F2")</strong>kWh</p>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="bd-example m-0 border-0">
-							<div class="alert alert-light" role="alert">
-								<p>累计充电量</p>
-								<p><strong class="fs-3">@Model.pcsInfos.Sum(s=>s.ACCumulativeChargeAmount).ToString("F2")</strong>kWh</p>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="bd-example m-0 border-0">
-							<div class="alert alert-light" role="alert">
-								<p>累计放电量</p>
-								<p><strong class="fs-3">@Model.pcsInfos.Sum(s=>s.ACCumulativeDischargeAmount).ToString("F2")</strong>kWh</p>
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="bd-example m-0 border-0">
-							<div class="alert alert-light" role="alert">
-								<p>电池堆SOC</p>
-								<p><strong class="fs-3">XXXX</strong>kWh</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-5">
-						<div class="card h-100">
-							<div class="card-header">
-								<div class="row">
-									<h6 class="d-flex justify-content-between align-items-center">
-										<span class="text-primary">运行状态</span>
-									</h6>
-								</div>
-							</div>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-12 order-md-last">
-										<ul class="list-group mb-3">
-											<li class="list-group-item d-flex justify-content-between lh-base">
-												<div>
-													<h6 class="my-0">电网：</h6>
-												</div>
-												<span class="text-body-secondary">???? kW</span>
-											</li>
-											<li class="list-group-item d-flex justify-content-between lh-base">
-												<div>
-													<h6 class="my-0">负载：</h6>
-												</div>
-												<span class="text-body-secondary">???? kW</span>
-											</li>
-											<li class="list-group-item d-flex justify-content-between lh-base">
-												<div>
-													<h6 class="my-0">储能：</h6>
-												</div>
-												<span class="text-body-secondary">???? kW</span>
-											</li>
-										</ul>
-									</div>
-								</div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-header">
+                <strong>实时数据</strong>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="bd-example m-0 border-0">
+                            <div class="alert alert-light" role="alert">
+                                <p>今日充电量</p>
+                                <p><strong class="fs-3">@Model.DailyChargeAmount</strong>kWh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="bd-example m-0 border-0">
+                            <div class="alert alert-light" role="alert">
+                                <p>今日放电量</p>
+                                <p><strong class="fs-3">@Model.DailyDischargeAmount</strong>kWh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="bd-example m-0 border-0">
+                            <div class="alert alert-light" role="alert">
+                                <p>累计充电量</p>
+                                <p><strong class="fs-3">@Model.ACCumulativeChargeAmount</strong>kWh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="bd-example m-0 border-0">
+                            <div class="alert alert-light" role="alert">
+                                <p>累计放电量</p>
+                                <p><strong class="fs-3">@Model.ACCumulativeDischargeAmount</strong>kWh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="bd-example m-0 border-0">
+                            <div class="alert alert-light" role="alert">
+                                <p>电池堆SOC</p>
+                                <p><strong class="fs-3">@Model.SOC</strong>%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <div class="row">
+                                    <h6 class="d-flex justify-content-between align-items-center">
+                                        <span class="text-primary">运行状态</span>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 order-md-last">
+                                        <ul class="list-group mb-3">
+                                            <li class="list-group-item d-flex justify-content-between lh-base">
+                                                <div>
+                                                    <h6 class="my-0">电网：</h6>
+                                                </div>
+                                                <span class="text-body-secondary">@Model.PowerGrid kW</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between lh-base">
+                                                <div>
+                                                    <h6 class="my-0">负载：</h6>
+                                                </div>
+                                                <span class="text-body-secondary">@Model.Load kW</span>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between lh-base">
+                                                <div>
+                                                    <h6 class="my-0">储能：</h6>
+                                                </div>
+                                                <span class="text-body-secondary">@Model.EnergyStorage kW</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-							</div>
-						</div>
-					</div>
-					<div class="col-7">
-						<div class="card h-100">
-							<div class="card-header">
-								<div class="row">
-									<h6 class="d-flex justify-content-between align-items-center">
-										<span class="text-primary">功率趋势</span>
-									</h6>
-								</div>
-							</div>
-							@* <div class="card-body">
-								<div class="row g-3">
-									<div class="col-auto">
-										最大充电功率：<strong>@Model.MaximumAllowedChargePower.ToString("F2")</strong> kW
-									</div>
-									<div class="col-auto">
-										最大放电功率：<strong>@Model.MaximumAllowedDischargePower.ToString("F2")</strong> kW
-									</div>
-									<div class="col-auto">
-										最大负载功率：<strong>XXX</strong> kW
-									</div>
-								</div>
-								<div class="row p-2">
-									<div class="col-12" id="power_trend" style="height:400px;border-right: 2px solid #ccc;">
-									</div>
-								</div>
-							</div> *@
-						</div>
-					</div>
-				</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <div class="row">
+                                    <h6 class="d-flex justify-content-between align-items-center">
+                                        <span class="text-primary">功率趋势</span>
+                                    </h6>
+                                </div>
 
-			</div>
-		</div>
-	</div>
-	<div class="col-3">
-		<div class="card h-100">
-			<div class="card-header">
-				<div class="row">
-					<div class="col-7">
-						<h6>告警状态</h6>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12 order-md-last">
-						<table class="table table-sm table-bordered">
-							<thead>
-								<tr>
-									<th>名称</th>
-									<th>状态</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>PCS#1</td>
-									<td>正常</td>
-								</tr>
-								<tr>
-									<td>PCS#1</td>
-									<td>正常</td>
-								</tr>
-								<tr>
-									<td>PCS#1</td>
-									<td>正常</td>
-								</tr>
-								<tr>
-									<td>PCS#1</td>
-									<td>正常</td>
-								</tr>
-								<tr>
-									<td>PCS#1</td>
-									<td>正常</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-12" id="power_trend" style="height:400px;">
+                                </div>
+                            </div>
+                            @* <div class="card-body">
+                                <div class="row g-3">
+                                <div class="col-auto">
+                                最大充电功率：<strong>@Model.MaximumAllowedChargePower.ToString("F2")</strong> kW
+                                </div>
+                                <div class="col-auto">
+                                最大放电功率：<strong>@Model.MaximumAllowedDischargePower.ToString("F2")</strong> kW
+                                </div>
+                                <div class="col-auto">
+                                最大负载功率：<strong>XXX</strong> kW
+                                </div>
+                                </div>
+                                <div class="row p-2">
 
-			</div>
-		</div>
-	</div>
+                                </div>
+                                </div> *@
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card h-100">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-7">
+                        <h6>告警状态</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 order-md-last">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var device in @Model.deviceStatus) {
+                                    <tr>
+                                        <td>@device.devName</td>
+                                        <td>@device.status</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row pt-3">
-	<div class="col-12">
-		<div class="card">
-			<div class="card-header">
-				<strong>实时运行</strong>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-9">
-						<div class="row g-3">
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-						</div>
-						<div class="row pt-3 g-3">
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-							<div class="col">
-								<select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-									<option selected>PCS#1</option>
-									<option>PCS#2</option>
-									<option>PCS#3</option>
-									<option>PCS#4</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-3">
-						<button type="button" class="btn btn-primary h-100 w-100">查询</button>
-					</div>
-				</div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>实时运行</strong>
+            </div>
+            <div class="card-body">
+                @* <div class="row">
+                    <div class="col-9">
+                        <div class="row g-3">
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pt-3 g-3">
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                                    <option selected>PCS#1</option>
+                                    <option>PCS#2</option>
+                                    <option>PCS#3</option>
+                                    <option>PCS#4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-primary h-100 w-100">查询</button>
+                    </div>
+                </div> *@
 
-				<div class="row pt-3">
-					<span class="fs-sm fw-bold">
-						运行曲线
-					</span>
-				</div>
-				<div class="row pt-3">
-					<div class="col-12" id="power_trend1" style="height:400px;border-right: 2px solid #ccc;">
-					</div>
-				</div>
+                <div class="row pt-3">
+                    <span class="fs-sm fw-bold">
+                        运行曲线
+                    </span>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-12" id="real_time_chart" style="height:600px;border-right: 2px solid #ccc;">
+                    </div>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <div class="row pt-3">
-	<div class="col-12">
-		<div class="card">
-			<div class="card-header">
-				<strong>实时电量收益</strong>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-auto d-flex  align-items-center">
-						<span>日期：</span>
-					</div>
-					<div class="col-2 d-flex  align-items-center">
-						<input class="w-100" type="text" id="datepicker" placeholder="选择日期">
-					</div>
-					<div class="col-auto">
-						<button type="button" class="btn btn-primary">查询</button>
-					</div>
-					<div class="col-auto">
-						<button type="button" class="btn btn-secondary">重置</button>
-					</div>
-				</div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <strong>实时电量收益</strong>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto d-flex  align-items-center">
+                        <span>日期：</span>
+                    </div>
+                    <div class="col-2 d-flex  align-items-center">
+                        <input class="w-100" type="text" id="datepicker" placeholder="选择日期">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary">查询</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-secondary">重置</button>
+                    </div>
+                </div>
 
-				<div class="row pt-3">
-					<span class="fs-sm fw-bold">
-						运行曲线
-					</span>
-				</div>
-				<div class="row pt-3">
-					<table class="table table-sm table-bordered">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">First</th>
-								<th scope="col">Last</th>
-								<th scope="col">Handle</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>Mark</td>
-								<td>Otto</td>
-								<td>mdo</td>
-							</tr>
-							<tr>
-								<th scope="row">2</th>
-								<td>Jacob</td>
-								<td>Thornton</td>
-								<td>fat</td>
-							</tr>
-							<tr>
-								<th scope="row">3</th>
-								<td colspan="2">Larry the Bird</td>
-								<td>twitter</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+                <div class="row pt-3">
+                    <span class="fs-sm fw-bold">
+                        运行曲线
+                    </span>
+                </div>
+                <div class="row pt-3">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 </div>
 @section Scripts{
+<script>
+        var cabinetName = document.getElementById('energy_storage_cabinet_name').value;
+        var baseUrl = '@Url.Action("GetPowerTrendChartData", "StationSystem")';
+        var InitPowerTrend = `${baseUrl}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
 
-	<script>
-		$(document).ready(function () {
-			flatpickr("#datepicker", {
-				dateFormat: "Y-m-d", // 设置日期格式为 YYYY-MM-DD
-				defaultDate: null,   // 默认为空
-			});
+        var baseUrlRealTime = '@Url.Action("GetRealTimeChartData", "StationSystem")';
+        var InitRealTimeTrend = `${baseUrlRealTime}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
+</script>
+    <script src="~/js/StationSystem/init_power_trend.js"></script>
+    <script src="~/js/StationSystem/real_time_chart.js"></script>
+<script>
+        $(document).ready(function () {
+            flatpickr("#datepicker", {
+                dateFormat: "Y-m-d", // 设置日期格式为 YYYY-MM-DD
+                defaultDate: null,   // 默认为空
+            });
 
-
-			var chartDom = document.getElementById('power_trend');
-			var myChart = echarts.init(chartDom);
-			var option;
-
-			function randomData() {
-				now = new Date(+now + oneDay);
-				value = value + Math.random() * 21 - 10;
-				return {
-					name: now.toString(),
-					value: [
-						[now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
-						Math.round(value)
-					]
-				};
-			}
-
-			let data = [];
-			let now = new Date(1997, 9, 3);
-			let oneDay = 24 * 3600 * 1000;
-			let value = Math.random() * 1000;
-			for (var i = 0; i < 1000; i++) {
-				data.push(randomData());
-			}
-			option = {
-				title: {
-					text: '有功功率/kW'
-				},
-				tooltip: {
-					trigger: 'axis',
-					formatter: function (params) {
-						params = params[0];
-						var date = new Date(params.name);
-						return (
-							date.getDate() +
-							'/' +
-							(date.getMonth() + 1) +
-							'/' +
-							date.getFullYear() +
-							' : ' +
-							params.value[1]
-						);
-					},
-					axisPointer: {
-						animation: false
-					}
-				},
-				xAxis: {
-					type: 'time',
-					splitLine: {
-						show: false
-					}
-				},
-				yAxis: {
-					type: 'value',
-					boundaryGap: [0, '100%'],
-					splitLine: {
-						show: false
-					}
-				},
-				series: [
-					{
-						name: 'Fake Data',
-						type: 'line',
-						showSymbol: false,
-						data: data
-					}
-				]
-			};
-			setInterval(function () {
-				for (var i = 0; i < 5; i++) {
-					data.shift();
-					data.push(randomData());
-				}
-				myChart.setOption({
-					series: [
-						{
-							data: data
-						}
-					]
-				});
-			}, 1000);
-			option && myChart.setOption(option);
-
-
-			chartDom = document.getElementById('power_trend1');
-			myChart = echarts.init(chartDom);
-			option && myChart.setOption(option);
-
-		});
-	</script>
+        });
+</script>
     }

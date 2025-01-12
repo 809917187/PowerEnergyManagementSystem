@@ -91,14 +91,14 @@
                   {
                     "menuTree": 1,
                     "name": "2号BCU",
-                    "devType": 0,
+                    "devType": 4,
                     "sn": "BCU2023023822",
                     "child": []
                   },
                   {
                     "menuTree": 1,
                     "name": "3号BCU",
-                    "devType": 0,
+                    "devType": 4,
                     "sn": "BCU2023023823",
                     "child": []
                   }

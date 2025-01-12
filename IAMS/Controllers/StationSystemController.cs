@@ -1,4 +1,5 @@
-﻿using IAMS.MQTT;
+﻿using IAMS.Common;
+using IAMS.MQTT;
 using IAMS.MQTT.Model;
 using IAMS.Service;
 using IAMS.ViewModels.StationSystem;
@@ -18,6 +19,16 @@ namespace IAMS.Controllers {
             var model = _stationSystemService.GetStationSystemIndexViewModel(energyStorageCabinetName, DateTime.Now);
 
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult GetRealTimeChartData(string energyStorageCabinetName) {
+            return Ok(_stationSystemService.GetRealTimeTrendOfChart(energyStorageCabinetName, DateTime.Now));
+        }
+
+        [HttpGet]
+        public IActionResult GetPowerTrendChartData(string energyStorageCabinetName) {
+            return Ok(_stationSystemService.GetTotalActivePowerOfChart(energyStorageCabinetName, DateTime.Now));
+            
         }
     }
 }
