@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Access\Index.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Access\Login.cshtml" />
     <None Include="Views\Access\UserManagement.cshtml" />
     <None Include="Views\Access\_addUser.cshtml" />
@@ -38,6 +34,9 @@
     <None Include="Views\ElectricityReport\_SingleStationReportByRange.cshtml" />
     <None Include="Views\ElectricityReport\_StationSummary.cshtml" />
     <None Include="Views\EnergyManagement\Index.cshtml" />
+    <None Include="Views\DeviceMonitor\_EnergyStackDetails.cshtml" />
+    <None Include="Views\DeviceMonitor\_GatewayTableDetails.cshtml" />
+    <None Include="Views\DeviceMonitor\_PcsDetails.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
     <None Include="Views\MultiStationOverview\Index.cshtml" />
@@ -49,6 +48,7 @@
     <None Include="Views\ProfitReport\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_PowerStationSelector.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\StationAlarm\AlarmHistory.cshtml" />
     <None Include="Views\StationAlarm\Index.cshtml" />
@@ -181,6 +181,8 @@
     <None Include="wwwroot\js\StationAlarm\chart_alarm_level.js" />
     <None Include="wwwroot\js\StationAlarm\chart_alarm_type.js" />
     <None Include="wwwroot\js\StationAlarm\chart_device_type.js" />
+    <None Include="wwwroot\js\StationSystem\init_power_trend.js" />
+    <None Include="wwwroot\js\StationSystem\real_time_chart.js" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
     <None Include="wwwroot\lib\bootstrap\LICENSE" />
     <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />

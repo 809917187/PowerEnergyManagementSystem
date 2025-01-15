@@ -2,30 +2,7 @@
 @using IAMS.Models.StationSystem;
 @model IAMS.ViewModels.StationSystem.StationSystemIndexViewModel
 
-<div class="row pt-3">
-    <div class="col-2">
-        <select id="example-select" class="form-select fw-bold" data-live-search="true">
-            @foreach (PowerStationInfo ps in Model.PowerStationInfos) {
-                if (Model.selectedPowerStation.Id == ps.Id) {
-                    <option value="@ps.Id" selected>@ps.Name</option>
-                } else {
-                    <option value="@ps.Id">@ps.Name</option>
-                }
-            }
-        </select>
-    </div>
-    <div class="col-2">
-        <select id="energy_storage_cabinet_name" class="form-select fw-bold" data-live-search="true" @*title="请选择一个选项"*@>
-            @foreach (var cabinet in Model.EnergyStorageCabinets) {
-                if (Model.selectedEnergyStorageCabinet.rootDataFromMqtt.structure.name == @cabinet.rootDataFromMqtt.structure.name) {
-                    <option value="@cabinet.rootDataFromMqtt.structure.name" selected>@cabinet.rootDataFromMqtt.structure.name</option>
-                } else {
-                    <option value="@cabinet.rootDataFromMqtt.structure.name">@cabinet.rootDataFromMqtt.structure.name</option>
-                }
-            }
-        </select>
-    </div>
-</div>
+@Html.Partial("_PowerStationSelector",Model.PowerStationInfos)
 
 <div class="row pt-3">
     <div class="col-9">
@@ -197,63 +174,63 @@
             <div class="card-body">
                 @* <div class="row">
                     <div class="col-9">
-                        <div class="row g-3">
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row pt-3 g-3">
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
-                                    <option selected>PCS#1</option>
-                                    <option>PCS#2</option>
-                                    <option>PCS#3</option>
-                                    <option>PCS#4</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="row g-3">
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    </div>
+                    <div class="row pt-3 g-3">
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    <div class="col">
+                    <select id="example-select" class="selectpicker fw-bold w-100" data-live-search="true" multiple>
+                    <option selected>PCS#1</option>
+                    <option>PCS#2</option>
+                    <option>PCS#3</option>
+                    <option>PCS#4</option>
+                    </select>
+                    </div>
+                    </div>
                     </div>
                     <div class="col-3">
-                        <button type="button" class="btn btn-primary h-100 w-100">查询</button>
+                    <button type="button" class="btn btn-primary h-100 w-100">查询</button>
                     </div>
-                </div> *@
+                    </div> *@
 
                 <div class="row pt-3">
                     <span class="fs-sm fw-bold">
@@ -337,22 +314,33 @@
 </div>
 @section Scripts{
 <script>
-        var cabinetName = document.getElementById('energy_storage_cabinet_name').value;
-        var baseUrl = '@Url.Action("GetPowerTrendChartData", "StationSystem")';
-        var InitPowerTrend = `${baseUrl}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
+    var cabinetName = document.getElementById('energy_storage_cabinet_name').value;
+    var baseUrl = '@Url.Action("GetPowerTrendChartData", "StationSystem")';
+    var InitPowerTrend = `${baseUrl}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
 
-        var baseUrlRealTime = '@Url.Action("GetRealTimeChartData", "StationSystem")';
-        var InitRealTimeTrend = `${baseUrlRealTime}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
+    var baseUrlRealTime = '@Url.Action("GetRealTimeChartData", "StationSystem")';
+    var InitRealTimeTrend = `${baseUrlRealTime}?energyStorageCabinetName=${encodeURIComponent(cabinetName)}`;
 </script>
-    <script src="~/js/StationSystem/init_power_trend.js"></script>
-    <script src="~/js/StationSystem/real_time_chart.js"></script>
+<script src="~/js/StationSystem/init_power_trend.js"></script>
+<script src="~/js/StationSystem/real_time_chart.js"></script>
 <script>
-        $(document).ready(function () {
-            flatpickr("#datepicker", {
-                dateFormat: "Y-m-d", // 设置日期格式为 YYYY-MM-DD
-                defaultDate: null,   // 默认为空
-            });
 
+    $(document).ready(function () {
+        flatpickr("#datepicker", {
+            dateFormat: "Y-m-d", // 设置日期格式为 YYYY-MM-DD
+            defaultDate: null,   // 默认为空
         });
+        $('.selectpicker').selectpicker();
+
+        $('#energy_storage_cabinet_name').change(function() {
+            var val = $(this).val();
+            if (val) { // 如果val不为空
+                // 跳转到StationSystemController的Index操作，传递参数
+                window.location.href ='@Url.Action("Index", "StationSystem")?energyStorageCabinetName=' + encodeURIComponent(val);
+            }
+        });
+    });
+
+
 </script>
     }

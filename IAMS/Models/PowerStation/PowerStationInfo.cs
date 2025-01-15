@@ -25,7 +25,7 @@ namespace IAMS.Models.PowerStation {
         public List<string> StationImagesFilePath { get; set; } = new List<string>();
         public List<IFormFile> StationInstallImages { get; set; } = new List<IFormFile>();
         public List<string> StationInstallImagesFilePath { get; set; } = new List<string>();
-
-        public List<RootDataFromMqtt> EnergyStorageCabinetList { get; set; } = new List<RootDataFromMqtt>();
+        public bool IsSelected { get; set; } = false;
+        public List<EnergyStorageCabinetInfo> EnergyStorageCabinetRootDataList { get; set; }
     }
 }

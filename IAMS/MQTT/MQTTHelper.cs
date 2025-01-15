@@ -35,7 +35,9 @@ namespace IAMS.MQTT {
         }
 
         public static bool SaveRootDataToDBInfo() {
-            string json = MQTTHelper.GetRootData();
+            string json = MQTTHelper.GetRootData(Path.Combine(AppContext.BaseDirectory, "Assets", "JsonFile", "root.json"));
+            MQTTHelper.SaveRootInfo(json);
+            json = MQTTHelper.GetRootData(Path.Combine(AppContext.BaseDirectory, "Assets", "JsonFile", "root_3.json"));
             MQTTHelper.SaveRootInfo(json);
             return true;
         }
@@ -584,11 +586,10 @@ VALUES (
             }
         }
 
-        public static string GetRootData() {
-            string filePath = Path.Combine(AppContext.BaseDirectory, "Assets", "JsonFile", "root.json");
+        public static string GetRootData(string rootPath) {
             // 读取文件内容
-            if (File.Exists(filePath)) {
-                return File.ReadAllText(filePath).Replace("\r\n", "").Replace("\n", ""); ;
+            if (File.Exists(rootPath)) {
+                return File.ReadAllText(rootPath).Replace("\r\n", "").Replace("\n", ""); ;
             } else {
                 return String.Empty;
             }

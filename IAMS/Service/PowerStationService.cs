@@ -118,17 +118,55 @@ namespace IAMS.Service {
                 using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
                     connection.Open();
 
-                    // 定义 SQL 查询
-                    string query = "SELECT " +
-                        "id AS Id,name AS Name,owner AS Owner,phone AS Phone," +
-                        "installed_power AS InstalledPower, installed_capacity AS InstalledCapacity," +
-                        "start_time AS StartTime,country AS Country,state AS State,city AS City,region AS Region," +
-                        "location_details AS LocationDetails,longitude AS Longitude,latitude AS Latitude," +
-                        "transformer_capacity AS TransformerCapacity,transformer_info AS TransformerInfo,network_info AS NetworkInfo," +
-                        "installer AS Installer,installer_phone AS InstallerPhone " +
-                        "FROM " +
-                        "power_station;";
-                    powerStationInfos = connection.Query<PowerStationInfo>(query).ToList();
+                    // 定义 SQL 查询，关联两个表
+                    string query = @"
+            SELECT 
+                ps.id AS Id, ps.name AS Name, ps.owner AS Owner, ps.phone AS Phone,
+                ps.installed_power AS InstalledPower, ps.installed_capacity AS InstalledCapacity,
+                ps.start_time AS StartTime, ps.country AS Country, ps.state AS State, 
+                ps.city AS City, ps.region AS Region, ps.location_details AS LocationDetails,
+                ps.longitude AS Longitude, ps.latitude AS Latitude, 
+                ps.transformer_capacity AS TransformerCapacity, ps.transformer_info AS TransformerInfo,
+                ps.network_info AS NetworkInfo, ps.installer AS Installer, ps.installer_phone AS InstallerPhone,
+                esc.json_structure AS JsonStructure
+            FROM 
+                power_station ps
+            LEFT JOIN 
+                energy_storage_cabinet_array esc
+            ON 
+                ps.id = esc.power_station_id;";
+                    // 使用字典缓存 PowerStationInfo，避免重复
+                    var lookup = new Dictionary<int, PowerStationInfo>();
+
+                    // 执行查询并映射结果
+                    connection.Query<PowerStationInfo, string, PowerStationInfo>(
+                        query,
+                        (powerStation, jsonStructure) => {
+                            // 如果 PowerStationInfo 尚未存在于字典中，添加
+                            if (!lookup.TryGetValue(powerStation.Id, out var powerStationInfo)) {
+                                powerStationInfo = powerStation;
+                                powerStationInfo.EnergyStorageCabinetRootDataList = new List<EnergyStorageCabinetInfo>();
+                                lookup[powerStation.Id] = powerStationInfo;
+                            }
+
+                            // 如果存在 jsonStructure 数据，使用 MQTTHelper 转换
+                            if (!string.IsNullOrEmpty(jsonStructure)) {
+                                var energyCabinetInfo = new EnergyStorageCabinetInfo {
+                                    IsSelected = false, // 根据需求设置默认值
+                                    rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(jsonStructure)
+                                };
+                                powerStationInfo.EnergyStorageCabinetRootDataList.Add(energyCabinetInfo);
+                            }
+
+                            return powerStationInfo;
+                        },
+                        splitOn: "JsonStructure" // 指定分隔点
+                                );
+
+                    // 将字典中的值转换为列表
+                    powerStationInfos = lookup.Values.ToList();
+
+
                 }
             } catch (Exception ex) {
                 Console.WriteLine($"Error: {ex.Message}");
@@ -137,8 +175,8 @@ namespace IAMS.Service {
             return powerStationInfos;
         }
 
-        public List<PowerStationRootInfo> GetAllEnergyStorageCabinetArray() {
-            List<PowerStationRootInfo> ret = new List<PowerStationRootInfo>();
+        public List<PowerStationInfo> GetAllEnergyStorageCabinetArray() {
+            List<PowerStationInfo> ret = new List<PowerStationInfo>();
             try {
                 // 创建 MySQL 连接
                 using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
@@ -151,15 +189,17 @@ namespace IAMS.Service {
                         // 执行查询并读取结果
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
-                                PowerStationRootInfo powerStationRootInfo = new PowerStationRootInfo();
+                                PowerStationInfo ps = new PowerStationInfo();
                                 if (reader.IsDBNull(reader.GetOrdinal("power_station_id"))) {
                                     continue;
                                 } else {
-                                    powerStationRootInfo.PowerStationId = reader.GetInt32("power_station_id");
-                                    powerStationRootInfo.rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"));
-                                    ret.Add(powerStationRootInfo);
+                                    ps.Id = reader.GetInt32("power_station_id");
+                                    ps.EnergyStorageCabinetRootDataList.Add(
+                                        new EnergyStorageCabinetInfo() { rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure")) }
+                                        );
+                                    ret.Add(ps);
                                 }
-                                
+
                             }
                         }
                     }
@@ -171,8 +211,10 @@ namespace IAMS.Service {
         }
 
 
-        public List<PowerStationRootInfo> GetEnergyStorageCabinetArrayById(int PowerStationId) {
-            List<PowerStationRootInfo> ret = new List<PowerStationRootInfo>();
+        public PowerStationInfo GetEnergyStorageCabinetArrayById(int PowerStationId) {
+            PowerStationInfo ret = new PowerStationInfo() {
+                Id = PowerStationId
+            };
             try {
                 // 创建 MySQL 连接
                 using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
@@ -186,11 +228,11 @@ namespace IAMS.Service {
                         // 执行查询并读取结果
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
-                                PowerStationRootInfo powerStationRootInfo = new PowerStationRootInfo() {
-                                    PowerStationId = PowerStationId,
-                                    rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"))
-                                };
-                                ret.Add(powerStationRootInfo);
+                                ret.EnergyStorageCabinetRootDataList.Add(
+                                    new EnergyStorageCabinetInfo() {
+                                        IsSelected = false,
+                                        rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"))
+                                    });
                             }
                         }
                     }
@@ -323,6 +365,23 @@ namespace IAMS.Service {
             }
         }
 
-		
-	}
+        public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName) {
+            List<PowerStationInfo> PowerStationInfos = this.GetAllPowerStationInfos();
+            PowerStationInfos = PowerStationInfos.FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+            PowerStationInfo selectedPS = PowerStationInfos[0];
+            EnergyStorageCabinetInfo selectedCabinet = selectedPS.EnergyStorageCabinetRootDataList[0];
+
+            if (!string.IsNullOrEmpty(cabinetName)) {
+                selectedPS = PowerStationInfos.FirstOrDefault(s => s.EnergyStorageCabinetRootDataList.Any(m => m.rootDataFromMqtt.structure.name == cabinetName));
+                selectedCabinet = selectedPS.EnergyStorageCabinetRootDataList.FirstOrDefault(s => s.rootDataFromMqtt.structure.name == cabinetName);
+            }
+            selectedPS.IsSelected = true;
+            selectedCabinet.IsSelected = true;
+            return PowerStationInfos;
+        }
+
+        public RootDataFromMqtt GetDataSourceCabinet(List<PowerStationInfo> powerStationInfos) {
+            return powerStationInfos.SelectMany(s => s.EnergyStorageCabinetRootDataList).FirstOrDefault(m => m.IsSelected)?.rootDataFromMqtt;
+        }
+    }
 }

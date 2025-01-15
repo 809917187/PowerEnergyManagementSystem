@@ -123,30 +123,32 @@ namespace IAMS.Service {
 
             return ret;
         }
-		public PowerStationRootInfo? GetPowerStationRootInfoByName(string EnergyStorageCabinetArrayName) {
-			return _powerStationService.GetAllEnergyStorageCabinetArray().Find(s => s.rootDataFromMqtt.structure.name == EnergyStorageCabinetArrayName);
-		}
+        public PowerStationInfo? GetPowerStationRootInfoByName(string EnergyStorageCabinetArrayName) {
+            return _powerStationService.GetAllPowerStationInfos().Find(s => s.EnergyStorageCabinetRootDataList.FindAll(m => m.rootDataFromMqtt.structure.name == EnergyStorageCabinetArrayName).Count > 0);
+        }
         public List<SeriesData> GetRealTimeTrendOfChart(string EnergyStorageCabinetArrayName, DateTime today) {
             List<SeriesData> seriesDatas = new List<SeriesData>();
-            PowerStationRootInfo powerStationRootInfo = this.GetPowerStationRootInfoByName(EnergyStorageCabinetArrayName);
-            if (powerStationRootInfo == null) {
+            PowerStationInfo powerStationInfo = this.GetPowerStationRootInfoByName(EnergyStorageCabinetArrayName);
+            if (powerStationInfo == null) {
                 return seriesDatas;
             }
-            List<Structure> gatewayTableRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(powerStationRootInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
-            var gatewayTableTotalActivePower = this.GetGatewayTableModelInfo(gatewayTableRootInfos.Select(S => S.name).ToList(), today).GroupBy(s=>s.DevName).Select(
-                g=> new SeriesData() { 
-                Name = g.Key + "有功功率",
-                Data = g.Select(m=>new object[] {m.UploadTime.ToString("yyyy-MM-ddTHH:mm:ss"), m.TotalActivePower }).ToList()
+            EnergyStorageCabinetInfo energyStorageCabinetInfo = powerStationInfo.EnergyStorageCabinetRootDataList.FirstOrDefault(s => s.rootDataFromMqtt.structure.name == EnergyStorageCabinetArrayName);
+
+            List<Structure> gatewayTableRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(energyStorageCabinetInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
+            var gatewayTableTotalActivePower = this.GetGatewayTableModelInfo(gatewayTableRootInfos.Select(S => S.name).ToList(), today).GroupBy(s => s.DevName).Select(
+                g => new SeriesData() {
+                    Name = g.Key + "有功功率",
+                    Data = g.Select(m => new object[] { m.UploadTime.ToString("yyyy-MM-ddTHH:mm:ss"), m.TotalActivePower }).ToList()
                 }).ToList();//关口表总有功功率
 
-            List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(powerStationRootInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
+            List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(energyStorageCabinetInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
             var pcsTotalActivePower = this.GetPCSInfo(pcsRootInfos.Select(S => S.name).ToList(), today).GroupBy(s => s.DevName).Select(
                 g => new SeriesData() {
                     Name = g.Key + "有功功率",
                     Data = g.Select(m => new object[] { m.UploadTime.ToString("yyyy-MM-ddTHH:mm:ss"), m.TotalActivePower }).ToList()
                 }).ToList();//PCS
 
-            List<Structure> energyStorageStackControlRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(powerStationRootInfo.rootDataFromMqtt.structure, (int)DeviceCode.EnergyStorageStackControl, 1);
+            List<Structure> energyStorageStackControlRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(energyStorageCabinetInfo.rootDataFromMqtt.structure, (int)DeviceCode.EnergyStorageStackControl, 1);
             var energyStorageStackControlGroupedByName = this.GetEnergyStorageStackControllerInfo(energyStorageStackControlRootInfos.Select(S => S.name).ToList(), today).GroupBy(s => s.DevName);
             var energyStorageStackControlSoc = energyStorageStackControlGroupedByName.Select(
                 g => new SeriesData() {
@@ -169,41 +171,37 @@ namespace IAMS.Service {
             return seriesDatas;
         }
         public TotalActivePowerOfChart GetTotalActivePowerOfChart(string EnergyStorageCabinetArrayName, DateTime today) {
-			TotalActivePowerOfChart model = new TotalActivePowerOfChart();
-			PowerStationRootInfo powerStationRootInfo = this.GetPowerStationRootInfoByName(EnergyStorageCabinetArrayName);
-            if (powerStationRootInfo == null) {
-				return model;
-			}
+            TotalActivePowerOfChart model = new TotalActivePowerOfChart();
+            PowerStationInfo powerStationInfo = this.GetPowerStationRootInfoByName(EnergyStorageCabinetArrayName);
+            if (powerStationInfo == null) {
+                return model;
+            }
+
+            EnergyStorageCabinetInfo rootDataFromMqtt = powerStationInfo.EnergyStorageCabinetRootDataList.FirstOrDefault(s => s.rootDataFromMqtt.structure.name == EnergyStorageCabinetArrayName);
 
             //电网有功功率就是关口表上的和
-			List<Structure> gatewayTableRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(powerStationRootInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
-			model.ChartDataOfElectricGrid = this.GetGatewayTableModelInfo(gatewayTableRootInfos.Select(S => S.name).ToList(), today).GroupBy(m => m.UploadTime).Select(g => new object[]{ 
+            List<Structure> gatewayTableRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(rootDataFromMqtt.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
+            model.ChartDataOfElectricGrid = this.GetGatewayTableModelInfo(gatewayTableRootInfos.Select(S => S.name).ToList(), today).GroupBy(m => m.UploadTime).Select(g => new object[]{
                 g.Key.ToString("yyyy-MM-ddTHH:mm:ss"),
                 Math.Round(g.Sum(m => m.TotalActivePower), 2)
             }).OrderBy(s => s[0]).ToList();
-			//储能功率从PCS总有功取
-			List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(powerStationRootInfo.rootDataFromMqtt.structure, (int)DeviceCode.PCS, 1);
-			model.ChartDataOfEnergyStorage = this.GetPCSInfo(pcsRootInfos.Select(S => S.name).ToList(), today).GroupBy(m => m.UploadTime).Select(g => new object[]{
-				g.Key.ToString("yyyy-MM-ddTHH:mm:ss"),
-                Math.Round(g.Sum(m => m.TotalActivePower), 2) 
-			}).OrderBy(s => s[0]).ToList();
+            //储能功率从PCS总有功取
+            List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(rootDataFromMqtt.rootDataFromMqtt.structure, (int)DeviceCode.PCS, 1);
+            model.ChartDataOfEnergyStorage = this.GetPCSInfo(pcsRootInfos.Select(S => S.name).ToList(), today).GroupBy(m => m.UploadTime).Select(g => new object[]{
+                g.Key.ToString("yyyy-MM-ddTHH:mm:ss"),
+                Math.Round(g.Sum(m => m.TotalActivePower), 2)
+            }).OrderBy(s => s[0]).ToList();
 
             return model;
-		}
-		public StationSystemIndexViewModel GetStationSystemIndexViewModel(string energyStorageCabinetName, DateTime dateTime) {
-            StationSystemIndexViewModel model = new StationSystemIndexViewModel();
-            model.EnergyStorageCabinets = _powerStationService.GetAllEnergyStorageCabinetArray();//功下拉列表选择
-            List<int> bindPowerStationIds = model.EnergyStorageCabinets.Select(s => s.PowerStationId).Distinct().ToList();
-            model.PowerStationInfos = _powerStationService.GetAllPowerStationInfos().FindAll(s => bindPowerStationIds.Contains(s.Id));//功下拉列表选择
+        }
 
-            if (string.IsNullOrEmpty(energyStorageCabinetName)) { //默认的
-                model.selectedPowerStation = model.PowerStationInfos[0];
-                model.selectedEnergyStorageCabinet = model.EnergyStorageCabinets.Find(s => s.PowerStationId == model.PowerStationInfos[0].Id);
-            } else {
-                model.selectedEnergyStorageCabinet = model.EnergyStorageCabinets.Find(s => s.rootDataFromMqtt.structure.name == energyStorageCabinetName);
-                model.selectedPowerStation = model.PowerStationInfos.FirstOrDefault(s => s.Id == model.selectedEnergyStorageCabinet.PowerStationId);
-            }
-            RootDataFromMqtt viewDataSourceCabinet = model.selectedEnergyStorageCabinet.rootDataFromMqtt;
+        
+
+        public StationSystemIndexViewModel GetStationSystemIndexViewModel(string energyStorageCabinetName, DateTime dateTime) {
+            StationSystemIndexViewModel model = new StationSystemIndexViewModel();
+            model.PowerStationInfos = _powerStationService.GetAllPowerStationInfoByCabinetName(energyStorageCabinetName);
+
+            RootDataFromMqtt viewDataSourceCabinet = _powerStationService.GetDataSourceCabinet(model.PowerStationInfos);
 
             //PCS devType=5
             List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(viewDataSourceCabinet.structure, (int)DeviceCode.PCS, 1);
@@ -276,6 +274,6 @@ upload_time,dev_type,dev_name,dev_id,sn,is_in_use,is_active
 
         }
 
-        
+
     }
 }

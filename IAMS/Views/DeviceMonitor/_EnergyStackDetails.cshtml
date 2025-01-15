@@ -1,0 +1,52 @@
+﻿@model List<IAMS.Models.StationSystem.EnergyStorageStackControlInfo>
+
+<ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
+    @for (int i = 0; i < Model.Count; i++) {
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(i == 0 ? "active" : "")" id="model-@Model[i].Id-tab"
+                data-bs-toggle="pill" data-bs-target="#model-@Model[i].Id" type="button" role="tab"
+                aria-controls="model-@Model[i].Id" aria-selected="@(i == 0 ? "true" : "false")">
+                @Model[i].DevName
+            </button>
+        </li>
+    }
+</ul>
+<div class="tab-content" id="pills-tabContent">
+    <hr />
+    @for (int i = 0; i < Model.Count; i++) {
+        var pcs = Model[i];
+        <div class="tab-pane fade @(i == 0 ? "show active" : "")" id="model-@Model[i].Id" role="tabpanel"
+         aria-labelledby="model-@Model[i].Id-tab" tabindex="0">
+            <div class="row">
+                @foreach (var property in pcs.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)) {
+                    var propertyName = property.Name;
+                    var propertyValue = property.GetValue(pcs);
+
+                    if (property.PropertyType == typeof(double)) {
+
+                        <div class="col border-0">
+                            <div class="alert alert-light" role="alert">
+                                <strong>@propertyValue</strong><br>
+                                <small class="text-muted">@pcs.Property2ChineseName[propertyName]</small>
+                            </div>
+                        </div>
+                    } else if (property.PropertyType == typeof(bool)) {
+                        <div class="col border-0">
+                            <div class="alert alert-light" role="alert">
+                                <strong>
+                                    @if ((bool)propertyValue) {
+                                        <i class="bi bi-lightbulb-fill text-success"></i>
+                                    } else {
+                                        <i class="bi bi-lightbulb-fill text-danger"></i>
+                                    }
+                                </strong><br>
+                                <small class="text-muted">@pcs.Property2ChineseName[propertyName]</small>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+    }
+</div>

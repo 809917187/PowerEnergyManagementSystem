@@ -1,5 +1,5 @@
 ﻿namespace IAMS.Models.StationSystem {
-    public class GatewayTableModelInfo:DeviceDataBaseInfo {
+    public class GatewayTableModelInfo : DeviceDataBaseInfo {
         public bool IsEnabled { get; set; }     //	是否启用	0
         public bool IsOnline { get; set; }      //	是否在线	1
         public double VoltagePhaseA { get; set; } = 0;  //	A相电压	2
@@ -44,6 +44,51 @@
         public double ValleyReverseActiveEnergy { get; set; } = 0;  //	谷反向有功电度	41
         public double CurrentMonthMaxForwardActiveDemand { get; set; } = 0; //	当月正向有功最大需量	42
         public double CurrentMonthMaxReverseActiveDemand { get; set; } = 0;	//	当月反向有功最大需量	43
-
+        public Dictionary<string, string> Property2ChineseName = new Dictionary<string, string>() {
+            {"IsEnabled","是否启用"},
+            {"IsOnline","是否在线"},
+            {"VoltagePhaseA","A相电压"},
+            {"VoltagePhaseB","B相电压"},
+            {"VoltagePhaseC","C相电压"},
+            {"VoltageLineAB","AB线电压"},
+            {"VoltageLineBC","BC线电压"},
+            {"VoltageLineCA","CA线电压"},
+            {"CurrentPhaseA","A相电流"},
+            {"CurrentPhaseB","B相电流"},
+            {"CurrentPhaseC","C相电流"},
+            {"ActivePowerPhaseA","A相有功功率"},
+            {"ActivePowerPhaseB","B相有功功率"},
+            {"ActivePowerPhaseC","C相有功功率"},
+            {"TotalActivePower","总有功功率"},
+            {"ReactivePowerPhaseA","A相无功功率"},
+            {"ReactivePowerPhaseB","B相无功功率"},
+            {"ReactivePowerPhaseC","C相无功功率"},
+            {"TotalReactivePower","总无功功率"},
+            {"ApparentPowerPhaseA","A相视在功率"},
+            {"ApparentPowerPhaseB","B相视在功率"},
+            {"ApparentPowerPhaseC","C相视在功率"},
+            {"TotalApparentPower","总视在功率"},
+            {"PowerFactorPhaseA","A相功率因数"},
+            {"PowerFactorPhaseB","B相功率因数"},
+            {"PowerFactorPhaseC","C相功率因数"},
+            {"TotalPowerFactor","总功率因数"},
+            {"GridFrequency","电网频率"},
+            {"VoltageTransformationRatio","电压互感比"},
+            {"CurrentTransformationRatio","电流互感比"},
+            {"ForwardActiveEnergy","正向有功电度"},
+            {"ReverseActiveEnergy","反向有功电度"},
+            {"ForwardReactiveEnergy","正向无功电度"},
+            {"ReverseReactiveEnergy","反向无功电度"},
+            {"PeakForwardActiveEnergy","尖正向有功电度"},
+            {"PeakReverseActiveEnergy","尖反向有功电度"},
+            {"FlatForwardActiveEnergy","峰正向有功电度"},
+            {"FlatReverseActiveEnergy","峰反向有功电度"},
+            {"NormalForwardActiveEnergy","平正向有功电度"},
+            {"NormalReverseActiveEnergy","平反向有功电度"},
+            {"ValleyForwardActiveEnergy","谷正向有功电度"},
+            {"ValleyReverseActiveEnergy","谷反向有功电度"},
+            {"CurrentMonthMaxForwardActiveDemand","当月正向有功最大需量"},
+            {"CurrentMonthMaxReverseActiveDemand","当月反向有功最大需量"}
+        };
     }
 }

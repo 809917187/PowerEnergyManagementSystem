@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.font-08 {
+    font-size: 0.5rem !important;
+}
+

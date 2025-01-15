@@ -17,7 +17,7 @@ namespace IAMS.Service {
         public List<EnergyStorageStackControlInfo> GetEnergyStorageStackControllerInfo(List<string> devNames, DateTime dateTime);
         public List<GatewayTableModelInfo> GetGatewayTableModelInfo(List<string> devNames, DateTime dateTime);
 		public TotalActivePowerOfChart GetTotalActivePowerOfChart(string EnergyStorageCabinetArrayName, DateTime today);
-        public PowerStationRootInfo? GetPowerStationRootInfoByName(string EnergyStorageCabinetArrayName);
+        /*public PowerStationRootInfo? GetPowerStationRootInfoByName(string EnergyStorageCabinetArrayName);*/
         public List<SeriesData> GetRealTimeTrendOfChart(string EnergyStorageCabinetArrayName, DateTime today);
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 
 namespace IAMS.Models.StationSystem {
-    public class EnergyStorageStackControlInfo: DeviceDataBaseInfo {
+    public class EnergyStorageStackControlInfo : DeviceDataBaseInfo {
         public bool IsEnabled { get; set; } //	设备启用	0
         public bool IsOnline { get; set; }  //	设备在线	1
         public double TotalVoltage { get; set; } = 0;   //	总压	2
@@ -52,7 +52,59 @@ namespace IAMS.Models.StationSystem {
         public double CumulativeChargeEnergy { get; set; } = 0; //	累计充电电量	47
         public double CumulativeDischargeCapacity { get; set; } = 0;    //	累计放电容量	48
         public double CumulativeDischargeEnergy { get; set; } = 0;	//	累计放电电量	49
+        public Dictionary<string, string> Property2ChineseName = new Dictionary<string, string>() {
+            {"IsEnabled","设备启用"},
+            {"IsOnline","设备在线"},
+            {"TotalVoltage","总压"},
+            {"TotalCurrent","总电流"},
+            {"StateOfCharge","SOC"},
+            {"StateOfHealth","SOH"},
+            {"StateOfEnergy","SOE"},
+            {"RatedTotalVoltage","额定总压"},
+            {"RatedCapacity","额定容量"},
+            {"RemainingCapacity","剩余容量"},
+            {"RatedEnergy","额定电量"},
+            {"RemainingEnergy","剩余电量"},
+            {"TotalNumberOfSlaveUnitsBMU","从机总数(BMU)"},
+            {"OnlineNumberOfSlaveUnitsBMU","在线从机总数(BMU)"},
+            {"TotalNumberOfBatteries","电池总数"},
+            {"OnlineNumberOfBatteries","在线电池总数"},
+            {"TotalNumberOfTemperatureSensors","温感总数"},
+            {"OnlineNumberOfTemperatureSensors","在线温感总数"},
+            {"MaximumAllowedDischargeCurrent","最大允许放电电流"},
+            {"MaximumAllowedDischargePower","最大允许放电功率"},
+            {"MaximumAllowedChargeCurrent","最大允许充电电流"},
+            {"MaximumAllowedChargePower","最大允许充电功率"},
+            {"PositiveInsulationResistance","正极绝缘阻值"},
+            {"NegativeInsulationResistance","负极绝缘阻值"},
+            {"AverageCellVoltage","单体平均电压"},
+            {"MaximumVoltageDifferenceBetweenCells","单体最大压差"},
+            {"HighestCellVoltage","最高单体电压"},
+            {"HighestCellVoltageSlaveUnitNumber","最高单体电压从机号"},
+            {"HighestCellVoltageSerialNumber","最高单体电压编号"},
+            {"LowestCellVoltage","最低单体电压"},
+            {"LowestCellVoltageSlaveUnitNumber","最低单体电压从机号"},
+            {"LowestCellVoltageSerialNumber","最低单体电压编号"},
+            {"AverageCellTemperature","单体平均温度"},
+            {"MaximumTemperatureDifference","最大温差"},
+            {"HighestCellTemperature","最高单体温度"},
+            {"HighestCellTemperatureSlaveUnitNumber","最高单体温度从机号"},
+            {"HighestCellTemperatureSerialNumber","最高单体温度编号"},
+            {"LowestCellTemperature","最低单体温度"},
+            {"LowestCellTemperatureSlaveUnitNumber","最低单体温度从机号"},
+            {"LowestCellTemperatureSerialNumber","最低单体温度编号"},
+            {"DailyChargeCapacity","日充电容量"},
+            {"DailyChargeEnergy","日充电电量"},
+            {"DailyDischargeCapacity","日放电容量"},
+            {"DailyDischargeEnergy","日放电电量"},
+            {"DailyChargeTime","日充电时间"},
+            {"DailyDischargeTime","日放电时间"},
+            {"CumulativeChargeCapacity","累计充电容量"},
+            {"CumulativeChargeEnergy","累计充电电量"},
+            {"CumulativeDischargeCapacity","累计放电容量"},
+            {"CumulativeDischargeEnergy","累计放电电量"}
 
+        };
 
     }
 
