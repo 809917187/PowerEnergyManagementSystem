@@ -1,0 +1,62 @@
+﻿@using IAMS.Models.PowerStation;
+@model List<PowerStationInfo>
+@{
+    //var defaultCabinet = @Model.Find(s => s.IsSelected).EnergyStorageCabinetRootDataList.Find(m => m.IsSelected).rootDataFromMqtt.structure.name;
+    var defaultPs = @Model.Find(s => s.IsSelected);
+}
+
+<div class="row pt-3">
+    <div class="col-2">
+        <select id="power_station_name" class="form-select fw-bold" data-live-search="true" onchange="updateCabinets(this.value)">
+            @foreach (PowerStationInfo ps in Model) {
+                if (ps.IsSelected) {
+                    <option value="@ps.Id" selected>@ps.Name</option>
+                } else {
+                    <option value="@ps.Id">@ps.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-2">
+        <select id="energy_storage_cabinet_name" class="form-select fw-bold" data-live-search="true">
+            @foreach(var cabinet in defaultPs.EnergyStorageCabinetRootDataList) {
+                if (cabinet.IsSelected) {
+                    <option value="@cabinet.rootDataFromMqtt.structure.name" selected>@cabinet.rootDataFromMqtt.structure.name</option>
+                } else {
+                    <option value="@cabinet.rootDataFromMqtt.structure.name">@cabinet.rootDataFromMqtt.structure.name</option>
+                }
+            }
+            
+        </select>
+    </div>
+</div>
+
+<script>
+    // 更新二级菜单的函数
+    function updateCabinets(powerStationId) {
+        var powerStationInfos = @Html.Raw(Json.Serialize(Model));
+        var powerStationIdInt = parseInt(powerStationId);
+        // 如果有选择电站
+        if (powerStationId) {
+            // 查找对应电站的数据
+            var selectedPowerStation = powerStationInfos.find(station => station.id == powerStationIdInt);
+                
+            // 获取对应电站的柜子数据
+            var cabinets = selectedPowerStation.energyStorageCabinetRootDataList;
+                
+            // 清空现有选项
+            $('#energy_storage_cabinet_name').empty().append('<option value="">请选择储能柜</option>');
+                
+            // 如果有柜子数据，更新二级菜单
+            if (cabinets.length > 0) {
+                cabinets.forEach(function (cabinet) {
+                    $('#energy_storage_cabinet_name').append('<option value="' + cabinet.rootDataFromMqtt.structure.name + '">' + cabinet.rootDataFromMqtt.structure.name + '</option>');
+                });
+                    
+            }
+        } else {
+            // 如果没有选择电站，禁用二级菜单
+            $('#energy_storage_cabinet_name').prop('disabled', true);
+        }
+    }
+</script>

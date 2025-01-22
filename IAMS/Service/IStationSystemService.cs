@@ -13,11 +13,11 @@ namespace IAMS.Service {
 
         public StationSystemIndexViewModel GetStationSystemIndexViewModel(string energyStorageCabinetName, DateTime today);
 
-        public List<PCSInfo> GetPCSInfo(List<string> devNames, DateTime today);
-        public List<EnergyStorageStackControlInfo> GetEnergyStorageStackControllerInfo(List<string> devNames, DateTime dateTime);
-        public List<GatewayTableModelInfo> GetGatewayTableModelInfo(List<string> devNames, DateTime dateTime);
-		public TotalActivePowerOfChart GetTotalActivePowerOfChart(string EnergyStorageCabinetArrayName, DateTime today);
+        public List<PCSInfo> GetPCSInfo(List<string> devNames, DateTime startDate, DateTime endDate = default);
+        public List<EnergyStorageStackControlInfo> GetEnergyStorageStackControllerInfo(List<string> devNames, DateTime startDate, DateTime endDate = default);
+        public List<GatewayTableModelInfo> GetGatewayTableModelInfo(List<string> devNames, DateTime startDate, DateTime endDate = default);
+        public TotalActivePowerOfChart GetTotalActivePowerOfChart(string EnergyStorageCabinetArrayName, DateTime today);
         /*public PowerStationRootInfo? GetPowerStationRootInfoByName(string EnergyStorageCabinetArrayName);*/
         public List<SeriesData> GetRealTimeTrendOfChart(string EnergyStorageCabinetArrayName, DateTime today);
-	}
+    }
 }

@@ -1,255 +1,299 @@
-﻿
-<div class="row pt-3">
-    <div class="col-3">
-        <select class="form-select">
-            <option value="1" selected>One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
-    </div>
-</div>
+﻿@model IAMS.ViewModels.PowerStationOverview.PowerStationOverviewViewModel
+
+@await Html.PartialAsync("_OnlyPowerStationSelector", Model.PowerStationInfos)
 
 
 <div class="row pt-2">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                今日充电量
-                <ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
-                    <li><h3 class="card-title pricing-card-title d-inline">2543</h3>kWh</li>
-                    <li>较昨日下降<span class="text-primary">509 kWh</span></li>
-                    <li><hr class="my-2"></li>
-                    <li>月充电: 55.145 MWh | 累计充电: 949.792 MWh</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                今日放电量
-                <ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
-                    <li><h3 class="card-title pricing-card-title d-inline">1514</h3>kWh</li>
-                    <li>较昨日下降<span class="text-primary">1203 kWh</span></li>
-                    <li><hr class="my-2"></li>
-                    <li>月放电: 48.303 MWh | 累计放电: 844.653 MWh</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                今日收益
-                <ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
-                    <li><h3 class="card-title pricing-card-title d-inline">588.68</h3>元</li>
-                    <li>较昨日下降<span class="text-primary">1036.95元</span></li>
-                    <li><hr class="my-2"></li>
-                    <li>本月收益: 2.89 万元 | 总收益: 49.46 万元</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <div class="row justify-content-between">
-                    <span class="col-8">
-                        发生中告警: 0 条
-                    </span>
-                    <a class="col-4" asp-controller="XXX" asp-action="Index">查看详情</a>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				今日充电量
+				<ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
+					<li><h3 class="card-title pricing-card-title d-inline">@Model.ChargeAmountToday.ToString("F2")</h3>kWh</li>
+					<li>较昨日上浮<span class="text-primary">@Model.ChargeAmountRaise.ToString("F2") kWh</span></li>
+					<li><hr class="my-2"></li>
+					<li>月充电: @Model.ChargeAmountThisMonth.ToString("F2") MWh | 累计充电: @Model.TotalChargeAmount.ToString("F2") MWh</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				今日放电量
+				<ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
+					<li><h3 class="card-title pricing-card-title d-inline">@Model.DischargeAmountToday.ToString("F2")</h3>kWh</li>
+					<li>较昨日上浮<span class="text-primary">@Model.DischargeAmountRaise.ToString("F2") kWh</span></li>
+					<li><hr class="my-2"></li>
+					<li>月放电: @Model.DischargeAmountThisMonth.ToString("F2") MWh | 累计放电: @Model.TotalDischargeAmount.ToString("F2") MWh</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				今日收益
+				<ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
+					<li><h3 class="card-title pricing-card-title d-inline">@Model.EarningToday.ToString("F2")</h3>元</li>
+					<li>较昨日上涨<span class="text-primary">@Model.EarningRaise.ToString("F2") 元</span></li>
+					<li><hr class="my-2"></li>
+					<li>本月收益: @Model.EarningThisMonth.ToString("F2") 万元 | 总收益: @Model.TotalEarning.ToString("F2") 万元</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="row justify-content-between">
+					<span class="col-8">
+						发生中告警: 0 条
+					</span>
+					<a class="col-4" asp-controller="XXX" asp-action="Index">查看详情</a>
 
-                </div>
+				</div>
 
-                <ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
-                    <li><h3 class="card-title pricing-card-title d-inline">588.68</h3>元</li>
-                    <li>较昨日下降<span class="text-primary">1036.95元</span></li>
-                    <li><hr class="my-2"></li>
-                    <li>本月收益: 2.89 万元 | 总收益: 49.46 万元</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+				<ul class="list-unstyled mt-1 mb-1 d-flex flex-column gap-3">
+					<li><h3 class="card-title pricing-card-title d-inline">588.68</h3>元</li>
+					<li>较昨日下降<span class="text-primary">1036.95元</span></li>
+					<li><hr class="my-2"></li>
+					<li>本月收益: 2.89 万元 | 总收益: 49.46 万元</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
 </div>
 
 
 
 <div class="row d-flex align-items-stretch pt-3">
-    <div class="col-8">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-4">
-                        <h6>收益统计</h6>
-                    </div>
-                    <div class="col-3">
-                        <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
-                            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                                <ul class="navbar-nav me-auto mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="#">近1周</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1月</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1年</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-5 d-flex align-items-center">
-                        <label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
-                        <input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
-                    </div>
-                </div>
+	<div class="col-8">
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-4">
+						<h6>收益统计</h6>
+					</div>
+					 <div class="col-3">
+						@* <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
+							<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+								<ul class="navbar-nav me-auto mb-lg-0">
+									<li class="nav-item">
+										<a class="nav-link active" aria-current="page" href="#">近1周</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1月</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1年</a>
+									</li>
+								</ul>
+							</div>
+						</nav> *@
+					</div> 
+					<div class="col-5 d-flex align-items-center">
+						<label for="daterange" class="form-label mb-0 me-2" style="white-space: nowrap;">选择日期时间段</label>
+						<input type="date" class="form-control" id="SummaryTimeRange" value="">
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<nav>
+						<div class="nav nav-tabs" id="nav-tab" role="tablist">
+							<button class="nav-link active" id="nav-earn-tab" data-bs-toggle="tab" data-bs-target="#nav-earn" type="button" role="tab" aria-controls="nav-earn" aria-selected="true">收益统计</button>
+							<button class="nav-link" id="nav-charge-discharge-tab" data-bs-toggle="tab" data-bs-target="#nav-charge-discharge" type="button" role="tab" aria-controls="nav-charge-discharge" aria-selected="false">充放电统计</button>
+						</div>
+					</nav>
+					<div class="tab-content pt-3" id="nav-tabContent">
+						<div class="tab-pane fade show active" id="nav-earn" role="tabpanel" aria-labelledby="nav-earn-tab" tabindex="0">
+							<div class="col-12" id="earn_chart" style="height:400px;border-right: 2px solid #ccc;">
+								111
+							</div>
+						</div>
+						<div class="tab-pane fade" id="nav-charge-discharge" role="tabpanel" aria-labelledby="nav-charge-discharge-tab" tabindex="0">
+							<div class="col-12" id="charge_discharge_chart" style="height:400px;border-right: 2px solid #ccc;">
+								222
+							</div>
+						</div>
+					</div>
 
-            </div>
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-7">
-                        <h6>站点信息</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 order-md-last">
-                        <h6 class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-primary">江苏无锡市1号电站</span>
-                        </h6>
-                        <ul class="list-group mb-3">
-                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                <div>
-                                    <h6 class="my-0">装机总容量：</h6>
-                                </div>
-                                <span class="text-body-secondary">1.374 MWh</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                <div>
-                                    <h6 class="my-0">装机功率：</h6>
-                                </div>
-                                <span class="text-body-secondary">0.6 MW</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                <div>
-                                    <h6 class="my-0">投运时间：</h6>
-                                </div>
-                                <span class="text-body-secondary">2023-05-05</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                <div>
-                                    <h6 class="my-0">电站地址：</h6>
-                                </div>
-                                <span class="text-body-secondary">江苏省无锡市</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-    </div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="card h-100">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-7">
+						<h6>站点信息</h6>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 order-md-last">
+						<h6 class="d-flex justify-content-between align-items-center mb-3">
+							<span class="text-primary">江苏无锡市1号电站</span>
+						</h6>
+						<ul class="list-group mb-3">
+							<li class="list-group-item d-flex justify-content-between lh-base">
+								<div>
+									<h6 class="my-0">装机总容量：</h6>
+								</div>
+								<span class="text-body-secondary">1.374 MWh</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-base">
+								<div>
+									<h6 class="my-0">装机功率：</h6>
+								</div>
+								<span class="text-body-secondary">0.6 MW</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-base">
+								<div>
+									<h6 class="my-0">投运时间：</h6>
+								</div>
+								<span class="text-body-secondary">2023-05-05</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between lh-base">
+								<div>
+									<h6 class="my-0">电站地址：</h6>
+								</div>
+								<span class="text-body-secondary">江苏省无锡市</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="row pt-3">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-auto  d-flex align-items-center">
-                        <strong>综合效率</strong>
-                    </div>
-                    <div class="col-auto ">
-                        <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
-                            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                                <ul class="navbar-nav me-auto mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="#">近1周</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1月</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1年</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
-                        <input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
-                    </div>
-                </div>
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-auto  d-flex align-items-center">
+						<strong>综合效率</strong>
+					</div>
+					<div class="col-auto ">
+						<nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
+							<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+								<ul class="navbar-nav me-auto mb-lg-0">
+									<li class="nav-item">
+										<a class="nav-link active" aria-current="page" href="#">近1周</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1月</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1年</a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+					<div class="col-auto d-flex align-items-center">
+						<label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
+						<input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
+					</div>
+				</div>
 
-            </div>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-auto  d-flex align-items-center">
-                        <strong>放电达成率</strong>
-                    </div>
-                    <div class="col-auto">
-                        <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
-                            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                                <ul class="navbar-nav me-auto mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="#">近1周</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1月</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1年</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
-                        <input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
-                    </div>
-                </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-auto  d-flex align-items-center">
+						<strong>放电达成率</strong>
+					</div>
+					<div class="col-auto">
+						<nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
+							<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+								<ul class="navbar-nav me-auto mb-lg-0">
+									<li class="nav-item">
+										<a class="nav-link active" aria-current="page" href="#">近1周</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1月</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">近1年</a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+					<div class="col-auto d-flex align-items-center">
+						<label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
+						<input type="text" id="daterange" class="form-control w-auto" style="min-width: 150px;" />
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
+					</div>
+				</div>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
 @section Scripts{
-<script>
-    $(document).ready(function () {
-    });
-</script>
+	<script>
+		var summaryTimeRange = document.getElementById('SummaryTimeRange').value;
+		var selectedPsId = $('#power_station_name').val();
+		var baseUrlRealTime = '@Url.Action("GetEarnChartData", "PowerStationOverview")';
+		var InitEarnChart = `${baseUrlRealTime}?powerStationId=${selectedPsId}`;
+	</script>
+	<script src="~/js/PowerStationOverview/init_earn_summary.js"></script>
+	<script>
+		$(document).ready(function () {
+
+			$('#power_station_name').change(function () {
+				var val = $(this).val();
+				if (val) { // 如果val不为空
+					window.location.href = '@Url.Action("Index", "PowerStationOverview")?PowerstationId=' + val;
+				}
+			});
+
+
+			flatpickr("#SummaryTimeRange", {
+				dateFormat: "Y-m-d",
+				mode: "range",
+				onChange: function (selectedDates, dateStr, instance) {
+					// 当用户选择日期范围时触发此事件
+					if (selectedDates.length === 2) {
+						var startDate = selectedDates[0].toLocaleDateString();
+						var endDate = selectedDates[1].toLocaleDateString();
+						InitEarnChart = `${baseUrlRealTime}?powerStationId=${selectedPsId}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+						
+						loadPowerTrendChart(InitEarnChart);
+					}
+				}
+			});
+
+			loadPowerTrendChart(InitEarnChart);
+
+		});
+	</script>
 }

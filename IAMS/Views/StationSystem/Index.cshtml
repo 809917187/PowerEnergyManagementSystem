@@ -2,7 +2,7 @@
 @using IAMS.Models.StationSystem;
 @model IAMS.ViewModels.StationSystem.StationSystemIndexViewModel
 
-@Html.Partial("_PowerStationSelector",Model.PowerStationInfos)
+@await Html.PartialAsync("_PowerStationAndCabinetSelector",Model.PowerStationInfos)
 
 <div class="row pt-3">
     <div class="col-9">

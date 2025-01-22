@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\PowerStationOverview\init_earn_summary.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Access\Login.cshtml" />
     <None Include="Views\Access\UserManagement.cshtml" />
     <None Include="Views\Access\_addUser.cshtml" />
@@ -168,6 +172,7 @@
     <None Include="wwwroot\js\PowerStationManagement\delete_powerstation.js" />
     <None Include="wwwroot\js\PowerStationManagement\edit_powerstation.js" />
     <None Include="wwwroot\js\PowerStationManagement\see_details.js" />
+    <None Include="wwwroot\js\PowerStationOverview\init_earn_summary.js" />
     <None Include="wwwroot\js\PriceTemplate\add_price_template.js" />
     <None Include="wwwroot\js\PriceTemplate\add_row.js" />
     <None Include="wwwroot\js\PriceTemplate\delete_template.js" />

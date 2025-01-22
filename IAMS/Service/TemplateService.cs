@@ -260,7 +260,32 @@ namespace IAMS.Service {
             }
             return ret;
         }
+        public PriceTemplateInfo GetTemplateByPowerStationId(int powerstationId) {
+            PriceTemplateInfo ret = new PriceTemplateInfo();
 
+            try {
+                string sql = "SELECT price_template_id FROM power_station_map_price_template WHERE power_station_id = @id";
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    using (MySqlCommand command = new MySqlCommand(sql, connection)) {
+                        command.Parameters.AddWithValue("@id", powerstationId);
+                        // 执行查询并读取结果
+                        using (MySqlDataReader reader = command.ExecuteReader()) {
+                            while (reader.Read()) {
+                                // 读取每一行数据
+                                ret = this.GetPriceTemplateInfoById(reader.GetInt32("price_template_id"));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return ret;
+        }
         public bool UpdatePriceTemplate(PriceTemplateInfo priceTemplate) {
             using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
                 conn.Open();

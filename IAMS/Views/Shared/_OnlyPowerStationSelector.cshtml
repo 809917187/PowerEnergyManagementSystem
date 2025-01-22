@@ -1,0 +1,17 @@
+﻿@using IAMS.Models.PowerStation;
+@model List<PowerStationInfo>
+
+<div class="row pt-3">
+    <div class="col-2">
+        <select id="power_station_name" class="form-select fw-bold" data-live-search="true">
+            @foreach (PowerStationInfo ps in Model) {
+                if (ps.IsSelected) {
+                    <option value="@ps.Id" selected>@ps.Name</option>
+                } else {
+                    <option value="@ps.Id">@ps.Name</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+

@@ -76,6 +76,9 @@ namespace IAMS.Service {
         }
 
         public PowerStationInfo GetPowerStationInfoById(int id) {
+
+            return this.GetAllPowerStationInfos().FirstOrDefault(s => s.Id == id);
+/*
             PowerStationInfo powerStationInfo = new PowerStationInfo();
 
             try {
@@ -107,7 +110,7 @@ namespace IAMS.Service {
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
-            return powerStationInfo;
+            return powerStationInfo;*/
         }
 
         public List<PowerStationInfo> GetAllPowerStationInfos() {

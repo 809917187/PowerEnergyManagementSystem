@@ -11,5 +11,6 @@ namespace IAMS.Service {
         public Dictionary<int, decimal> GetTimeFrame2BuyPrice(int templateId);
         public Dictionary<int, decimal> GetTimeFrame2SalePrice(int templateId);
         public bool UpdatePriceTemplate(PriceTemplateInfo priceTemplate);
+        public PriceTemplateInfo GetTemplateByPowerStationId(int powerstationId);
     }
 }

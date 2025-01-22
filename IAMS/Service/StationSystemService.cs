@@ -65,26 +65,12 @@ namespace IAMS.Service {
             return ret;
         }*/
 
-        public List<GatewayTableModelInfo> GetGatewayTableModelInfo(List<string> names, DateTime dateTime) {
-            List<GatewayTableModelInfo> ret = new List<GatewayTableModelInfo>();
-
-            try {
-                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
-                // 创建 MySQL 连接
-                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
-                    connection.Open();
-
-                    // 定义 SQL 查询
-                    string sql = "SELECT * FROM device_gateway_table_model WHERE dev_name IN @Names AND DATE(upload_time) = @TargetDate";
-                    ret = connection.Query<GatewayTableModelInfo>(sql, new { Names = names, TargetDate = dateTime.Date }).AsList();
-                }
-            } catch (Exception ex) {
-                Console.WriteLine($"Error: {ex.Message}");
+        
+        public List<EnergyStorageStackControlInfo> GetEnergyStorageStackControllerInfo(List<string> names, DateTime startDateTime, DateTime endDateTime = default) {
+            // 如果 endDateTime 没有显式传入，设置为当前时间
+            if (endDateTime == default) {
+                endDateTime = startDateTime;
             }
-
-            return ret;
-        }
-        public List<EnergyStorageStackControlInfo> GetEnergyStorageStackControllerInfo(List<string> names, DateTime dateTime) {
             List<EnergyStorageStackControlInfo> ret = new List<EnergyStorageStackControlInfo>();
 
             try {
@@ -94,8 +80,8 @@ namespace IAMS.Service {
                     connection.Open();
 
                     // 定义 SQL 查询
-                    string sql = "SELECT * FROM device_energy_storage_stack_control_info WHERE dev_name IN @Names AND DATE(upload_time) = @TargetDate";
-                    ret = connection.Query<EnergyStorageStackControlInfo>(sql, new { Names = names, TargetDate = dateTime.Date }).AsList();
+                    string sql = "SELECT * FROM device_energy_storage_stack_control_info WHERE dev_name IN @Names AND upload_time >= @StartDate AND upload_time < @EndDate";
+                    ret = connection.Query<EnergyStorageStackControlInfo>(sql, new { Names = names, StartDate = startDateTime.Date, EndDate = endDateTime.Date.AddDays(1) }).AsList();
                 }
             } catch (Exception ex) {
                 Console.WriteLine($"Error: {ex.Message}");
@@ -104,7 +90,35 @@ namespace IAMS.Service {
             return ret;
         }
 
-        public List<PCSInfo> GetPCSInfo(List<string> pcsName, DateTime dateTime) {
+        public List<GatewayTableModelInfo> GetGatewayTableModelInfo(List<string> names, DateTime startDateTime, DateTime endDateTime = default) {
+            // 如果 endDateTime 没有显式传入，设置为当前时间
+            if (endDateTime == default) {
+                endDateTime = startDateTime;
+            }
+            List<GatewayTableModelInfo> ret = new List<GatewayTableModelInfo>();
+
+            try {
+                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    // 定义 SQL 查询
+                    string sql = "SELECT * FROM device_gateway_table_model WHERE dev_name IN @Names AND upload_time >= @StartDate AND upload_time < @EndDate";
+                    ret = connection.Query<GatewayTableModelInfo>(sql, new { Names = names, StartDate = startDateTime.Date, EndDate = endDateTime.Date.AddDays(1) }).AsList();
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return ret;
+        }
+
+        public List<PCSInfo> GetPCSInfo(List<string> names, DateTime startDateTime, DateTime endDateTime = default) {
+            // 如果 endDateTime 没有显式传入，设置为当前时间
+            if (endDateTime == default) {
+                endDateTime = startDateTime;
+            }
             List<PCSInfo> ret = new List<PCSInfo>();
 
             try {
@@ -114,8 +128,8 @@ namespace IAMS.Service {
                     connection.Open();
 
                     // 定义 SQL 查询
-                    string sql = "SELECT * FROM device_pcs_info WHERE dev_name IN @Names AND DATE(upload_time) = @TargetDate";
-                    ret = connection.Query<PCSInfo>(sql, new { Names = pcsName, TargetDate = dateTime.Date }).AsList();
+                    string sql = @" SELECT * FROM device_pcs_info WHERE dev_name IN @Names AND upload_time >= @StartDate AND upload_time < @EndDate";
+                    ret = connection.Query<PCSInfo>(sql, new { Names = names, StartDate = startDateTime.Date, EndDate = endDateTime.Date.AddDays(1) }).AsList();
                 }
             } catch (Exception ex) {
                 Console.WriteLine($"Error: {ex.Message}");
@@ -195,7 +209,7 @@ namespace IAMS.Service {
             return model;
         }
 
-        
+
 
         public StationSystemIndexViewModel GetStationSystemIndexViewModel(string energyStorageCabinetName, DateTime dateTime) {
             StationSystemIndexViewModel model = new StationSystemIndexViewModel();
