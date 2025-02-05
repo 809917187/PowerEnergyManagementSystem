@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using IAMS.Models.PriceTemplate;
+using IAMS.Models.StationSystem;
 using MySql.Data.MySqlClient;
 using System.Text;
 
@@ -321,6 +322,18 @@ namespace IAMS.Service {
                     return true;
                 }
             }
+        }
+
+        public decimal GetEarn(List<GatewayTableModelInfo> gatewayTableModelInfos, PriceTemplateInfo templateInfo) {
+            if (gatewayTableModelInfos == null || templateInfo == null) {
+                return 0;
+            } else {
+                return (decimal)gatewayTableModelInfos.Sum(s => s.PeakForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[1] - templateInfo.TimeFrame2SalePrice[1]) +
+                                (decimal)gatewayTableModelInfos.Sum(s => s.FlatForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[2] - templateInfo.TimeFrame2SalePrice[2]) +
+                                (decimal)gatewayTableModelInfos.Sum(s => s.NormalForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[3] - templateInfo.TimeFrame2SalePrice[3]) +
+                                (decimal)gatewayTableModelInfos.Sum(s => s.ValleyForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[4] - templateInfo.TimeFrame2SalePrice[4]);
+            }
+
         }
     }
 }

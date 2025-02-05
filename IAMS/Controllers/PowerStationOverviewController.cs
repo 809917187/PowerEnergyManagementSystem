@@ -8,7 +8,8 @@ namespace IAMS.Controllers {
             _powerStationOverviewService = powerStationOverviewService;
         }
         public IActionResult Index(int PowerstationId) {
-            return View(_powerStationOverviewService.GetPowerStationOverviewViewModel(PowerstationId));
+            var ret = _powerStationOverviewService.GetPowerStationOverviewViewModel(PowerstationId);
+            return View(ret);
         }
 
         [HttpGet]
@@ -19,6 +20,16 @@ namespace IAMS.Controllers {
 				return Ok(_powerStationOverviewService.GetEarnSummaryData(powerStationId));
 			}
             
+        }
+
+        [HttpGet]
+        public IActionResult GetChargeAdnDischargeChartData(int powerStationId, string startDate, string endDate) {
+            if (DateTime.TryParse(startDate, out DateTime start) && DateTime.TryParse(endDate, out DateTime end)) {
+                return Ok(_powerStationOverviewService.GetChargeAdnDischargeChartData(powerStationId, start, end));
+            } else {
+                return Ok(_powerStationOverviewService.GetChargeAdnDischargeChartData(powerStationId));
+            }
+
         }
     }
 }

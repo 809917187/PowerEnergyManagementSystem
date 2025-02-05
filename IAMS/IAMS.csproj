@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\PowerStationOverview\init_earn_summary.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Access\Login.cshtml" />
     <None Include="Views\Access\UserManagement.cshtml" />
     <None Include="Views\Access\_addUser.cshtml" />
@@ -52,6 +48,8 @@
     <None Include="Views\ProfitReport\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_OnlyPowerStationSelector.cshtml" />
+    <None Include="Views\Shared\_PowerStationAndCabinetSelector.cshtml" />
     <None Include="Views\Shared\_PowerStationSelector.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\StationAlarm\AlarmHistory.cshtml" />
@@ -166,12 +164,18 @@
     <None Include="wwwroot\bootstrap_template\sidebars\sidebars.js" />
     <None Include="wwwroot\echarts\echarts.min.js" />
     <None Include="wwwroot\flatpickr\flatpickr.min.js" />
+    <None Include="wwwroot\js\ElectricityReport\load_single_station_report_day.js" />
+    <None Include="wwwroot\js\ElectricityReport\load_station_summary_table.js" />
     <None Include="wwwroot\js\ElectricityReport\singleStationReportByRange.js" />
     <None Include="wwwroot\js\EnergyManagement\chart_plan_power.js" />
+    <None Include="wwwroot\js\MultiStationOverview\init_charge_discharge_summary.js" />
+    <None Include="wwwroot\js\MultiStationOverview\init_earn_rank.js" />
+    <None Include="wwwroot\js\MultiStationOverview\init_earn_summary.js" />
     <None Include="wwwroot\js\PowerStationManagement\add_power_station.js" />
     <None Include="wwwroot\js\PowerStationManagement\delete_powerstation.js" />
     <None Include="wwwroot\js\PowerStationManagement\edit_powerstation.js" />
     <None Include="wwwroot\js\PowerStationManagement\see_details.js" />
+    <None Include="wwwroot\js\PowerStationOverview\init_charge_discharge_summary.js" />
     <None Include="wwwroot\js\PowerStationOverview\init_earn_summary.js" />
     <None Include="wwwroot\js\PriceTemplate\add_price_template.js" />
     <None Include="wwwroot\js\PriceTemplate\add_row.js" />

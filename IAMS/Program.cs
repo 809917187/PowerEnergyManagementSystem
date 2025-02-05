@@ -25,6 +25,8 @@ builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IStationSystemService, StationSystemService>();
 builder.Services.AddScoped<IDeviceMonitorService, DeviceMonitorService>();
 builder.Services.AddScoped<IPowerStationOverviewService, PowerStationOverviewService>();
+builder.Services.AddScoped<IMultiSatationOverviewService, MultiSatationOverviewService>();
+builder.Services.AddScoped<IElectricityReportService, ElectricityReportService>();
 builder.Services.AddHostedService<TimedBackgroundService>();
 
 var app = builder.Build();

@@ -18,5 +18,12 @@ namespace IAMS.Common {
         public static DateTime GetEndOfMonth(DateTime date) {
             return new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
         }
+
+        public static DateTime GetMinDate() {
+            return new DateTime(2025, 1, 1);
+        }
+        public static DateTime GetMaxDate() {
+            return new DateTime(2500, 1, 1);
+        }
     }
 }

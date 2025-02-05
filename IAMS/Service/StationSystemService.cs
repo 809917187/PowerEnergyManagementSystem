@@ -155,7 +155,7 @@ namespace IAMS.Service {
                     Data = g.Select(m => new object[] { m.UploadTime.ToString("yyyy-MM-ddTHH:mm:ss"), m.TotalActivePower }).ToList()
                 }).ToList();//关口表总有功功率
 
-            List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(energyStorageCabinetInfo.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
+            List<Structure> pcsRootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(energyStorageCabinetInfo.rootDataFromMqtt.structure, (int)DeviceCode.PCS, 1);
             var pcsTotalActivePower = this.GetPCSInfo(pcsRootInfos.Select(S => S.name).ToList(), today).GroupBy(s => s.DevName).Select(
                 g => new SeriesData() {
                     Name = g.Key + "有功功率",

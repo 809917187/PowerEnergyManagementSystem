@@ -1,4 +1,5 @@
 ﻿using IAMS.Models.PriceTemplate;
+using IAMS.Models.StationSystem;
 
 namespace IAMS.Service {
     public interface ITemplateService {
@@ -12,5 +13,7 @@ namespace IAMS.Service {
         public Dictionary<int, decimal> GetTimeFrame2SalePrice(int templateId);
         public bool UpdatePriceTemplate(PriceTemplateInfo priceTemplate);
         public PriceTemplateInfo GetTemplateByPowerStationId(int powerstationId);
+
+        public decimal GetEarn(List<GatewayTableModelInfo> gatewayTableModelInfos, PriceTemplateInfo templateInfo);
     }
 }

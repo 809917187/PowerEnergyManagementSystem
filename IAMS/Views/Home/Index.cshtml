@@ -1,12 +1,12 @@
-﻿@model IAMS.ViewModels.Home.MultiPowerStationOverviewViewModel
+﻿@model IAMS.ViewModels.MultiStationOverview.MultiStationOverviewViewModel
 
 <div class="row pt-2">
     <div class="col-11">
         <p class="h5">多站总览 <span class="badge text-bg-warning">@DateTime.Now.ToString("yyyy-MM-dd")</span></p>
     </div>
-    @*<div class="col-auto">
+    <div class="col-auto">
         <button type="button" class="btn btn-primary">创建电站</button>
-        </div>*@
+    </div>
 </div>
 
 <div class="row pt-2">
@@ -14,10 +14,13 @@
         <div class="card">
             <div class="card-body">
                 站点总数
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li><h3 class="card-title pricing-card-title">2</h3></li>
-                    <li>在线5 个, 离线0个, 待运维0个</li>
-                    <li>装机功率: 1.8 MW | 装机容量: 3.9 MWh</li>
+                <ul class="list-unstyled mt-3 mb-2">
+                    <li><h3 class="card-title">@Model.PowerStationTotalNumber</h3></li>
+                    <li class="font-08">在线 @Model.PowerStationOnlineNumber 个, 离线 @Model.PowerStationOfflineNumber 个, 待运维 @Model.PowerStationToBeMaintainanceNumber 个</li>
+                </ul>
+                <hr>
+                <ul class="list-unstyled mt-2 mb-2">
+                    <li class="font-08">装机功率: @Model.InstalledPower.ToString("F2") MW | 装机容量: @Model.InstalledCapacity.ToString("F2") MWh</li>
                 </ul>
             </div>
         </div>
@@ -25,11 +28,14 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                PIM 总数
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li><h3 class="card-title pricing-card-title">2</h3></li>
-                    <li>在线5 个, 离线0个, 待运维0个</li>
-                    <li>装机功率: 1.8 MW | 装机容量: 3.9 MWh</li>
+                今日充电量
+                <ul class="list-unstyled mt-3 mb-2">
+                    <li><h3 class="card-title">@Model.ChargeAmountToday.ToString("F2") Mkw</h3></li>
+                    <li class="font-08">较昨日上涨：@Model.ChargeAmountRaise.ToString("F2") MWh</li>
+                </ul>
+                <hr>
+                <ul class="list-unstyled mt-2 mb-2">
+                    <li class="font-08">月充电量：@Model.ChargeAmountThisMonth.ToString("F2") MWh | 累计充电量：@Model.TotalChargeAmount.ToString("F2") MWh</li>
                 </ul>
             </div>
         </div>
@@ -37,11 +43,14 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                PIM 总数
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li><h3 class="card-title pricing-card-title">2</h3></li>
-                    <li>在线5 个, 离线0个, 待运维0个</li>
-                    <li>装机功率: 1.8 MW | 装机容量: 3.9 MWh</li>
+                今日放电量
+                <ul class="list-unstyled mt-3 mb-2">
+                    <li><h3 class="card-title">@Model.DischargeAmountToday.ToString("F2") Mkw</h3></li>
+                    <li class="font-08">较昨日上涨：XXXX MWh</li>
+                </ul>
+                <hr>
+                <ul class="list-unstyled mt-2 mb-2">
+                    <li class="font-08">月放电量：@Model.DischargeAmountThisMonth.ToString("F2") MWh | 累计放电量：@Model.TotalDischargeAmount.ToString("F2") MWh</li>
                 </ul>
             </div>
         </div>
@@ -49,69 +58,65 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                PIM 总数
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li><h3 class="card-title pricing-card-title">2</h3></li>
-                    <li>在线5 个, 离线0个, 待运维0个</li>
-                    <li>装机功率: 1.8 MW | 装机容量: 3.9 MWh</li>
+                今日收益
+                <ul class="list-unstyled mt-3 mb-2">
+                    <li><h3 class="card-title">@Model.EarningToday.ToString("F2") 元</h3></li>
+                    <li class="font-08">较昨日上涨：@Model.EarningRaise.ToString("F2") 元</li>
+                </ul>
+                <hr>
+                <ul class="list-unstyled mt-2 mb-2">
+                    <li class="font-08">本月收益：@Model.EarningThisMonth.ToString("F2") 元 | 总收益：@Model.TotalEarning.ToString("F2") 元</li>
                 </ul>
             </div>
         </div>
     </div>
 
 </div>
-
 <div class="row pt-3">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-body">
                 <div class="row">
-                    <div class="col-7">
-                        <h6>收益统计</h6>
-                    </div>
-                    <div class="col-auto">
-                        <nav class="navbar navbar-expand-sm navbar-light bg-light py-1">
-                            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                                <ul class="navbar-nav me-auto mb-lg-0">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="#">近1周</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1月</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">近1年</a>
-                                    </li>
-                                </ul>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-earn-tab" data-bs-toggle="tab" data-bs-target="#nav-earn" type="button" role="tab" aria-controls="nav-earn" aria-selected="true">收益统计</button>
+                            <button class="nav-link" id="nav-charge-discharge-tab" data-bs-toggle="tab" data-bs-target="#nav-charge-discharge" type="button" role="tab" aria-controls="nav-charge-discharge" aria-selected="false">充放电统计</button>
+                            <div class="ms-auto d-flex align-items-center">
+                                <label for="daterange" class="form-label mb-0 me-2 text-nowrap">选择日期时间段</label>
+                                <input type="text" id="daterange" class="flatpickr flatpickr-input form-control" style="width: 250px;" />
                             </div>
-                        </nav>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <label for="daterange" class="form-label mb-0 me-2">选择日期时间段</label>
-                    </div>
-                    <div class="col d-flex align-items-center">
-                        <input type="text" id="daterange" class="flatpickr flatpickr-input form-control" />
-                    </div>
+                        </div>
+
+                    </nav>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-7" id="earnings_chart1" style="height:400px;border-right: 2px solid #ccc;">
+                <div class="tab-content pt-3" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-earn" role="tabpanel" aria-labelledby="nav-earn-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-7" id="earn_chart" style="height:400px;border-right: 2px solid #ccc;">
+                            </div>
+                            <div class="col-5" id="earn_rank_chart" style="height:400px;border-right: 2px solid #ccc;">
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-5" id="earnings_chart2" style="height:400px;border-right: 2px solid #ccc;">
+                    <div class="tab-pane fade" id="nav-charge-discharge" role="tabpanel" aria-labelledby="nav-charge-discharge-tab" tabindex="0">
+                        <div class="col-12" id="charge_discharge_chart" style="height:400px;border-right: 2px solid #ccc;">
+                        </div>
                     </div>
                 </div>
 
             </div>
+
         </div>
+
     </div>
+
 </div>
 
 <div class="row pt-3">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h6>PIM List</h6>
+                <h6>站点列表</h6>
             </div>
             <div class="card-body">
                 <table id="table"
@@ -121,19 +126,27 @@
                        data-pagination="true">
                     <thead>
                         <tr>
-                            <th data-field="id">编号</th>
-                            <th data-field="name">姓名</th>
-                            <th data-field="position">职位</th>
-                            <th data-field="department">部门</th>
+                            <th>编号</th>
+                            <th>电站名称</th>
+                            <th>在线状态</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int i = 0; i < 80; i++) {
+                        @{
+                            var index = 1;
+                        }
+                        @foreach (var ps in @Model.OnlinePowerStation) {
                             <tr>
-                                <td>@i</td>
-                                <td>张+@i</td>
-                                <td>软件工程师</td>
-                                <td>研发部</td>
+                                <td>@(index++)</td>
+                                <td><a asp-controller="PowerStationOverview" asp-action="Index" asp-route-PowerstationId="@ps.Id">@ps.Name</a></td>
+                                <td>在线</td>
+                            </tr>
+                        }
+                        @foreach (var ps in @Model.OfflinePowerStation) {
+                            <tr>
+                                <td>@(index++)</td>
+                                <td>@ps.Name</td>
+                                <td>离线</td>
                             </tr>
                         }
                     </tbody>
@@ -146,116 +159,37 @@
 
 
 @section Scripts{
-
+<script>
+    var InitEarnChart = `@Url.Action("GetEarnChartData", "Home")`;
+    var InitEarnRankChart = `@Url.Action("GetEarnRankChartData", "Home")`;
+    var InitChargeDischargeChart = `@Url.Action("GetChargeAdnDischargeChartData", "Home")`;
+</script>
+<script src="~/js/MultiStationOverview/init_earn_summary.js"></script>
+<script src="~/js/MultiStationOverview/init_charge_discharge_summary.js"></script>
+<script src="~/js/MultiStationOverview/init_earn_rank.js"></script>
 <script>
     $(document).ready(function () {
 
         flatpickr("#daterange", {
             dateFormat: "Y-m-d",
-            mode: "range"
+            mode: "range",
+            onChange: function (selectedDates, dateStr, instance) {
+                // 当用户选择日期范围时触发此事件
+                if (selectedDates.length === 2) {
+                    var startDate = selectedDates[0].toLocaleDateString();
+                    var endDate = selectedDates[1].toLocaleDateString();
+                    InitEarnChart = `@Url.Action("GetEarnChartData", "Home")?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+                    InitChargeDischargeChart = `@Url.Action("GetChargeAdnDischargeChartData", "Home")?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+                    InitEarnRankChart = `@Url.Action("GetEarnRankChartData", "Home")?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+                    loadEarnChart(InitEarnChart);
+                    loadChargeDischargeChart(InitChargeDischargeChart);
+                    loadEarnRankChart(InitEarnRankChart);
+                }
+            }
         });
-
-
-        var chartDom = document.getElementById('earnings_chart1');
-        var myChart = echarts.init(chartDom);
-        var option;
-
-        option = {
-            xAxis: {
-            type: 'category',
-            position: 'bottom',  // 这是默认配置，如果需要把X轴放在y=0的位置，可以使用它
-            axisLine: {
-                onZero: true // 让X轴在Y=0的位置显示
-            }
-            },
-            yAxis: {
-            type: 'value',
-            axisLine: {
-                onZero: false // 让Y轴不强制在X轴的0位置显示
-            }
-            },
-            series: [{
-            data: [10, 20, -30, 40, 50],
-            type: 'bar'
-            }]
-        };
-
-        option && myChart.setOption(option);
-
-        chartDom = document.getElementById('earnings_chart2');
-        myChart = echarts.init(chartDom);
-        const labelRight = {
-            position: 'right'
-        };
-
-            option = {
-                title: {
-                text: 'Bar Chart with Negative Value'
-                },
-                tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                }
-                },
-                grid: {
-                top: 80,
-                bottom: 30
-                },
-                xAxis: {
-                type: 'value',
-                position: 'top',
-                splitLine: {
-                    lineStyle: {
-                    type: 'dashed'
-                    }
-                }
-                },
-                yAxis: {
-                type: 'category',
-                axisLine: { show: false },
-                axisLabel: { show: false },
-                axisTick: { show: false },
-                splitLine: { show: false },
-                data: [
-                    'ten',
-                    'nine',
-                    'eight',
-                    'seven',
-                    'six',
-                    'five',
-                    'four',
-                    'three',
-                    'two',
-                    'one'
-                ]
-                },
-                series: [
-                {
-                    name: 'Cost',
-                    type: 'bar',
-                    stack: 'Total',
-                    label: {
-                    show: true,
-                    formatter: '{b}'
-                    },
-                    data: [
-                    { value: -0.07, label: labelRight },
-                    { value: -0.09, label: labelRight },
-                    0.2,
-                    0.44,
-                    { value: -0.23, label: labelRight },
-                    0.08,
-                    { value: -0.17, label: labelRight },
-                    0.47,
-                    { value: -0.36, label: labelRight },
-                    0.18
-                    ]
-                }
-            ]
-        };
-
-        option && myChart.setOption(option);
+        loadEarnChart(InitEarnChart);
+        loadChargeDischargeChart(InitChargeDischargeChart);
+        loadEarnRankChart(InitEarnRankChart);
     })
 
 </script>

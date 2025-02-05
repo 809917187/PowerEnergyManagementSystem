@@ -1,41 +1,42 @@
-﻿<div class="row pt-3">
-	<div class="col-auto d-flex align-items-center">
-		<span>选择站点：</span>
-	</div>
-	<div class="col-2">
-		<select class="form-select" id="SingleReportStation">
-			<option value="">江苏无锡市1号电站</option>
-			<option value="">江苏无锡市1号电站</option>
-			<option value="">江苏无锡市1号电站</option>
-			<option value="">江苏无锡市1号电站</option>
-			<option value="">江苏无锡市1号电站</option>
-		</select>
-	</div>
+﻿@model List<IAMS.Models.PowerStation.PowerStationInfo>
+
+<div class="row pt-3">
+    <div class="col-auto d-flex align-items-center">
+        <span>选择站点：</span>
+    </div>
+    <div class="col-2">
+
+        <select class="form-select" id="SingleReportStation">
+            @foreach (var ps in Model) {
+                <option value="@ps.Id">@ps.Name</option>
+            }
+        </select>
+    </div>
 </div>
 
 <div class="row pt-3">
-	<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-		<li class="nav-item">
-			<a class="nav-link" id="pills-range-tab" data-toggle="pill" href="#pills-range" role="tab" aria-controls="pills-range" aria-selected="true">时间段报表</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link active" id="pills-day-tab" data-toggle="pill" href="#pills-day" role="tab" aria-controls="pills-day" aria-selected="false">日报表</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" id="pills-month-tab" data-toggle="pill" href="#pills-month" role="tab" aria-controls="pills-month" aria-selected="false">月报表</a>
-		</li>
-	</ul>
-	<div class="tab-content" id="pills-tabContent" >
-		<div class="tab-pane fade " id="pills-range" role="tabpanel" aria-labelledby="pills-range-tab">
-			@await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByRange.cshtml")
-		</div>
-		<div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-day-tab">
-			@await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByDay.cshtml")
-		</div>
-		<div class="tab-pane fade" id="pills-month" role="tabpanel" aria-labelledby="pills-month-tab">
-			@await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByDay.cshtml")
-		</div>
-	</div>
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" id="pills-range-tab" data-toggle="pill" href="#pills-range" role="tab" aria-controls="pills-range" aria-selected="true">时间段报表</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-day-tab" data-toggle="pill" href="#pills-day" role="tab" aria-controls="pills-day" aria-selected="false">日报表</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-month-tab" data-toggle="pill" href="#pills-month" role="tab" aria-controls="pills-month" aria-selected="false">月报表</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade " id="pills-range" role="tabpanel" aria-labelledby="pills-range-tab">
+            @await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByRange.cshtml")
+        </div>
+        <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-day-tab">
+            @await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByDay.cshtml")
+        </div>
+        <div class="tab-pane fade" id="pills-month" role="tabpanel" aria-labelledby="pills-month-tab">
+            @await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReportByDay.cshtml")
+        </div>
+    </div>
 </div>
 
 

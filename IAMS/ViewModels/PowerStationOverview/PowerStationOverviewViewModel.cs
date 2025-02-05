@@ -4,6 +4,7 @@ using IAMS.Models.StationSystem;
 namespace IAMS.ViewModels.PowerStationOverview {
     public class PowerStationOverviewViewModel {
         public List<PowerStationInfo> PowerStationInfos { get; set; } = new List<PowerStationInfo>();
+        public PowerStationInfo SelectedPowerStation { get; set; }
         public double ChargeAmountToday { get; set; }
         //public double ChargeAmountYesterday { get; set; }
         public double ChargeAmountRaise { get; set; }
@@ -25,5 +26,9 @@ namespace IAMS.ViewModels.PowerStationOverview {
         public int AlarmCount { get; set; }
         public int MaintenanceDealingCount { get; set; }
         public int NoNeedDealingCount { get; set; }
+        public List<CabinetStationSystemInfo> CabinetStationSystemInfos { get; set; } = new List<CabinetStationSystemInfo>();
     }
+
+    
+
 }

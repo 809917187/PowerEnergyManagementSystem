@@ -12,9 +12,7 @@
     // 初始化 ECharts 图表
     var chartDom = document.getElementById('single_station_chart_by_range');
     var myChart = echarts.init(chartDom);
-    setTimeout(function () {
-        myChart.resize(); // 延迟调整图表尺寸
-    }, 100);
+    
     // 设置图表的配置项
     var option = {
         title: {
@@ -48,6 +46,5 @@
 
     
 
-    // 初始调整图表尺寸（在页面加载时）
-    myChart.resize();
+    
 });
