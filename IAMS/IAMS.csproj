@@ -212,7 +212,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\stationImages\" />
-    <Folder Include="wwwroot\images\userPictures\" />
   </ItemGroup>
 
 </Project>
