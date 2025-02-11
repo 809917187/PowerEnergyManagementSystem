@@ -66,9 +66,6 @@
     <None Include="wwwroot\big-screen\js\echarts.min.js" />
     <None Include="wwwroot\big-screen\js\jquery.js" />
     <None Include="wwwroot\big-screen\js\js.js" />
-    <None Include="wwwroot\bootstrap-fileinput\.gitignore" />
-    <None Include="wwwroot\bootstrap-fileinput\.npmignore" />
-    <None Include="wwwroot\bootstrap-fileinput\CHANGE.md" />
     <None Include="wwwroot\bootstrap-fileinput\js\fileinput.js" />
     <None Include="wwwroot\bootstrap-fileinput\js\fileinput.min.js" />
     <None Include="wwwroot\bootstrap-fileinput\js\locales\ar.js" />
@@ -129,8 +126,6 @@
     <None Include="wwwroot\bootstrap-fileinput\js\plugins\piexif.min.js" />
     <None Include="wwwroot\bootstrap-fileinput\js\plugins\sortable.js" />
     <None Include="wwwroot\bootstrap-fileinput\js\plugins\sortable.min.js" />
-    <None Include="wwwroot\bootstrap-fileinput\LICENSE.md" />
-    <None Include="wwwroot\bootstrap-fileinput\README.md" />
     <None Include="wwwroot\bootstrap-fileinput\scss\fileinput-rtl.scss" />
     <None Include="wwwroot\bootstrap-fileinput\scss\fileinput.scss" />
     <None Include="wwwroot\bootstrap-fileinput\scss\themes\explorer-fa4\theme.scss" />

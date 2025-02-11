@@ -11,5 +11,6 @@
         public DateTime CreateTime { get; set; }
         public bool KeepLoggedIn { get; set; }
         public bool IsDelete { get; set; }
+        public bool IsChecked { get; set; } = false;
     }
 }

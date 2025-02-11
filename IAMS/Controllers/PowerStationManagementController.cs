@@ -6,9 +6,12 @@ namespace IAMS.Controllers {
     public class PowerStationManagementController : Controller {
         private readonly IPowerStationService _powerStationService;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public PowerStationManagementController(IPowerStationService powerStationService, IWebHostEnvironment hostingEnvironment) {
+        private readonly IUserService _userService;
+
+        public PowerStationManagementController(IPowerStationService powerStationService, IWebHostEnvironment hostingEnvironment, IUserService userService) {
             _powerStationService = powerStationService;
             _hostingEnvironment = hostingEnvironment;
+            _userService = userService;
         }
 
         public IActionResult Index() {
@@ -30,7 +33,7 @@ namespace IAMS.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPowerStation(PowerStationInfo powerStationInfo,List<string> DeletedImages) {
+        public async Task<IActionResult> EditPowerStation(PowerStationInfo powerStationInfo, List<string> DeletedImages) {
             if (await this.UploadImages(powerStationInfo) && _powerStationService.UpdateStationInfo(powerStationInfo)) {
                 return Ok(new { message = "电站信息更新成功" });
             } else {
@@ -38,12 +41,37 @@ namespace IAMS.Controllers {
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> BindCabinetToPowerStation([FromBody] BindRequestModel bindRequestModel) {
+            if (_powerStationService.BindCabinetToPowerStation(bindRequestModel.powerStationId, bindRequestModel.cabinetIds)) {
+                return Ok(new { message = "绑定成功" });
+            } else {
+                return BadRequest("绑定失败");
+            }
+        }
+
+
+        public async Task<IActionResult> BindPowerStationToUser([FromBody] BindRequestModel bindRequestModel) {
+            if (_powerStationService.BindPowerStationToUser(bindRequestModel.powerStationId, bindRequestModel.userIds)) {
+                return Ok(new { message = "绑定成功" });
+            } else {
+                return BadRequest("绑定失败");
+            }
+        }
+
         [HttpGet]
         public IActionResult GetPowerStationInfoById(int id) {
             var ret = _powerStationService.GetPowerStationInfoById(id);
-            
+
             return Ok(ret);
         }
+        [HttpGet]
+        public IActionResult GetAllCabinetList() {
+            var ret = _powerStationService.GetAllEnergyStorageCabinetArray();
+
+            return Ok(ret);
+        }
+
 
         public async Task<IActionResult> AddPowerStation([FromForm] PowerStationInfo model) {
             try {
@@ -133,6 +161,21 @@ namespace IAMS.Controllers {
             } else {
                 return Json(new { success = true, message = "删除失败" });
             }
+        }
+
+        [HttpGet]
+        public IActionResult GetAllBindUserList(int powerStationId) {
+            var ret = _userService.GetAllUsers();
+
+            var bindedUser = _powerStationService.GetBindUserListByPowerStationId(powerStationId);
+
+            foreach (var user in ret) {
+                if (bindedUser.Contains(user.Id)) {
+                    user.IsChecked = true;
+                }
+            }
+
+            return Ok(ret);
         }
     }
 }

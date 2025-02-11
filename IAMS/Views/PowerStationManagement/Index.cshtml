@@ -12,39 +12,6 @@
         </div>
     </div>
 </div>
-@*<div class="row pt-3 justify-content-center">
-    <div class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="floatingSelect1" class="col-form-label">电站状态：</label>
-        </div>
-        <div class="col-2">
-            <select class="form-select" id="floatingSelect1">
-                <option value="1">全部</option>
-                <option value="2">在线</option>
-                <option value="3">离线</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <label for="floatingSelect2" class="col-form-label mb-0">客户：</label>
-        </div>
-        <div class="col-2">
-            <select class="form-select" id="floatingSelect2">
-                <option value="1">测试1</option>
-                <option value="2">测试2</option>
-                <option value="3">测试3</option>
-            </select>
-        </div>
-        <div class="col-2">
-            <input type="text" class="form-control" placeholder="电站名称">
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-primary" type="button">查询</button>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-outline-secondary" type="button">重置</button>
-        </div>
-    </div>
-</div>*@
 
 <div class="row pt-3">
     <div class="col-12">
@@ -66,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for(int i=0;i<Model.Count;i++){
+                @for (int i = 0; i < Model.Count; i++) {
                     <tr>
                         <td>@(i+1)</td>
                         <td>@Model[i].Name</td>
@@ -78,8 +45,10 @@
                         <td>@Model[i].StartTime</td>
                         <td class="gap-1">
                             <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal" data-id="@Model[i].Id">查看</button>
-                            <a class="btn btn-outline-primary btn-sm"  asp-controller="PowerStationManagement" asp-action="EditPowerStation" asp-route-id="@Model[i].Id">修改</a>
-                            <button class="btn btn-outline-primary btn-sm" onclick="deleteStation(@Model[i].Id)">删除</button>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="PowerStationManagement" asp-action="EditPowerStation" asp-route-id="@Model[i].Id">修改</a>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteStation(@Model[i].Id)">删除</button>
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bindCabinetModal" data-name="@Model[i].Name" data-id="@Model[i].Id">绑定电站</button>
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bindUserModal" data-name="@Model[i].Name" data-id="@Model[i].Id">绑定用户</button>
                         </td>
                     </tr>
                 }
@@ -89,14 +58,22 @@
 </div>
 
 @await Html.PartialAsync("~/Views/PowerStationManagement/_IndexViewDetailsModal.cshtml")
+@await Html.PartialAsync("~/Views/PowerStationManagement/_IndexBindCabinetModal.cshtml")
+@await Html.PartialAsync("~/Views/PowerStationManagement/_IndexBindUserModal.cshtml")
 
 @section Scripts{
 <script>
     var addPowerStationUrl = '@Url.Action("AddPowerStation", "PowerStationManagement")';
     var seeDetailsUrl = '@Url.Action("GetPowerStationInfoById", "PowerStationManagement")';
     var deletePowerStationUrl = '@Url.Action("DeletePowerStation", "PowerStationManagement")';
+    var getAllCabinetListUrl = '@Url.Action("GetAllCabinetList", "PowerStationManagement")';
+    var bindCabinetToPowerStationUrl = '@Url.Action("BindCabinetToPowerStation", "PowerStationManagement")';
+    var getAllUserListUrl = '@Url.Action("GetAllBindUserList", "PowerStationManagement")';
+    var bindPowerStationToUserUrl = '@Url.Action("BindPowerStationToUser", "PowerStationManagement")';
 
 </script>
 <script src="~/js/PowerStationManagement/see_details.js"></script>
+<script src="~/js/PowerStationManagement/bind_cabinet.js"></script>
+<script src="~/js/PowerStationManagement/bind_user.js"></script>
 <script src="~/js/PowerStationManagement/delete_powerstation.js"></script>
 }

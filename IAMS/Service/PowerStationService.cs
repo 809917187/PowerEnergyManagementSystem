@@ -78,39 +78,39 @@ namespace IAMS.Service {
         public PowerStationInfo GetPowerStationInfoById(int id) {
 
             return this.GetAllPowerStationInfos().FirstOrDefault(s => s.Id == id);
-/*
-            PowerStationInfo powerStationInfo = new PowerStationInfo();
+            /*
+                        PowerStationInfo powerStationInfo = new PowerStationInfo();
 
-            try {
-                // 创建 MySQL 连接
-                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
-                    connection.Open();
+                        try {
+                            // 创建 MySQL 连接
+                            using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                                connection.Open();
 
-                    // 定义 SQL 查询
-                    string query = "SELECT " +
-                        "id AS Id,name AS Name,owner AS Owner,phone AS Phone," +
-                        "installed_power AS InstalledPower, installed_capacity AS InstalledCapacity," +
-                        "start_time AS StartTime,country AS Country,state AS State,city AS City,region AS Region," +
-                        "location_details AS LocationDetails,longitude AS Longitude,latitude AS Latitude," +
-                        "transformer_capacity AS TransformerCapacity,transformer_info AS TransformerInfo,network_info AS NetworkInfo," +
-                        "installer AS Installer,installer_phone AS InstallerPhone " +
-                        "FROM " +
-                        "power_station " +
-                        "WHERE id=" + id;
-                    powerStationInfo = connection.Query<PowerStationInfo>(query).First();
-                    powerStationInfo.StationImagesFilePath = this.GetAllStationImages(powerStationInfo.Id);
-                    powerStationInfo.StationInstallImagesFilePath = this.GetAllStationInstallImages(powerStationInfo.Id);
-                    // 访问 HttpContext 获取 Request.Scheme 和 Request.Host
-                    var scheme = _httpContextAccessor.HttpContext?.Request.Scheme;
-                    var host = _httpContextAccessor.HttpContext?.Request.Host.Value;
-                    powerStationInfo.StationImagesFilePath = powerStationInfo.StationImagesFilePath.Select(s => $"{scheme}://{host}/{s}").ToList();
-                    powerStationInfo.StationInstallImagesFilePath = powerStationInfo.StationInstallImagesFilePath.Select(s => $"{scheme}://{host}/{s}").ToList();
-                }
-            } catch (Exception ex) {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
+                                // 定义 SQL 查询
+                                string query = "SELECT " +
+                                    "id AS Id,name AS Name,owner AS Owner,phone AS Phone," +
+                                    "installed_power AS InstalledPower, installed_capacity AS InstalledCapacity," +
+                                    "start_time AS StartTime,country AS Country,state AS State,city AS City,region AS Region," +
+                                    "location_details AS LocationDetails,longitude AS Longitude,latitude AS Latitude," +
+                                    "transformer_capacity AS TransformerCapacity,transformer_info AS TransformerInfo,network_info AS NetworkInfo," +
+                                    "installer AS Installer,installer_phone AS InstallerPhone " +
+                                    "FROM " +
+                                    "power_station " +
+                                    "WHERE id=" + id;
+                                powerStationInfo = connection.Query<PowerStationInfo>(query).First();
+                                powerStationInfo.StationImagesFilePath = this.GetAllStationImages(powerStationInfo.Id);
+                                powerStationInfo.StationInstallImagesFilePath = this.GetAllStationInstallImages(powerStationInfo.Id);
+                                // 访问 HttpContext 获取 Request.Scheme 和 Request.Host
+                                var scheme = _httpContextAccessor.HttpContext?.Request.Scheme;
+                                var host = _httpContextAccessor.HttpContext?.Request.Host.Value;
+                                powerStationInfo.StationImagesFilePath = powerStationInfo.StationImagesFilePath.Select(s => $"{scheme}://{host}/{s}").ToList();
+                                powerStationInfo.StationInstallImagesFilePath = powerStationInfo.StationInstallImagesFilePath.Select(s => $"{scheme}://{host}/{s}").ToList();
+                            }
+                        } catch (Exception ex) {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
 
-            return powerStationInfo;*/
+                        return powerStationInfo;*/
         }
 
         public List<PowerStationInfo> GetAllPowerStationInfos() {
@@ -178,30 +178,36 @@ namespace IAMS.Service {
             return powerStationInfos;
         }
 
-        public List<PowerStationInfo> GetAllEnergyStorageCabinetArray() {
-            List<PowerStationInfo> ret = new List<PowerStationInfo>();
+        public List<EnergyStorageCabinetInfo> GetAllEnergyStorageCabinetArray() {
+            List<EnergyStorageCabinetInfo> ret = new List<EnergyStorageCabinetInfo>();
             try {
                 // 创建 MySQL 连接
                 using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
                     connection.Open();
 
                     // 定义 SQL 查询
-                    string query = "SELECT power_station_id,json_structure FROM energy_storage_cabinet_array";
+                    string query = "SELECT id,power_station_id,json_structure,name,power_station_id FROM energy_storage_cabinet_array";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection)) {
                         // 执行查询并读取结果
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
-                                PowerStationInfo ps = new PowerStationInfo();
+                                EnergyStorageCabinetInfo esci = new EnergyStorageCabinetInfo();
                                 if (reader.IsDBNull(reader.GetOrdinal("power_station_id"))) {
-                                    continue;
+                                    esci.IsSelected = false;
+                                    esci.PowerStationId = null;
                                 } else {
-                                    ps.Id = reader.GetInt32("power_station_id");
-                                    ps.EnergyStorageCabinetRootDataList.Add(
-                                        new EnergyStorageCabinetInfo() { rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure")) }
-                                        );
-                                    ret.Add(ps);
+                                    esci.IsSelected = true;
+                                    esci.PowerStationId = reader.GetInt32(reader.GetOrdinal("power_station_id"));
                                 }
+                                esci.CabinetName = reader.GetString(reader.GetOrdinal("name"));
+                                if (reader.IsDBNull(reader.GetOrdinal("json_structure"))) {
+                                    esci.rootDataFromMqtt = null;
+                                } else {
+                                    esci.rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString(reader.GetOrdinal("json_structure")));
+                                }
+                                esci.CabinetId = reader.GetInt32(reader.GetOrdinal("id"));
+                                ret.Add(esci);
 
                             }
                         }
@@ -275,6 +281,31 @@ namespace IAMS.Service {
 
         }
 
+        public List<int> GetBindUserListByPowerStationId(int PowerStationId) {
+            List<int> ret = new List<int>();
+            try {
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    // 定义 SQL 查询
+                    string query = "SELECT user_id FROM power_station_bind_user WHERE power_station_id = @PowerStationId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        command.Parameters.AddWithValue("@PowerStationId", PowerStationId);
+                        using (MySqlDataReader reader = command.ExecuteReader()) {
+                            while (reader.Read()) {
+                                // 读取每一行数据
+                                ret.Add(reader.GetInt32("user_id"));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+
+            }
+            return ret;
+        }
         public List<string> GetAllStationInstallImages(int PowerStationId) {
             List<string> allImages = new List<string>();
             try {
@@ -385,6 +416,76 @@ namespace IAMS.Service {
 
         public RootDataFromMqtt GetDataSourceCabinet(List<PowerStationInfo> powerStationInfos) {
             return powerStationInfos.SelectMany(s => s.EnergyStorageCabinetRootDataList).FirstOrDefault(m => m.IsSelected)?.rootDataFromMqtt;
+        }
+
+        public bool BindPowerStationToUser(int PowerStationId, List<int> UserIds) {
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction()) {
+                    try {
+                        string sql = "DELETE FROM power_station_bind_user WHERE power_station_id=@PowerStationId";
+                        // 使用 MySqlCommand 执行更新操作
+                        using (var cmd = new MySqlCommand(sql, conn, transaction)) {
+                            cmd.Parameters.AddWithValue("@PowerStationId", PowerStationId);
+
+                            // 执行更新
+                            cmd.ExecuteNonQuery();
+                        }
+                        if (UserIds.Count > 0) {
+                            string insertSql = "INSERT INTO power_station_bind_user (power_station_id, user_id) VALUES (@PowerStationId, @UserId)";
+                            var insertParams = UserIds.Select(userId => new { PowerStationId, UserId = userId }).ToList();
+
+                            conn.Execute(insertSql, insertParams, transaction);
+                        }
+
+                        transaction.Commit();
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        public bool BindCabinetToPowerStation(int PowerStationId, List<int> CabinetIds) {
+            using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction()) {
+                    try {
+                        string cabinetIdsStr = string.Join(",", CabinetIds);
+                        string sql = "UPDATE energy_storage_cabinet_array SET power_station_id = NULL WHERE power_station_id=@PowerStationId";
+                        // 使用 MySqlCommand 执行更新操作
+                        using (var cmd = new MySqlCommand(sql, conn, transaction)) {
+                            cmd.Parameters.AddWithValue("@PowerStationId", PowerStationId);
+
+                            // 执行更新
+                            cmd.ExecuteNonQuery();
+                        }
+                        if (CabinetIds.Count > 0) {
+                            sql = @"
+                    UPDATE energy_storage_cabinet_array 
+                    SET power_station_id = @PowerStationId
+                    WHERE id IN (" + cabinetIdsStr + ")";
+
+                            // 使用 MySqlCommand 执行更新操作
+                            using (var cmd = new MySqlCommand(sql, conn, transaction)) {
+                                cmd.Parameters.AddWithValue("@PowerStationId", PowerStationId);
+
+                                // 执行更新
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+
+                        transaction.Commit();
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    return true;
+                }
+            }
         }
     }
 }

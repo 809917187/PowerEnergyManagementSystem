@@ -12,10 +12,14 @@ namespace IAMS.Service {
         public bool AddPowerSatationInfo(PowerStationInfo powerStationInfo);
         public bool DeletePowerSatationInfo(int PowerStationId);
         public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName);//包含被选中信息
-        /*public List<PowerStationInfo> GetAllEnergyStorageCabinetArray();*/
+        public List<EnergyStorageCabinetInfo> GetAllEnergyStorageCabinetArray();
 
         public RootDataFromMqtt GetDataSourceCabinet(List<PowerStationInfo> powerStationInfos);
+        public bool BindCabinetToPowerStation(int PowerStationId, List<int> CabinetIds);
+        public bool BindPowerStationToUser(int PowerStationId, List<int> UserIds);
+        public List<int> GetBindUserListByPowerStationId(int PowerStationId);
 
-        
+
+
     }
 }
