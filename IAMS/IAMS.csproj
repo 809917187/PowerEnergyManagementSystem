@@ -197,7 +197,6 @@
     <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
-    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
   </ItemGroup>
 
