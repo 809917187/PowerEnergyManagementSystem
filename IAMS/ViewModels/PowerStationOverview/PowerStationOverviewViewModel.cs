@@ -4,7 +4,7 @@ using IAMS.Models.StationSystem;
 namespace IAMS.ViewModels.PowerStationOverview {
     public class PowerStationOverviewViewModel {
         public List<PowerStationInfo> PowerStationInfos { get; set; } = new List<PowerStationInfo>();
-        public PowerStationInfo SelectedPowerStation { get; set; }
+        public PowerStationInfo SelectedPowerStation { get; set; } = new PowerStationInfo();
         public double ChargeAmountToday { get; set; }
         //public double ChargeAmountYesterday { get; set; }
         public double ChargeAmountRaise { get; set; }

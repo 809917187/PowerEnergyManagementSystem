@@ -3,7 +3,7 @@
 namespace IAMS.Models.PowerStation {
     public class PowerStationInfo {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string Owner { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public float InstalledPower { get; set; }

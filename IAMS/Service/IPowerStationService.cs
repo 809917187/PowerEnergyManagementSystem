@@ -18,6 +18,7 @@ namespace IAMS.Service {
         public bool BindCabinetToPowerStation(int PowerStationId, List<int> CabinetIds);
         public bool BindPowerStationToUser(int PowerStationId, List<int> UserIds);
         public List<int> GetBindUserListByPowerStationId(int PowerStationId);
+        public List<int> GetBindPowerStationListByUserId(int UserId);
 
 
 

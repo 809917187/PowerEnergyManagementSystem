@@ -3,6 +3,7 @@ using IAMS.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -56,6 +57,11 @@ namespace IAMS.Controllers {
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
+            var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            var exception = exceptionDetails?.Error;
+
+            // 记录异常日志或处理其他业务
+            _logger.LogError(exception?.Message);
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

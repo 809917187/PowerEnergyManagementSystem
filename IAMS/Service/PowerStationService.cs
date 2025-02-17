@@ -138,24 +138,20 @@ namespace IAMS.Service {
                 energy_storage_cabinet_array esc
             ON 
                 ps.id = esc.power_station_id;";
-                    // 使用字典缓存 PowerStationInfo，避免重复
                     var lookup = new Dictionary<int, PowerStationInfo>();
 
-                    // 执行查询并映射结果
                     connection.Query<PowerStationInfo, string, PowerStationInfo>(
                         query,
                         (powerStation, jsonStructure) => {
-                            // 如果 PowerStationInfo 尚未存在于字典中，添加
                             if (!lookup.TryGetValue(powerStation.Id, out var powerStationInfo)) {
                                 powerStationInfo = powerStation;
                                 powerStationInfo.EnergyStorageCabinetRootDataList = new List<EnergyStorageCabinetInfo>();
                                 lookup[powerStation.Id] = powerStationInfo;
                             }
 
-                            // 如果存在 jsonStructure 数据，使用 MQTTHelper 转换
                             if (!string.IsNullOrEmpty(jsonStructure)) {
                                 var energyCabinetInfo = new EnergyStorageCabinetInfo {
-                                    IsSelected = false, // 根据需求设置默认值
+                                    IsSelected = false, 
                                     rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(jsonStructure)
                                 };
                                 powerStationInfo.EnergyStorageCabinetRootDataList.Add(energyCabinetInfo);
@@ -175,6 +171,15 @@ namespace IAMS.Service {
                 Console.WriteLine($"Error: {ex.Message}");
             }
 
+
+            int role = Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst("Role")?.Value);
+            if (role == 1) {
+                
+            } else {
+                int userId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst("UserId")?.Value);
+                var psList = this.GetBindPowerStationListByUserId(userId);
+                powerStationInfos = powerStationInfos.FindAll(s => psList.Contains(s.Id));
+            }
             return powerStationInfos;
         }
 
@@ -281,6 +286,31 @@ namespace IAMS.Service {
 
         }
 
+        public List<int> GetBindPowerStationListByUserId(int UserId) {
+            List<int> ret = new List<int>();
+            try {
+                // 创建 MySQL 连接
+                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
+                    connection.Open();
+
+                    // 定义 SQL 查询
+                    string query = "SELECT power_station_id FROM power_station_bind_user WHERE user_id = @UserId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        command.Parameters.AddWithValue("@UserId", UserId);
+                        using (MySqlDataReader reader = command.ExecuteReader()) {
+                            while (reader.Read()) {
+                                // 读取每一行数据
+                                ret.Add(reader.GetInt32("power_station_id"));
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            return ret;
+        }
         public List<int> GetBindUserListByPowerStationId(int PowerStationId) {
             List<int> ret = new List<int>();
             try {

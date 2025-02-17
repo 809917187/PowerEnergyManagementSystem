@@ -43,6 +43,8 @@
     <None Include="Views\PowerStationManagement\AddPowerStation.cshtml" />
     <None Include="Views\PowerStationManagement\EditPowerStation.cshtml" />
     <None Include="Views\PowerStationManagement\Index.cshtml" />
+    <None Include="Views\PowerStationManagement\_IndexBindCabinetModal.cshtml" />
+    <None Include="Views\PowerStationManagement\_IndexBindUserModal.cshtml" />
     <None Include="Views\PowerStationManagement\_IndexViewDetailsModal.cshtml" />
     <None Include="Views\PowerStationOverview\Index.cshtml" />
     <None Include="Views\ProfitReport\Index.cshtml" />
@@ -203,6 +205,7 @@
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="MySql.Data" Version="9.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>

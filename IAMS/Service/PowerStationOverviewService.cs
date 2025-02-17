@@ -13,10 +13,13 @@ namespace IAMS.Service {
         private IPowerStationService _powerStationService;
         private IStationSystemService _stationSystemService;
         private ITemplateService _templateService;
-        public PowerStationOverviewService(IPowerStationService powerStationService, IStationSystemService stationSystemService, ITemplateService templateService) {
+        private readonly ILogger<PowerStationOverviewService> _logger;
+        public PowerStationOverviewService(ILogger<PowerStationOverviewService> logger,IPowerStationService powerStationService, IStationSystemService stationSystemService, ITemplateService templateService) {
+            _logger = logger;
             _powerStationService = powerStationService;
             _stationSystemService = stationSystemService;
             _templateService = templateService;
+            
         }
 
         public List<SeriesData> GetChargeAdnDischargeChartData(int powerStationId, DateTime startDate = default, DateTime endDate = default) {
@@ -94,60 +97,67 @@ namespace IAMS.Service {
 
         public PowerStationOverviewViewModel GetPowerStationOverviewViewModel(int id) {
             PowerStationOverviewViewModel ret = new PowerStationOverviewViewModel();
-            ret.PowerStationInfos = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
-            if (id == 0) {
-                ret.PowerStationInfos.First().IsSelected = true;
-            } else {
-                ret.PowerStationInfos.First(s => s.Id == id).IsSelected = true;
+            try {
+                ret.PowerStationInfos = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+                if (ret.PowerStationInfos.Count == 0) {
+                    throw new Exception("No Data");
+                }
+                if (id == 0) {
+                    ret.PowerStationInfos.First().IsSelected = true;
+                } else {
+                    ret.PowerStationInfos.First(s => s.Id == id).IsSelected = true;
+                }
+
+                ret.SelectedPowerStation = ret.PowerStationInfos.FirstOrDefault(s => s.IsSelected);
+                if (ret.SelectedPowerStation == null) {
+                    return ret;
+                }
+
+                foreach (EnergyStorageCabinetInfo cabinet in ret.SelectedPowerStation.EnergyStorageCabinetRootDataList) {
+                    List<Structure> rootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(cabinet.rootDataFromMqtt.structure, (int)DeviceCode.PCS, 1);
+                    List<PCSInfo> pcsInfos_today = _stationSystemService.GetPCSInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today).GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                    List<PCSInfo> pcsInfos_yesterday = _stationSystemService.GetPCSInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today.AddDays(-1)).GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+
+                    var charge_today = pcsInfos_today.Sum(s => s.DailyChargeAmount);
+                    ret.ChargeAmountToday += charge_today;
+                    ret.ChargeAmountRaise += charge_today - pcsInfos_yesterday.Sum(s => s.DailyChargeAmount);
+                    ret.DischargeAmountToday += pcsInfos_today.Sum(s => s.DailyDischargeAmount);
+                    ret.DischargeAmountRaise += pcsInfos_today.Sum(s => s.DailyDischargeAmount) - pcsInfos_yesterday.Sum(s => s.DailyDischargeAmount);
+
+                    rootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(cabinet.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
+
+                    //堆中每个系统的详情
+                    ret.CabinetStationSystemInfos.Add(new CabinetStationSystemInfo() {
+                        CabinetName = cabinet.rootDataFromMqtt.structure.name,
+                        SystemName = cabinet.rootDataFromMqtt.structure.name,//后期改为主机从机
+                        OnlineStatus = "在线",//后期要改structure状态
+                        DailyDischargeAmount = charge_today
+                    });
+
+                    //根据ps查到绑定的电价模板
+                    PriceTemplateInfo templateInfo = _templateService.GetTemplateByPowerStationId(ret.SelectedPowerStation.Id);
+                    List<GatewayTableModelInfo> gatewayTableModelInfos = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today)
+                        .GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                    ret.EarningToday += _templateService.GetEarn(gatewayTableModelInfos, templateInfo);
+                    List<GatewayTableModelInfo> gatewayTableModelInfos_yesterday = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today.AddDays(-1))
+                        .GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                    ret.EarningRaise += ret.EarningToday - _templateService.GetEarn(gatewayTableModelInfos_yesterday, templateInfo);
+
+                    //获取当月每天的所有的GatewayTableModelInfo
+                    List<GatewayTableModelInfo> gatewayTableModelInfo_month = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), Utility.GetStartOfMonth(DateTime.Now), Utility.GetEndOfMonth(DateTime.Now))
+                        .GroupBy(m => new { m.DevName, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                    ret.EarningThisMonth += _templateService.GetEarn(gatewayTableModelInfo_month, templateInfo);
+                    //获取历史的所有的GatewayTableModelInfo
+                    List<GatewayTableModelInfo> gatewayTableModelInfo_total = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), Utility.GetMinDate(), Utility.GetMaxDate())
+                        .GroupBy(m => new { m.DevName, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                    ret.TotalEarning += _templateService.GetEarn(gatewayTableModelInfo_total, templateInfo);
+
+                }
+                
+            } catch (Exception ex) {
+                _logger.LogError(ex.ToString());
+                throw;
             }
-
-            ret.SelectedPowerStation = ret.PowerStationInfos.FirstOrDefault(s => s.IsSelected);
-            if (ret.SelectedPowerStation == null) {
-                return ret;
-            }
-
-            foreach (EnergyStorageCabinetInfo cabinet in ret.SelectedPowerStation.EnergyStorageCabinetRootDataList) {
-                List<Structure> rootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(cabinet.rootDataFromMqtt.structure, (int)DeviceCode.PCS, 1);
-                List<PCSInfo> pcsInfos_today = _stationSystemService.GetPCSInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today).GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                List<PCSInfo> pcsInfos_yesterday = _stationSystemService.GetPCSInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today.AddDays(-1)).GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-
-                var charge_today = pcsInfos_today.Sum(s => s.DailyChargeAmount);
-                ret.ChargeAmountToday += charge_today;
-                ret.ChargeAmountRaise += charge_today - pcsInfos_yesterday.Sum(s => s.DailyChargeAmount);
-                ret.DischargeAmountToday += pcsInfos_today.Sum(s => s.DailyDischargeAmount);
-                ret.DischargeAmountRaise += pcsInfos_today.Sum(s => s.DailyDischargeAmount) - pcsInfos_yesterday.Sum(s => s.DailyDischargeAmount);
-
-                rootInfos = MQTTHelper.FindStructuresBydevTypeAndmenuTree(cabinet.rootDataFromMqtt.structure, (int)DeviceCode.GatewayTableModel, 1);
-
-                //堆中每个系统的详情
-                ret.CabinetStationSystemInfos.Add(new CabinetStationSystemInfo() {
-                    CabinetName = cabinet.rootDataFromMqtt.structure.name,
-                    SystemName = cabinet.rootDataFromMqtt.structure.name,//后期改为主机从机
-                    OnlineStatus = "在线",//后期要改structure状态
-                    DailyDischargeAmount = charge_today
-                });
-
-                //根据ps查到绑定的电价模板
-                PriceTemplateInfo templateInfo = _templateService.GetTemplateByPowerStationId(ret.SelectedPowerStation.Id);
-                List<GatewayTableModelInfo> gatewayTableModelInfos = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today)
-                    .GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                ret.EarningToday += _templateService.GetEarn(gatewayTableModelInfos, templateInfo);
-                List<GatewayTableModelInfo> gatewayTableModelInfos_yesterday = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), DateTime.Today.AddDays(-1))
-                    .GroupBy(s => s.DevName).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                ret.EarningRaise += ret.EarningToday - _templateService.GetEarn(gatewayTableModelInfos_yesterday, templateInfo);
-
-                //获取当月每天的所有的GatewayTableModelInfo
-                List<GatewayTableModelInfo> gatewayTableModelInfo_month = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), Utility.GetStartOfMonth(DateTime.Now), Utility.GetEndOfMonth(DateTime.Now))
-                    .GroupBy(m => new { m.DevName, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                ret.EarningThisMonth += _templateService.GetEarn(gatewayTableModelInfo_month, templateInfo);
-                //获取历史的所有的GatewayTableModelInfo
-                List<GatewayTableModelInfo> gatewayTableModelInfo_total = _stationSystemService.GetGatewayTableModelInfo(rootInfos.Select(S => S.name).ToList(), Utility.GetMinDate(), Utility.GetMaxDate())
-                    .GroupBy(m => new { m.DevName, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                ret.TotalEarning += _templateService.GetEarn(gatewayTableModelInfo_total, templateInfo);
-
-            }
-
-
             return ret;
         }
 

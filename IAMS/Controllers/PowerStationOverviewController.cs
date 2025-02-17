@@ -9,21 +9,30 @@ namespace IAMS.Controllers {
         }
         public IActionResult Index(int PowerstationId) {
             var ret = _powerStationOverviewService.GetPowerStationOverviewViewModel(PowerstationId);
+
             return View(ret);
+
         }
 
         [HttpGet]
         public IActionResult GetEarnChartData(int powerStationId, string startDate, string endDate) {
+            if (powerStationId == 0) {
+                return BadRequest("No Data");
+            }
+
             if (DateTime.TryParse(startDate, out DateTime start) && DateTime.TryParse(endDate, out DateTime end)) {
                 return Ok(_powerStationOverviewService.GetEarnSummaryData(powerStationId, start, end));
             } else {
-				return Ok(_powerStationOverviewService.GetEarnSummaryData(powerStationId));
-			}
-            
+                return Ok(_powerStationOverviewService.GetEarnSummaryData(powerStationId));
+            }
+
         }
 
         [HttpGet]
         public IActionResult GetChargeAdnDischargeChartData(int powerStationId, string startDate, string endDate) {
+            if (powerStationId == 0) {
+                return BadRequest("No Data");
+            }
             if (DateTime.TryParse(startDate, out DateTime start) && DateTime.TryParse(endDate, out DateTime end)) {
                 return Ok(_powerStationOverviewService.GetChargeAdnDischargeChartData(powerStationId, start, end));
             } else {
