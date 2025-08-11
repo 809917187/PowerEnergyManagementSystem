@@ -3,8 +3,7 @@
 namespace IAMS.Models.PowerStation {
     public class EnergyStorageCabinetInfo {
         public bool IsSelected { get; set; }
-        public RootDataFromMqtt rootDataFromMqtt { get; set; }
-        public string CabinetName { get; set; }
+        public string CabinetSn { get; set; }
         public int CabinetId { get; set; }
         public int? PowerStationId { get; set; }
     }

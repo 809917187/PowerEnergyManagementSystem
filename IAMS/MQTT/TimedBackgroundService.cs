@@ -4,9 +4,10 @@
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
             while (!stoppingToken.IsCancellationRequested) {
-                MQTTHelper.SaveMqttPeriodDataToDB();
-                MQTTHelper.SaveRootDataToDBInfo();
-                await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
+                /*MQTTHelper.SaveMqttPeriodDataToDB("1.json");
+                MQTTHelper.SaveMqttPeriodDataToDB("3.json");
+                MQTTHelper.SaveMqttPeriodDataToDB("5.json");*/
+                await Task.Delay(TimeSpan.FromSeconds(8), stoppingToken);
             }
         }
 

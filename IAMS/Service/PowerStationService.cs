@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using IAMS.Models.DeviceInfo;
 using IAMS.Models.PowerStation;
 using IAMS.MQTT;
 using IAMS.MQTT.Model;
@@ -131,35 +132,35 @@ namespace IAMS.Service {
                 ps.longitude AS Longitude, ps.latitude AS Latitude, 
                 ps.transformer_capacity AS TransformerCapacity, ps.transformer_info AS TransformerInfo,
                 ps.network_info AS NetworkInfo, ps.installer AS Installer, ps.installer_phone AS InstallerPhone,
-                esc.json_structure AS JsonStructure
+                device_ems_ps_binding_info.ems_sn AS CabinetSn
             FROM 
                 power_station ps
             LEFT JOIN 
-                energy_storage_cabinet_array esc
+                device_ems_ps_binding_info
             ON 
-                ps.id = esc.power_station_id;";
+                ps.id = device_ems_ps_binding_info.ps_id;";
                     var lookup = new Dictionary<int, PowerStationInfo>();
 
                     connection.Query<PowerStationInfo, string, PowerStationInfo>(
                         query,
-                        (powerStation, jsonStructure) => {
+                        (powerStation, cabinetSn) => {
                             if (!lookup.TryGetValue(powerStation.Id, out var powerStationInfo)) {
                                 powerStationInfo = powerStation;
                                 powerStationInfo.EnergyStorageCabinetRootDataList = new List<EnergyStorageCabinetInfo>();
                                 lookup[powerStation.Id] = powerStationInfo;
                             }
 
-                            if (!string.IsNullOrEmpty(jsonStructure)) {
+                            if (!string.IsNullOrEmpty(cabinetSn)) {
                                 var energyCabinetInfo = new EnergyStorageCabinetInfo {
-                                    IsSelected = false, 
-                                    rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(jsonStructure)
+                                    IsSelected = false,
+                                    CabinetSn = cabinetSn
                                 };
                                 powerStationInfo.EnergyStorageCabinetRootDataList.Add(energyCabinetInfo);
                             }
 
                             return powerStationInfo;
                         },
-                        splitOn: "JsonStructure" // 指定分隔点
+                        splitOn: "CabinetSn" // 指定分隔点
                                 );
 
                     // 将字典中的值转换为列表
@@ -174,7 +175,7 @@ namespace IAMS.Service {
 
             int role = Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst("Role")?.Value);
             if (role == 1) {
-                
+
             } else {
                 int userId = Convert.ToInt32(_httpContextAccessor.HttpContext?.User?.FindFirst("UserId")?.Value);
                 var psList = this.GetBindPowerStationListByUserId(userId);
@@ -191,62 +192,19 @@ namespace IAMS.Service {
                     connection.Open();
 
                     // 定义 SQL 查询
-                    string query = "SELECT id,power_station_id,json_structure,name,power_station_id FROM energy_storage_cabinet_array";
+                    string query = "SELECT ems_sn FROM gq.device_ems_ps_binding_info";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection)) {
                         // 执行查询并读取结果
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
                                 EnergyStorageCabinetInfo esci = new EnergyStorageCabinetInfo();
-                                if (reader.IsDBNull(reader.GetOrdinal("power_station_id"))) {
+                                if (reader.IsDBNull(reader.GetOrdinal("ems_sn"))) {
                                     esci.IsSelected = false;
-                                    esci.PowerStationId = null;
-                                } else {
-                                    esci.IsSelected = true;
-                                    esci.PowerStationId = reader.GetInt32(reader.GetOrdinal("power_station_id"));
+                                    esci.CabinetSn = reader.GetOrdinal("ems_sn").ToString();
+                                    ret.Add(esci);
+
                                 }
-                                esci.CabinetName = reader.GetString(reader.GetOrdinal("name"));
-                                if (reader.IsDBNull(reader.GetOrdinal("json_structure"))) {
-                                    esci.rootDataFromMqtt = null;
-                                } else {
-                                    esci.rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString(reader.GetOrdinal("json_structure")));
-                                }
-                                esci.CabinetId = reader.GetInt32(reader.GetOrdinal("id"));
-                                ret.Add(esci);
-
-                            }
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            return ret;
-        }
-
-
-        public PowerStationInfo GetEnergyStorageCabinetArrayById(int PowerStationId) {
-            PowerStationInfo ret = new PowerStationInfo() {
-                Id = PowerStationId
-            };
-            try {
-                // 创建 MySQL 连接
-                using (MySqlConnection connection = new MySqlConnection(_connectionString)) {
-                    connection.Open();
-
-                    // 定义 SQL 查询
-                    string query = "SELECT json_structure FROM energy_storage_cabinet_array WHERE power_station_id=@id";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
-                        command.Parameters.AddWithValue("@id", PowerStationId);
-                        // 执行查询并读取结果
-                        using (MySqlDataReader reader = command.ExecuteReader()) {
-                            while (reader.Read()) {
-                                ret.EnergyStorageCabinetRootDataList.Add(
-                                    new EnergyStorageCabinetInfo() {
-                                        IsSelected = false,
-                                        rootDataFromMqtt = MQTTHelper.ConvertRootInfoToObject(reader.GetString("json_structure"))
-                                    });
                             }
                         }
                     }
@@ -429,7 +387,7 @@ namespace IAMS.Service {
             }
         }
 
-        public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName) {
+        /*public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName) {
             List<PowerStationInfo> PowerStationInfos = this.GetAllPowerStationInfos();
             PowerStationInfos = PowerStationInfos.FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
             PowerStationInfo selectedPS = PowerStationInfos[0];
@@ -442,10 +400,74 @@ namespace IAMS.Service {
             selectedPS.IsSelected = true;
             selectedCabinet.IsSelected = true;
             return PowerStationInfos;
-        }
+        }*/
 
-        public RootDataFromMqtt GetDataSourceCabinet(List<PowerStationInfo> powerStationInfos) {
-            return powerStationInfos.SelectMany(s => s.EnergyStorageCabinetRootDataList).FirstOrDefault(m => m.IsSelected)?.rootDataFromMqtt;
+        public List<DeviceBaseInfo> GetDeviceBaseInfoByEmsSn(string EmsSN) {
+
+            List<DeviceBaseInfo> ret = new List<DeviceBaseInfo>();
+            using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                conn.Open();
+                try {
+                    var sql = $"SELECT device_sn,device_type FROM device_ems_ps_binding_info WHERE ems_sn=@ems_sn";
+
+                    // 使用 MySqlCommand 执行更新操作
+                    using (var cmd = new MySqlCommand(sql, conn)) {
+                        cmd.Parameters.AddWithValue("@ems_sn", EmsSN);
+                        var reader = cmd.ExecuteReader();
+                        while (reader.Read()) {
+                            if (reader["device_sn"] != DBNull.Value && reader["device_type"] != DBNull.Value) {
+                                ret.Add(new DeviceBaseInfo() {
+                                    Sn = reader["device_sn"].ToString(),
+                                    DeviceType = Convert.ToInt32(reader["device_type"])
+                                });
+                            }
+                        }
+
+                    }
+
+                } catch (Exception ex) {
+
+                }
+            }
+            return ret;
+        }
+        public List<DeviceBaseInfo> GetDeviceBaseInfosByPowerStationId(List<int> psIds) {
+            if (psIds.Count == 0) {
+                return new List<DeviceBaseInfo>();
+            }
+            List<DeviceBaseInfo> ret = new List<DeviceBaseInfo>();
+            using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
+                conn.Open();
+                try {
+                    var paramNames = psIds.Select((id, index) => $"@psId{index}").ToList();
+                    var inClause = string.Join(",", paramNames);
+                    var sql = $"SELECT device_sn, ems_sn, ps_id,device_type FROM device_ems_ps_binding_info WHERE ps_id IN ({inClause})";
+
+                    // 使用 MySqlCommand 执行更新操作
+                    using (var cmd = new MySqlCommand(sql, conn)) {
+                        for (int i = 0; i < psIds.Count; i++) {
+                            cmd.Parameters.AddWithValue(paramNames[i], psIds[i]);
+                        }
+                        var reader = cmd.ExecuteReader();
+                        while (reader.Read()) {
+                            if (reader["device_sn"] != DBNull.Value && reader["ems_sn"] != DBNull.Value) {
+                                var info = new DeviceBaseInfo {
+                                    Sn = reader["device_sn"]?.ToString(),
+                                    emsSn = reader["ems_sn"]?.ToString(),
+                                    PowerStationId = reader["ps_id"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["ps_id"]),
+                                    DeviceType = Convert.ToInt32(reader["device_type"])
+                                };
+                                ret.Add(info);
+                            }
+                        }
+
+                    }
+
+                } catch (Exception ex) {
+
+                }
+            }
+            return ret;
         }
 
         public bool BindPowerStationToUser(int PowerStationId, List<int> UserIds) {

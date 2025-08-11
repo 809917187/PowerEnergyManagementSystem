@@ -9,8 +9,9 @@ var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurr
 try {
     var builder = WebApplication.CreateBuilder(args);
 
-    string connectionString = builder.Configuration.GetConnectionString("gq");
-    MQTTHelper.SetConnectionString(connectionString);
+    string connectionString_mysql = builder.Configuration.GetConnectionString("gq");
+    string connectionString_clickhouse = builder.Configuration.GetConnectionString("ems");
+    MQTTHelper.SetConnectionString(connectionString_mysql, connectionString_clickhouse);
 
     // 1. 清除默认日志提供程序
     builder.Logging.ClearProviders();
@@ -38,6 +39,7 @@ try {
     builder.Services.AddScoped<IPowerStationOverviewService, PowerStationOverviewService>();
     builder.Services.AddScoped<IMultiSatationOverviewService, MultiSatationOverviewService>();
     builder.Services.AddScoped<IElectricityReportService, ElectricityReportService>();
+    builder.Services.AddScoped<IClickHouseService, ClickHouseService>();
     builder.Services.AddHostedService<TimedBackgroundService>();
 
     var app = builder.Build();

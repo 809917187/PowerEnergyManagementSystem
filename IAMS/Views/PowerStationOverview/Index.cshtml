@@ -269,7 +269,6 @@
                             <tr>
                                 <th data-field="id" data-sortable="true">序号</th>
                                 <th data-field="name" data-sortable="true">系统编号</th>
-                                <th data-field="age" data-sortable="true">系统名称</th>
                                 <th data-field="status" data-sortable="true">在线状态</th>
                                 <th data-field="city" data-sortable="true">今日放电量(MWh)</th>
                             </tr>
@@ -279,8 +278,7 @@
                                 var cabinetInfo = Model.CabinetStationSystemInfos[i];
                                 <tr>
                                     <td>@(i+1)</td>
-                                    <td>@cabinetInfo.CabinetName</td>
-                                    <td>@cabinetInfo.CabinetName</td>
+                                    <td>@cabinetInfo.CabinetSn</td>
                                     <td>@cabinetInfo.OnlineStatus</td>
                                     <td>@cabinetInfo.DailyDischargeAmount.ToString("F2")</td>
                                 </tr>

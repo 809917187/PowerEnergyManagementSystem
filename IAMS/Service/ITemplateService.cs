@@ -1,4 +1,5 @@
-﻿using IAMS.Models.PriceTemplate;
+﻿using IAMS.Models.DeviceInfo;
+using IAMS.Models.PriceTemplate;
 using IAMS.Models.StationSystem;
 
 namespace IAMS.Service {
@@ -14,6 +15,6 @@ namespace IAMS.Service {
         public bool UpdatePriceTemplate(PriceTemplateInfo priceTemplate);
         public PriceTemplateInfo GetTemplateByPowerStationId(int powerstationId);
 
-        public decimal GetEarn(List<GatewayTableModelInfo> gatewayTableModelInfos, PriceTemplateInfo templateInfo);
+        public decimal GetEarn(List<PccModel001> gatewayTableModelInfos, PriceTemplateInfo templateInfo);
     }
 }

@@ -21,9 +21,9 @@
         <select id="energy_storage_cabinet_name" class="form-select fw-bold" data-live-search="true">
             @foreach(var cabinet in defaultPs.EnergyStorageCabinetRootDataList) {
                 if (cabinet.IsSelected) {
-                    <option value="@cabinet.rootDataFromMqtt.structure.name" selected>@cabinet.rootDataFromMqtt.structure.name</option>
+                    <option value="@cabinet.CabinetSn" selected>@cabinet.CabinetSn</option>
                 } else {
-                    <option value="@cabinet.rootDataFromMqtt.structure.name">@cabinet.rootDataFromMqtt.structure.name</option>
+                    <option value="@cabinet.CabinetSn">@cabinet.CabinetSn</option>
                 }
             }
             

@@ -23,7 +23,7 @@ namespace IAMS.Common {
             return new DateTime(2025, 1, 1);
         }
         public static DateTime GetMaxDate() {
-            return new DateTime(2500, 1, 1);
+            return new DateTime(2100, 1, 1);
         }
     }
 }

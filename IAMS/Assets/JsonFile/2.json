@@ -1,0 +1,41 @@
+{
+  "devData": [
+    {
+      "devType": 2,
+      "currentPack": 1,
+      "totalPack": 1,
+      "devName": "bsm",
+      "devId": 1,
+      "sn": "chunengdianbiao",
+      "data": {
+        "bsm_0": 0,
+        "bsm_1": 0,
+        "bsm_2": 0,
+        "bsm_3": 0,
+        "bsm_7": 0,
+        "bsm_8": 0,
+        "bsm_9": 0,
+        "bsm_10": 0,
+        "bsm_11": 0,
+        "bsm_12": 0,
+        "bsm_13": 0,
+        "bsm_14": 0,
+        "bsm_15": 0,
+        "bsm_16": 0,
+        "bsm_17": 0,
+        "bsm_18": 0,
+        "bsm_19": 0,
+        "bsm_20": 0,
+        "bsm_21": 0,
+        "bsm_22": 0,
+        "bsm_23": 0,
+        "bsm_24": 0,
+        "bsm_25": 0,
+        "bsm_29": 0,
+        "bsm_30": 0
+      }
+    }
+  ],
+  "timeStamp": 1748875796,
+  "emsSn": "emssn12345678"
+}

@@ -1,0 +1,286 @@
+﻿-- ems.airlqd definition
+
+CREATE TABLE ems.airlqd
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.bcu definition
+
+CREATE TABLE ems.bcu
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.bsm definition
+
+CREATE TABLE ems.bsm
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.bsu definition
+
+CREATE TABLE ems.bsu
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.dido definition
+
+CREATE TABLE ems.dido
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.ems definition
+
+CREATE TABLE ems.ems
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.fire definition
+
+CREATE TABLE ems.fire
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.gas definition
+
+CREATE TABLE ems.gas
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.pcc definition
+
+CREATE TABLE ems.pcc
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.pcs definition
+
+CREATE TABLE ems.pcs
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.thss definition
+
+CREATE TABLE ems.thss
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;
+
+
+-- ems.water definition
+
+CREATE TABLE ems.water
+(
+
+    `sn` String,
+
+    `upload_time` DateTime DEFAULT now(),
+
+    `device_type` String,
+
+    `device_name` String,
+
+    `device_id` String,
+
+    `data` Array(Int32)
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(upload_time)
+ORDER BY (sn,
+ upload_time)
+SETTINGS index_granularity = 8192;

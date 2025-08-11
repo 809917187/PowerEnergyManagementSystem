@@ -1,4 +1,5 @@
-﻿using IAMS.Models.PowerStation;
+﻿using IAMS.Models.DeviceInfo;
+using IAMS.Models.PowerStation;
 using IAMS.MQTT.Model;
 using IAMS.ViewModels.StationSystem;
 
@@ -11,10 +12,10 @@ namespace IAMS.Service {
         public bool UpdateStationInfo(PowerStationInfo powerStationInfo);
         public bool AddPowerSatationInfo(PowerStationInfo powerStationInfo);
         public bool DeletePowerSatationInfo(int PowerStationId);
-        public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName);//包含被选中信息
+       /* public List<PowerStationInfo> GetAllPowerStationInfoByCabinetName(string cabinetName);//包含被选中信息*/
         public List<EnergyStorageCabinetInfo> GetAllEnergyStorageCabinetArray();
-
-        public RootDataFromMqtt GetDataSourceCabinet(List<PowerStationInfo> powerStationInfos);
+        public List<DeviceBaseInfo> GetDeviceBaseInfosByPowerStationId(List<int> psId);
+        public List<DeviceBaseInfo> GetDeviceBaseInfoByEmsSn(string emsSn);
         public bool BindCabinetToPowerStation(int PowerStationId, List<int> CabinetIds);
         public bool BindPowerStationToUser(int PowerStationId, List<int> UserIds);
         public List<int> GetBindUserListByPowerStationId(int PowerStationId);
