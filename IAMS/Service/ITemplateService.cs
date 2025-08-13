@@ -1,6 +1,5 @@
 ﻿using IAMS.Models.DeviceInfo;
 using IAMS.Models.PriceTemplate;
-using IAMS.Models.StationSystem;
 
 namespace IAMS.Service {
     public interface ITemplateService {

@@ -11,20 +11,20 @@ namespace IAMS.Service {
         private IClickHouseService _clickHouseService;
         public DeviceMonitorService(IConfiguration configuration, IPowerStationService powerStationService,
                     IStationSystemService stationSystemService, IClickHouseService clickHouseService) {
-            _connectionString = configuration.GetConnectionString("gq");
+            _connectionString = configuration.GetConnectionString("ems");
             _powerStationService = powerStationService;
             _stationSystemServicee = stationSystemService;
             _clickHouseService = clickHouseService;
         }
-        public DeviceMonitorViewModel GetDeviceMonitorViewModel(string energyStorageCabinetName, DateTime dateTime) {
+        public DeviceMonitorViewModel GetDeviceMonitorViewModel(string energyStorageCabinetSn) {
             DeviceMonitorViewModel model = new DeviceMonitorViewModel();
-            //model.PowerStationInfos = _powerStationService.GetAllPowerStationInfoByCabinetName(energyStorageCabinetName);
+            model.PowerStationInfos = _powerStationService.GetAllPowerStationInfos(0, energyStorageCabinetSn);
 
-            List<DeviceBaseInfo> deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(model.PowerStationInfos.Select(s => s.Id).ToList());
+            List<DeviceBaseInfo> deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(new List<int>() { model.PowerStationInfos.First(s => s.IsSelected).Id });
 
-            model.PcsInfos = _clickHouseService.GetPcsModel005s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCS).Select(s => s.Sn).ToList(), dateTime);
-            model.EnergyStorageStackControlInfos = _clickHouseService.GetBsuModel003s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.BSU).Select(s => s.Sn).ToList(), dateTime);
-            model.GatewayTableModelInfos = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC).Select(s => s.Sn).ToList(), dateTime);
+            model.PcsInfos = _clickHouseService.GetPcsModel005s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCS).Select(s => s.Sn).ToList(), DateTime.Today);
+            model.EnergyStorageStackControlInfos = _clickHouseService.GetBsuModel003s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.BSU).Select(s => s.Sn).ToList(), DateTime.Today);
+            model.GatewayTableModelInfos = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC).Select(s => s.Sn).ToList(), DateTime.Today);
 
             return model;
         }

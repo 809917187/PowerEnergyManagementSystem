@@ -8,7 +8,7 @@ namespace IAMS.MQTT {
         private IMqttClient _mqttClient;
         private MqttClientOptions _options;
 
-        private string _topic = "bluesun/bms/period/12345678";
+        private string _topic = "bluesun/ems/period/+";
         private string _host = "47.120.14.45";
         private int _port = 3011;
         private string username = "Bluesun";

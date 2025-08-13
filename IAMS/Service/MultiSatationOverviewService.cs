@@ -2,7 +2,6 @@
 using IAMS.Models.DeviceInfo;
 using IAMS.Models.PowerStation;
 using IAMS.Models.PriceTemplate;
-using IAMS.Models.StationSystem;
 using IAMS.MQTT;
 using IAMS.MQTT.Model;
 using IAMS.ViewModels.MultiStationOverview;
@@ -27,7 +26,7 @@ namespace IAMS.Service {
                 startDate = DateTime.Now.AddDays(-7);
                 endDate = DateTime.Now;
             }
-            var allPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+            var allPs = _powerStationService.GetAllPowerStationInfos(0, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
 
             Dictionary<DateTime, double> date2charge = new Dictionary<DateTime, double>();
             Dictionary<DateTime, double> date2discharge = new Dictionary<DateTime, double>();
@@ -69,7 +68,7 @@ namespace IAMS.Service {
                 endDate = DateTime.Now;
             }
 
-            var allPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+            var allPs = _powerStationService.GetAllPowerStationInfos(0, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
             Dictionary<string, decimal> date2earn = new Dictionary<string, decimal>();//电站--》收益
             var deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(allPs.Select(s => s.Id).ToList());
             foreach (var ps in allPs) {
@@ -93,13 +92,12 @@ namespace IAMS.Service {
                 startDate = DateTime.Now.AddDays(-7);
                 endDate = DateTime.Now;
             }
-            var allPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+            var allPs = _powerStationService.GetAllPowerStationInfos(0, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
             Dictionary<DateTime, decimal> date2earn = new Dictionary<DateTime, decimal>();
             var deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(allPs.Select(s => s.Id).ToList());
             foreach (var ps in allPs) {
                 PriceTemplateInfo templateInfo = _templateService.GetTemplateByPowerStationId(ps.Id);
-                List<PccModel001> gatewayTableModelInfos = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC).Select(S => S.Sn).ToList(), startDate, endDate)
-                    .GroupBy(m => new { m.Sn, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                List<PccModel001> gatewayTableModelInfos = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC).Select(S => S.Sn).ToList(), startDate, endDate);
 
                 for (DateTime current = startDate; current < endDate; current = current.AddDays(1)) {
 
@@ -120,7 +118,7 @@ namespace IAMS.Service {
         public MultiStationOverviewViewModel GetMultiStationOverviewViewModel() {
             MultiStationOverviewViewModel ret = new MultiStationOverviewViewModel();
 
-            var allPS = _powerStationService.GetAllPowerStationInfos();
+            var allPS = _powerStationService.GetAllPowerStationInfos(0, null);
             var allOnlinePS = allPS.FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
             var deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(allPS.Select(s => s.Id).ToList());
 
@@ -137,11 +135,9 @@ namespace IAMS.Service {
 
 
             foreach (PowerStationInfo ps in allOnlinePS) {
-                List<PcsModel005> pcsInfos_total = _clickHouseService.GetPcsModel005s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCS && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), Utility.GetMinDate(), Utility.GetMaxDate())
-                    .GroupBy(m => new { m.Sn, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-                List<PcsModel005> pcsInfos_today = pcsInfos_total.Where(s => s.UploadTime.Date == DateTime.Today.Date).ToList();
-                List<PcsModel005> pcsInfos_yesterday = pcsInfos_total.Where(s => s.UploadTime.Date == DateTime.Today.AddDays(-1).Date).ToList();
-                List<PcsModel005> pcsInfos_month = pcsInfos_total.Where(s => s.UploadTime.Date >= Utility.GetStartOfMonth(DateTime.Now).Date && s.UploadTime.Date <= Utility.GetEndOfMonth(DateTime.Now).Date).ToList();
+                List<PcsModel005> pcsInfos_month = _clickHouseService.GetPcsModel005s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCS && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), Utility.GetStartOfMonth(DateTime.Now), Utility.GetEndOfMonth(DateTime.Now));
+                List<PcsModel005> pcsInfos_today = pcsInfos_month.Where(s => s.UploadTime.Date == DateTime.Today.Date).ToList();
+                List<PcsModel005> pcsInfos_yesterday = pcsInfos_month.Where(s => s.UploadTime.Date == DateTime.Today.AddDays(-1).Date).ToList();
 
                 var charge_today = pcsInfos_today.Sum(s => s.DailyChargeAmount);
                 ret.ChargeAmountToday += charge_today;
@@ -150,18 +146,16 @@ namespace IAMS.Service {
                 ret.DischargeAmountRaise += pcsInfos_today.Sum(s => s.DailyDischargeAmount) - pcsInfos_yesterday.Sum(s => s.DailyDischargeAmount);
                 ret.ChargeAmountThisMonth += pcsInfos_month.Sum(s => s.DailyChargeAmount);
                 ret.DischargeAmountThisMonth += pcsInfos_month.Sum(s => s.DailyDischargeAmount);
-                ret.TotalChargeAmount += pcsInfos_total.Sum(s => s.DailyChargeAmount);
-                ret.TotalDischargeAmount += pcsInfos_total.Sum(s => s.DailyDischargeAmount);
+                ret.TotalChargeAmount += pcsInfos_today.Sum(s => s.ACAccumulatedChargeAmount);
+                ret.TotalDischargeAmount += pcsInfos_today.Sum(s => s.ACAccumulatedDischargeAmount);
 
                 //根据ps查到绑定的电价模板
                 PriceTemplateInfo templateInfo = _templateService.GetTemplateByPowerStationId(ps.Id);
-                List<PccModel001> gatewayTableModelInfo_total = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), Utility.GetMinDate(), Utility.GetMaxDate())
-                    .GroupBy(m => new { m.Sn, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
-
-                List<PccModel001> gatewayTableModelInfos = gatewayTableModelInfo_total.Where(s => s.UploadTime.Date == DateTime.Today.Date).ToList();
-                List<PccModel001> gatewayTableModelInfos_yesterday = gatewayTableModelInfo_total.Where(s => s.UploadTime.Date == DateTime.Today.AddDays(-1).Date).ToList();
-                List<PccModel001> gatewayTableModelInfo_month = gatewayTableModelInfo_total.Where(s => s.UploadTime.Date >= Utility.GetStartOfMonth(DateTime.Now).Date && s.UploadTime.Date <= Utility.GetEndOfMonth(DateTime.Now).Date).ToList();
-                ret.EarningToday += _templateService.GetEarn(gatewayTableModelInfos, templateInfo);
+                List<PccModel001> gatewayTableModelInfo_total = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), Utility.GetMinDate(), Utility.GetMaxDate());
+                List<PccModel001> gatewayTableModelInfo_month = _clickHouseService.GetPccModel001s(deviceInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), Utility.GetStartOfMonth(DateTime.Now), Utility.GetEndOfMonth(DateTime.Now));
+                List<PccModel001> gatewayTableModelInfos_today = gatewayTableModelInfo_month.Where(s => s.UploadTime.Date == DateTime.Today.Date).ToList();
+                List<PccModel001> gatewayTableModelInfos_yesterday = gatewayTableModelInfo_month.Where(s => s.UploadTime.Date == DateTime.Today.AddDays(-1).Date).ToList();
+                ret.EarningToday += _templateService.GetEarn(gatewayTableModelInfos_today, templateInfo);
                 ret.EarningRaise += ret.EarningToday - _templateService.GetEarn(gatewayTableModelInfos_yesterday, templateInfo);
                 //获取当月每天的所有的GatewayTableModelInfo
                 ret.EarningThisMonth += _templateService.GetEarn(gatewayTableModelInfo_month, templateInfo);

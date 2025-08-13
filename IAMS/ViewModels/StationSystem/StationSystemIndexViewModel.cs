@@ -1,5 +1,4 @@
 ﻿using IAMS.Models.PowerStation;
-using IAMS.Models.StationSystem;
 using IAMS.MQTT.Model;
 
 namespace IAMS.ViewModels.StationSystem {

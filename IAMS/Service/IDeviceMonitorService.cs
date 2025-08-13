@@ -2,7 +2,7 @@
 
 namespace IAMS.Service {
     public interface IDeviceMonitorService {
-        public DeviceMonitorViewModel GetDeviceMonitorViewModel(string cabinetName, DateTime dateTime);
+        public DeviceMonitorViewModel GetDeviceMonitorViewModel(string cabinetName);
 
     }
 }

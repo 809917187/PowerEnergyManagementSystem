@@ -2,20 +2,22 @@
 using IAMS.AttributeTag;
 using IAMS.Models;
 using IAMS.Models.DeviceInfo;
+using IAMS.MQTT.Model;
 using System.Reflection;
 
 namespace IAMS.Service {
     public class ClickHouseService : IClickHouseService {
         private string _connectionStringClickHouse;
         public ClickHouseService(IConfiguration configuration) {
-            _connectionStringClickHouse = configuration.GetConnectionString("ems");
+            _connectionStringClickHouse = configuration.GetConnectionString("ems_clickhouse");
         }
 
-        
-
-        public List<OrignialClickHouseData> GetOrignialClickHouseDatasBySn(int devType, List<string> snList, DateTime startDateTime, DateTime endDateTime = default) {
-            if (endDateTime == default) {
-                endDateTime = startDateTime;
+        public List<OrignialClickHouseData> GetOrignialClickHouseDatasBySn(int devType, List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            startDateTime = startDateTime.Date;
+            if (!endDateTime.HasValue || endDateTime == null) {
+                endDateTime = startDateTime.AddDays(1).AddTicks(-1);
+            } else {
+                endDateTime = (DateTime)endDateTime.Value.Date.AddDays(1).AddTicks(-1);
             }
             List<OrignialClickHouseData> ret = new List<OrignialClickHouseData>();
             try {
@@ -28,19 +30,26 @@ namespace IAMS.Service {
                         var snListLiteral = string.Join(",", snList.Select(sn => $"'{sn.Replace("'", "''")}'"));
 
                         command.CommandText = $@"
-                            SELECT sn, upload_time, device_type, device_name, device_id, data 
+                            SELECT sn,
+                                toDate(upload_time) AS day,
+                                argMax(upload_time, upload_time) AS latest_upload_time,
+                                argMax(device_type, upload_time) AS device_type,
+                                argMax(device_name, upload_time) AS device_name,
+                                argMax(device_id, upload_time) AS device_id,
+                                argMax(data, upload_time) AS data 
                             FROM {dbTable} 
                             WHERE sn IN ({snListLiteral})
                                 AND upload_time > '{startDateTime:yyyy-MM-dd HH:mm:ss}' 
-                                AND upload_time < '{endDateTime.Date.AddDays(1):yyyy-MM-dd HH:mm:ss}'
-                            ORDER BY upload_time DESC";
+                                AND upload_time < '{endDateTime:yyyy-MM-dd HH:mm:ss}'
+                            GROUP BY sn,day 
+                            ORDER BY sn, day;";
 
                         using (var reader = command.ExecuteReader()) {
                             while (reader.Read()) {
                                 ret.Add(new OrignialClickHouseData {
                                     Sn = reader.GetString(reader.GetOrdinal("sn")),
-                                    UploadTime = reader.GetDateTime(reader.GetOrdinal("upload_time")),
-                                    DeviceType = reader.GetString(reader.GetOrdinal("device_type")),
+                                    UploadTime = reader.GetDateTime(reader.GetOrdinal("latest_upload_time")),
+                                    DeviceType = Convert.ToInt32(reader.GetString(reader.GetOrdinal("device_type"))),
                                     DeviceName = reader.GetString(reader.GetOrdinal("device_name")),
                                     DeviceId = reader.GetString(reader.GetOrdinal("device_id")),
                                     PointData = (int[])reader.GetValue(reader.GetOrdinal("data"))
@@ -59,27 +68,34 @@ namespace IAMS.Service {
             return ret;
         }
 
-        public List<PccModel001> GetPccModel001s(List<string> snList, DateTime startDateTime, DateTime endDateTime = default) {
-            var o = this.GetOrignialClickHouseDatasBySn(1, snList, startDateTime, endDateTime);
+        public List<PccModel001> GetPccModel001s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.PCC, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<PccModel001>(o);
         }
 
-        public List<BsuModel003> GetBsuModel003s(List<string> snList, DateTime startDateTime, DateTime endDateTime = default) {
-            var o = this.GetOrignialClickHouseDatasBySn(3, snList, startDateTime, endDateTime);
+
+        public List<BsuModel003> GetBsuModel003s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.BSU, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<BsuModel003>(o);
         }
 
-        public List<PcsModel005> GetPcsModel005s(List<string> snList, DateTime startDateTime, DateTime endDateTime = default) {
-            var o = this.GetOrignialClickHouseDatasBySn(5, snList, startDateTime, endDateTime);
+        public List<PcsModel005> GetPcsModel005s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.PCS, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<PcsModel005>(o);
         }
 
-        public List<T> PraseDeviceInfo<T>(List<OrignialClickHouseData> orignialClickHouseDatas) where T : new() {
+
+        public List<T> PraseDeviceInfo<T>(List<OrignialClickHouseData> orignialClickHouseDatas) where T : DeviceBaseInfo, new() {
             List<T> ret = new List<T>();
 
             foreach (OrignialClickHouseData orignialClickHouseData in orignialClickHouseDatas) {
                 T model = new T();
                 SetModelPropertiesByMap(model, orignialClickHouseData.PointData);
+
+                model.Sn = orignialClickHouseData.Sn;
+                model.UploadTime = orignialClickHouseData.UploadTime;
+                model.DeviceType = orignialClickHouseData.DeviceType;
+                model.DeviceId = orignialClickHouseData.DeviceId;
 
                 ret.Add(model);
             }

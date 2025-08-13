@@ -1,7 +1,6 @@
 ﻿using IAMS.Common;
 using IAMS.Models.DeviceInfo;
 using IAMS.Models.PowerStation;
-using IAMS.Models.StationSystem;
 using IAMS.MQTT;
 using IAMS.MQTT.Model;
 using IAMS.ViewModels.ElectricityReport;
@@ -23,7 +22,7 @@ namespace IAMS.Service {
         public List<ElectricityReportStationSummaryViewModel> GetElectricityReportStationSummaryData(DateTime startDate, DateTime dateTime) {
             List<ElectricityReportStationSummaryViewModel> ret = new List<ElectricityReportStationSummaryViewModel>();
 
-            var allPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+            var allPs = _powerStationService.GetAllPowerStationInfos(0,null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
 
             var deviceBaseInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(allPs.Select(s => s.Id).ToList());
 
@@ -51,7 +50,7 @@ namespace IAMS.Service {
 
         public ElectricityReportViewModel GetElectricityReportViewModel() {
             ElectricityReportViewModel ret = new ElectricityReportViewModel() {
-                powerStationInfos = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0)
+                powerStationInfos = _powerStationService.GetAllPowerStationInfos(0,null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0)
             };
 
 
@@ -60,7 +59,7 @@ namespace IAMS.Service {
 
         public Dictionary<DateTime, ElectricityReportByDay> GetSingleStationReportByDayData(int powerStationId, DateTime startDate, DateTime dateTime) {
             Dictionary<DateTime, ElectricityReportByDay> date2ElectricityReportData = new Dictionary<DateTime, ElectricityReportByDay>();
-            var ps = _powerStationService.GetAllPowerStationInfos().Find(s => s.Id == powerStationId);
+            var ps = _powerStationService.GetAllPowerStationInfos(powerStationId,null).Find(s => s.Id == powerStationId);
             if (ps == null) {
                 return date2ElectricityReportData;
             }

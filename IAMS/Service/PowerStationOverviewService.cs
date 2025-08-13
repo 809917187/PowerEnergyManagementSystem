@@ -2,7 +2,6 @@
 using IAMS.Models.DeviceInfo;
 using IAMS.Models.PowerStation;
 using IAMS.Models.PriceTemplate;
-using IAMS.Models.StationSystem;
 using IAMS.MQTT;
 using IAMS.MQTT.Model;
 using IAMS.ViewModels.PowerStationOverview;
@@ -32,7 +31,7 @@ namespace IAMS.Service {
                 startDate = DateTime.Now.AddDays(-7);
                 endDate = DateTime.Now;
             }
-            PowerStationInfo selectedPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0).First(s => s.Id == powerStationId);
+            PowerStationInfo selectedPs = _powerStationService.GetAllPowerStationInfos(powerStationId, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0).First(s => s.Id == powerStationId);
 
             var deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(new List<int>() { selectedPs.Id });
 
@@ -75,7 +74,7 @@ namespace IAMS.Service {
                 endDate = DateTime.Now;
             }
 
-            PowerStationInfo selectedPs = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0).First(s => s.Id == powerStationId);
+            PowerStationInfo selectedPs = _powerStationService.GetAllPowerStationInfos(powerStationId, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0).First(s => s.Id == powerStationId);
 
             var deviceInfos = _powerStationService.GetDeviceBaseInfosByPowerStationId(new List<int>() { selectedPs.Id });
             PriceTemplateInfo templateInfo = _templateService.GetTemplateByPowerStationId(selectedPs.Id);
@@ -101,14 +100,9 @@ namespace IAMS.Service {
         public PowerStationOverviewViewModel GetPowerStationOverviewViewModel(int id) {
             PowerStationOverviewViewModel ret = new PowerStationOverviewViewModel();
             try {
-                ret.PowerStationInfos = _powerStationService.GetAllPowerStationInfos().FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
+                ret.PowerStationInfos = _powerStationService.GetAllPowerStationInfos(id, null).FindAll(s => s.EnergyStorageCabinetRootDataList.Count > 0);
                 if (ret.PowerStationInfos.Count == 0) {
                     throw new Exception("No Data");
-                }
-                if (id == 0) {
-                    ret.PowerStationInfos.First().IsSelected = true;
-                } else {
-                    ret.PowerStationInfos.First(s => s.Id == id).IsSelected = true;
                 }
 
                 ret.SelectedPowerStation = ret.PowerStationInfos.FirstOrDefault(s => s.IsSelected);

@@ -13,21 +13,23 @@ namespace IAMS.Controllers {
             _stationSystemService = stationSystemService;
             _powerStationService = powerStationService;
         }
-        public IActionResult Index(string energyStorageCabinetName) {//储能柜集
-
+        public IActionResult Index(string energyStorageCabinetSn) {//储能柜集
+            if (string.IsNullOrWhiteSpace(energyStorageCabinetSn)) {
+                energyStorageCabinetSn = _powerStationService.GetDefaultSelectedEmsSn();
+            }
             //根据储能柜集的name把页面所有的数据都查出来
-            var model = _stationSystemService.GetStationSystemIndexViewModel(energyStorageCabinetName, DateTime.Now);
+            var model = _stationSystemService.GetStationSystemIndexViewModel(energyStorageCabinetSn, DateTime.Today);
 
             return View(model);
         }
         [HttpGet]
         public IActionResult GetRealTimeChartData(string energyStorageCabinetName) {
-            return Ok(_stationSystemService.GetRealTimeTrendOfChart(energyStorageCabinetName, DateTime.Now));
+            return Ok(_stationSystemService.GetRealTimeTrendOfChart(energyStorageCabinetName, DateTime.Today));
         }
 
         [HttpGet]
         public IActionResult GetPowerTrendChartData(string energyStorageCabinetName) {
-            return Ok(_stationSystemService.GetTotalActivePowerOfChart(energyStorageCabinetName, DateTime.Now));
+            return Ok(_stationSystemService.GetTotalActivePowerOfChart(energyStorageCabinetName, DateTime.Today));
             
         }
     }

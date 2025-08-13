@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using IAMS.Models.DeviceInfo;
 using IAMS.Models.PriceTemplate;
-using IAMS.Models.StationSystem;
 using MySql.Data.MySqlClient;
 using System.Text;
 
@@ -9,7 +8,7 @@ namespace IAMS.Service {
     public class TemplateService : ITemplateService {
         private string _connectionString;
         public TemplateService(IConfiguration configuration) {
-            _connectionString = configuration.GetConnectionString("gq");
+            _connectionString = configuration.GetConnectionString("ems");
         }
 
         public bool AddTemplate(PriceTemplateInfo priceTemplate) {

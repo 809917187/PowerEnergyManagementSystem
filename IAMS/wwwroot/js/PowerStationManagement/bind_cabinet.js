@@ -2,11 +2,11 @@
 
     $("#bindOK").click(function () {
         var sendData = {};
-        let cabinetIds = [];
+        let cabinetSns = [];
         $("#checkboxContainer input[type='checkbox']:checked").each(function () {
-            cabinetIds.push(parseInt($(this).val(), 10)); // 将值转换为整数
+            cabinetSns.push($(this).val()); // 将值转换为整数
         });
-        sendData.cabinetIds = cabinetIds;
+        sendData.cabinetSns = cabinetSns;
         sendData.powerStationId = parseInt($("#selectedPsId").val(), 10);
         $.ajax({
             url: bindCabinetToPowerStationUrl,
@@ -53,8 +53,8 @@
                         let isBinded = item.isSelected;
                         let checkboxHtml = `
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="option${item.cabinetId}" value="${item.cabinetId}" ${isChecked}>
-                        <label class="form-check-label" for="option${item.id}">${item.cabinetName}</label>
+                        <input class="form-check-input" type="checkbox" id="option${item.cabinetId}" value="${item.cabinetSn}" ${isChecked}>
+                        <label class="form-check-label" for="option${item.id}">${item.cabinetSn}</label>
                 `;
                         if (isBinded) {
                             checkboxHtml += `<i class="bi bi-x-circle-fill text-danger"></i>`;

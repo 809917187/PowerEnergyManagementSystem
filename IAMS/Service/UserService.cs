@@ -6,7 +6,7 @@ namespace IAMS.Service {
     public class UserService : IUserService {
         private string _connectionString;
         public UserService(IConfiguration configuration) {
-            _connectionString = configuration.GetConnectionString("gq");
+            _connectionString = configuration.GetConnectionString("ems");
         }
 
         public UserInfo GetUserInfoByEmailAndPassword(string email, string password) {

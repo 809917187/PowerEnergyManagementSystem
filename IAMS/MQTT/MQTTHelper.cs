@@ -1,7 +1,6 @@
 ﻿using ClickHouse.Client.Copy;
 using Dapper;
 using IAMS.Models.DeviceInfo;
-using IAMS.Models.StationSystem;
 using IAMS.MQTT.Model;
 using IAMS.Service;
 using MySql.Data.MySqlClient;
@@ -18,9 +17,9 @@ namespace IAMS.MQTT {
 
 
 
-        public static bool SaveMqttPeriodDataToDB(string fileName) {
+        public static bool SaveMqttPeriodDataToDB(string json) {
             try {
-                string json = MQTTHelper.GetPeriodData(fileName);
+                //string json = MQTTHelper.GetPeriodData(fileName);
                 var rootObject = JsonSerializer.Deserialize<DeviceDataFromMqtt>(json);
                 if (rootObject != null) {
                     foreach (var devData in rootObject.devData) {

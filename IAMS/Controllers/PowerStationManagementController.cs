@@ -15,7 +15,7 @@ namespace IAMS.Controllers {
         }
 
         public IActionResult Index() {
-            return View(_powerStationService.GetAllPowerStationInfos());
+            return View(_powerStationService.GetAllPowerStationInfos(0, null));
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace IAMS.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> BindCabinetToPowerStation([FromBody] BindRequestModel bindRequestModel) {
-            if (_powerStationService.BindCabinetToPowerStation(bindRequestModel.powerStationId, bindRequestModel.cabinetIds)) {
+            if (_powerStationService.BindCabinetToPowerStation(bindRequestModel.powerStationId, bindRequestModel.cabinetSns)) {
                 return Ok(new { message = "绑定成功" });
             } else {
                 return BadRequest("绑定失败");
@@ -76,7 +76,7 @@ namespace IAMS.Controllers {
         public async Task<IActionResult> AddPowerStation([FromForm] PowerStationInfo model) {
             try {
                 //电站名称存在，返回
-                var powerStationInfos = _powerStationService.GetAllPowerStationInfos();
+                var powerStationInfos = _powerStationService.GetAllPowerStationInfos(0,null);
                 if (powerStationInfos.FindAll(s => s.Name == model.Name).Count > 0) {
                     return Ok(new { status = 500, message = "电站名称已经存在了" });
                 }

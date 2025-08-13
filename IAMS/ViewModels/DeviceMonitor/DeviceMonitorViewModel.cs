@@ -1,6 +1,5 @@
 ﻿using IAMS.Models.DeviceInfo;
 using IAMS.Models.PowerStation;
-using IAMS.Models.StationSystem;
 
 namespace IAMS.ViewModels.DeviceMonitor {
     public class DeviceMonitorViewModel {

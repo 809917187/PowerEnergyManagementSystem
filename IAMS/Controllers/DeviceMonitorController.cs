@@ -4,11 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace IAMS.Controllers {
     public class DeviceMonitorController : Controller {
         private readonly IDeviceMonitorService _deviceMonitorService;
-        public DeviceMonitorController(IDeviceMonitorService deviceMonitorService) {
+        private readonly IPowerStationService _powerStationService;
+        public DeviceMonitorController(IDeviceMonitorService deviceMonitorService, IPowerStationService powerStationService) {
             _deviceMonitorService = deviceMonitorService;
+            _powerStationService = powerStationService;
         }
-        public IActionResult Index(string energyStorageCabinetName) {
-            return View(_deviceMonitorService.GetDeviceMonitorViewModel(energyStorageCabinetName, DateTime.Now));
+        public IActionResult Index(string energyStorageCabinetSn) {
+            if (string.IsNullOrWhiteSpace(energyStorageCabinetSn)) {
+                energyStorageCabinetSn = _powerStationService.GetDefaultSelectedEmsSn();
+            }
+            return View(_deviceMonitorService.GetDeviceMonitorViewModel(energyStorageCabinetSn));
         }
     }
 }

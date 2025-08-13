@@ -1,5 +1,4 @@
 ﻿using IAMS.Models.PowerStation;
-using IAMS.Models.StationSystem;
 
 namespace IAMS.ViewModels.PowerStationOverview {
     public class PowerStationOverviewViewModel {

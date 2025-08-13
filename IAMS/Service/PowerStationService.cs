@@ -13,7 +13,7 @@ namespace IAMS.Service {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public PowerStationService(IConfiguration configuration, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor) {
-            _connectionString = configuration.GetConnectionString("gq");
+            _connectionString = configuration.GetConnectionString("ems");
             _hostingEnvironment = hostingEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -78,7 +78,7 @@ namespace IAMS.Service {
 
         public PowerStationInfo GetPowerStationInfoById(int id) {
 
-            return this.GetAllPowerStationInfos().FirstOrDefault(s => s.Id == id);
+            return this.GetAllPowerStationInfos(id, null).FirstOrDefault(s => s.Id == id);
             /*
                         PowerStationInfo powerStationInfo = new PowerStationInfo();
 
@@ -114,7 +114,8 @@ namespace IAMS.Service {
                         return powerStationInfo;*/
         }
 
-        public List<PowerStationInfo> GetAllPowerStationInfos() {
+        public List<PowerStationInfo> GetAllPowerStationInfos(int ps_id, string? emsSn) {
+            emsSn = String.IsNullOrWhiteSpace(emsSn) ? null : emsSn;
             List<PowerStationInfo> powerStationInfos = new List<PowerStationInfo>();
 
             try {
@@ -150,7 +151,7 @@ namespace IAMS.Service {
                                 lookup[powerStation.Id] = powerStationInfo;
                             }
 
-                            if (!string.IsNullOrEmpty(cabinetSn)) {
+                            if (!string.IsNullOrEmpty(cabinetSn) && !powerStationInfo.EnergyStorageCabinetRootDataList.Any(s => s.CabinetSn == cabinetSn)) {
                                 var energyCabinetInfo = new EnergyStorageCabinetInfo {
                                     IsSelected = false,
                                     CabinetSn = cabinetSn
@@ -181,6 +182,19 @@ namespace IAMS.Service {
                 var psList = this.GetBindPowerStationListByUserId(userId);
                 powerStationInfos = powerStationInfos.FindAll(s => psList.Contains(s.Id));
             }
+
+            if (emsSn != null) {
+                powerStationInfos.First(s => s.EnergyStorageCabinetRootDataList.Any(aa => aa.CabinetSn == emsSn)).IsSelected = true;
+                powerStationInfos.First(s => s.IsSelected).EnergyStorageCabinetRootDataList.First(s => s.CabinetSn == emsSn).IsSelected = true;
+            } else {
+                if (ps_id == 0) {
+                    powerStationInfos.First().IsSelected = true;
+                } else {
+                    powerStationInfos.First(s => s.Id == ps_id).IsSelected = true;
+                }
+                powerStationInfos.First(s => s.IsSelected).EnergyStorageCabinetRootDataList.First().IsSelected = true;
+            }
+
             return powerStationInfos;
         }
 
@@ -192,16 +206,16 @@ namespace IAMS.Service {
                     connection.Open();
 
                     // 定义 SQL 查询
-                    string query = "SELECT ems_sn FROM gq.device_ems_ps_binding_info";
+                    string query = "SELECT DISTINCT ems_sn FROM device_ems_ps_binding_info";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection)) {
                         // 执行查询并读取结果
                         using (MySqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
                                 EnergyStorageCabinetInfo esci = new EnergyStorageCabinetInfo();
-                                if (reader.IsDBNull(reader.GetOrdinal("ems_sn"))) {
+                                if (!reader.IsDBNull(reader.GetOrdinal("ems_sn"))) {
                                     esci.IsSelected = false;
-                                    esci.CabinetSn = reader.GetOrdinal("ems_sn").ToString();
+                                    esci.CabinetSn = reader.GetString("ems_sn");
                                     ret.Add(esci);
 
                                 }
@@ -500,13 +514,13 @@ namespace IAMS.Service {
                 }
             }
         }
-        public bool BindCabinetToPowerStation(int PowerStationId, List<int> CabinetIds) {
+        public bool BindCabinetToPowerStation(int PowerStationId, List<string> CabinetIds) {
             using (MySqlConnection conn = new MySqlConnection(_connectionString)) {
                 conn.Open();
                 using (var transaction = conn.BeginTransaction()) {
                     try {
-                        string cabinetIdsStr = string.Join(",", CabinetIds);
-                        string sql = "UPDATE energy_storage_cabinet_array SET power_station_id = NULL WHERE power_station_id=@PowerStationId";
+                        var inClause = string.Join(",", CabinetIds.Select((id, index) => $"@id{index}"));
+                        string sql = "UPDATE device_ems_ps_binding_info SET ps_id = NULL WHERE ps_id=@PowerStationId";
                         // 使用 MySqlCommand 执行更新操作
                         using (var cmd = new MySqlCommand(sql, conn, transaction)) {
                             cmd.Parameters.AddWithValue("@PowerStationId", PowerStationId);
@@ -515,15 +529,17 @@ namespace IAMS.Service {
                             cmd.ExecuteNonQuery();
                         }
                         if (CabinetIds.Count > 0) {
-                            sql = @"
-                    UPDATE energy_storage_cabinet_array 
-                    SET power_station_id = @PowerStationId
-                    WHERE id IN (" + cabinetIdsStr + ")";
+                            sql = $@"
+                                UPDATE device_ems_ps_binding_info 
+                                SET ps_id = @PowerStationId
+                                WHERE ems_sn IN ({inClause})";
 
                             // 使用 MySqlCommand 执行更新操作
                             using (var cmd = new MySqlCommand(sql, conn, transaction)) {
                                 cmd.Parameters.AddWithValue("@PowerStationId", PowerStationId);
-
+                                for (int i = 0; i < CabinetIds.Count; i++) {
+                                    cmd.Parameters.AddWithValue($"@id{i}", CabinetIds[i]);
+                                }
                                 // 执行更新
                                 cmd.ExecuteNonQuery();
                             }
@@ -538,6 +554,14 @@ namespace IAMS.Service {
                     return true;
                 }
             }
+        }
+
+        public string GetDefaultSelectedEmsSn() {
+            return this.GetAllPowerStationInfos(0,null).First(s => s.IsSelected).EnergyStorageCabinetRootDataList.First(s => s.IsSelected).CabinetSn;
+        }
+
+        public int GetDefaultSelectedPowerStationId() {
+            return this.GetAllPowerStationInfos(0, null).First(s => s.IsSelected).Id;
         }
     }
 }

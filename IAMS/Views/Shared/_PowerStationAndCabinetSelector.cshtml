@@ -50,7 +50,7 @@
             // 如果有柜子数据，更新二级菜单
             if (cabinets.length > 0) {
                 cabinets.forEach(function (cabinet) {
-                    $('#energy_storage_cabinet_name').append('<option value="' + cabinet.rootDataFromMqtt.structure.name + '">' + cabinet.rootDataFromMqtt.structure.name + '</option>');
+                    $('#energy_storage_cabinet_name').append('<option value="' + cabinet.cabinetSn + '">' + cabinet.cabinetSn + '</option>');
                 });
                     
             }
