@@ -8,7 +8,7 @@
             <button class="nav-link @(i == 0 ? "active" : "")" id="model-@Model[i].Sn-tab"
                 data-bs-toggle="pill" data-bs-target="#model-@Model[i].Sn" type="button" role="tab"
                 aria-controls="model-@Model[i].Sn" aria-selected="@(i == 0 ? "true" : "false")">
-                @Model[i].Sn
+                @Model[i].Sn.Split('_')[1]
             </button>
         </li>
     }

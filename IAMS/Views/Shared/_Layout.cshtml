@@ -1,196 +1,179 @@
 ﻿@using System.Security.Claims
 @{
-    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
-    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
-    var name = User.FindFirst("Name")?.Value;
-    var RoleName = User.FindFirst("RoleName")?.Value;
-    var Role = User.FindFirst("Role")?.Value;
+	var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+	var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+	var name = User.FindFirst("Name")?.Value;
+	var RoleName = User.FindFirst("RoleName")?.Value;
+	var Role = User.FindFirst("Role")?.Value;
 }
 
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <title>Dashboard</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<title>Dashboard</title>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="~/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/bootstrap_template/dashboard/dashboard.css" rel="stylesheet">
-    <link href="~/bootstrap_template/sidebars/sidebars.css" rel="stylesheet">
-    <link href="~/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" >
-    <link href="~/flatpickr/flatpickr.min.css" rel="stylesheet">
-    <link href="~/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
-    <link href="~/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" >
-    <link href="~/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" >
-    <link href="~/css/site.css" rel="stylesheet" >
-    <style>
-    #sidebar a {
-        color: black;
-    }
+	<link href="~/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
+	<link href="~/bootstrap_template/dashboard/dashboard.css" rel="stylesheet">
+	<link href="~/bootstrap_template/sidebars/sidebars.css" rel="stylesheet">
+	<link href="~/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+	<link href="~/flatpickr/flatpickr.min.css" rel="stylesheet">
+	<link href="~/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+	<link href="~/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
+	<link href="~/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+	<link href="~/css/site.css" rel="stylesheet">
+	<style>
+		#sidebar a {
+			color: black;
+		}
 
-    #sidebar a:hover {
-        color: darkgray; 
-    }
-    </style>
+			#sidebar a:hover {
+				color: darkgray;
+			}
+	</style>
 
 </head>
 <body>
 
+	<div class="container-fluid d-flex flex-column" style="height: 100vh;">
+		<!-- Header -->
+		<div class="row">
+			<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+				<a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">EMS系统</a>
+			</header>
+		</div>
+
+		<!-- 内容区域：自适应剩余高度 -->
+		<div class="row flex-grow-1" style="min-height: 0;">
+			<!-- Sidebar -->
+			<div class="col-2 d-flex flex-column" style="overflow-y: auto; border-right: 1px solid #ddd;">
+				<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+					<span class="fs-4">目录</span>
+				</a>
+				<hr>
+				<ul id="sidebar" class="nav nav-pills flex-column mb-auto">
+					<li class="nav-item">
+						<a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")"
+						   asp-area="" asp-controller="Home" asp-action="Index">
+							<i class="bi bi-house-fill pe-none me-2" width="16" height="16"></i>
+							多站总览
+						</a>
+					</li>
+					<li class="nav-item" style="font-size: 0.8rem; color: #a9a9a9;">
+						单站数据
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "PowerStationOverview" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="PowerStationOverview" asp-action="Index">
+							<i class="bi bi-body-text pe-none me-2" width="16" height="16"></i>
+							电站概览
+						</a>
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "StationSystem" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="StationSystem" asp-action="Index">
+							<i class="bi bi-boxes pe-none me-2" width="16" height="16"></i>
+							站点系统
+						</a>
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "DeviceMonitor" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="DeviceMonitor" asp-action="Index">
+							<i class="bi bi-easel pe-none me-2" width="16" height="16"></i>
+							设备监控
+						</a>
+					</li>
+					<li class="nav-item" style="font-size: 0.8rem; color: #a9a9a9;">
+						统计报表
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "ElectricityReport" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="ElectricityReport" asp-action="Index">
+							<i class="bi bi-battery-half pe-none me-2" width="16" height="16"></i>
+							电量报表
+						</a>
+					</li>
+					<li class="nav-item" style="font-size: 0.8rem; color: #a9a9a9;">
+						系统管理
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "PowerStationManagement" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="PowerStationManagement" asp-action="Index">
+							<i class="bi bi-ev-station-fill pe-none me-2" width="16" height="16"></i>
+							电站管理
+						</a>
+					</li>
+					<li>
+						<a class="nav-link @(currentController == "TemplateManagement" && currentAction == "Index" ? "active" : "")"
+						   asp-controller="TemplateManagement" asp-action="Index">
+							<i class="bi bi-book-half pe-none me-2" width="16" height="16"></i>
+							模板中心
+						</a>
+					</li>
+					@if (Role == "1") {
+						<li class="nav-item" style="font-size: 0.8rem; color: #a9a9a9;">
+							用户管理
+						</li>
+						<li>
+							<a class="nav-link @(currentController == "Access" && currentAction == "UserManagement" ? "active" : "")"
+							   asp-controller="Access" asp-action="UserManagement">
+								<i class="bi bi-people-fill pe-none me-2" width="16" height="16"></i>
+								用户管理
+							</a>
+						</li>
+					}
+				</ul>
+				<hr>
+				<div class="dropdown">
+					<a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="~/images/userPictures/yanzu.png" alt="" width="32" height="32" class="rounded-circle me-2">
+						<strong>@name</strong>
+					</a>
+					<ul class="dropdown-menu text-small shadow">
+						<li><a class="dropdown-item" asp-controller="Access" asp-action="Logout">退出登录</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Main -->
+			<main class="col-10 d-flex flex-column" style="overflow-y: auto;">
+				@RenderBody()
+			</main>
+		</div>
+
+		<!-- Footer -->
+		<div class="row">
+			<footer class="sticky-footer mt-auto" style="background-color:#c6c7c8">
+				<div class="container my-auto">
+					<div class="copyright text-center my-auto">
+						<span>Copyright &copy; Master Zhang</span>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
 
 
-    <div class="container-fluid d-flex flex-column" style="height: 100vh;">
-        <div class="row">
-            <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Master Zhang</a>
-            </header>
-        </div>
-
-        <div class="row flex-grow-1 overflow-hidden">
-            <div style="width: 280px;">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                    <span class="fs-4">Sidebar</span>
-                </a>
-                <hr>
-                <ul id="sidebar" class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")"
-                           asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="bi bi-house-fill   pe-none me-2" width="16" height="16"></i>
-                            多站总览
-                        </a>
-                    </li>
-                    @*<li>
-                        <a class="nav-link @(currentController == "BigScreen" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="BigScreen" asp-action="Index" target="_blank">
-                            <i class="bi bi-arrows-fullscreen  pe-none me-2" width="16" height="16"></i>
-                            大屏展示
-                        </a>
-                    </li>*@
-                    <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
-                        单站数据
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "PowerStationOverview" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="PowerStationOverview" asp-action="Index">
-                            <i class="bi bi-body-text pe-none me-2" width="16" height="16"></i>
-                            电站概览
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "StationSystem" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="StationSystem" asp-action="Index">
-                            <i class="bi bi-boxes pe-none me-2" width="16" height="16"></i>
-                            站点系统
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "DeviceMonitor" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="DeviceMonitor" asp-action="Index">
-                            <i class="bi bi-easel pe-none me-2" width="16" height="16"></i>
-                            设备监控
-                        </a>
-                    </li>
-                    @*<li>
-                        <a class="nav-link @(currentController == "StationAlarm" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="StationAlarm" asp-action="Index">
-                            <i class="bi bi-activity pe-none me-2" width="16" height="16"></i>
-                            站点告警
-                        </a>
-                    </li>*@
-                    <li>
-                        <a class="nav-link @(currentController == "EnergyManagement" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="EnergyManagement" asp-action="Index">
-                            <i class="bi bi-brightness-alt-high-fill pe-none me-2" width="16" height="16"></i>
-                            能量管理
-                        </a>
-                    </li>
-                    <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
-                        统计报表
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "ElectricityReport" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="ElectricityReport" asp-action="Index">
-                            <i class="bi bi-battery-half pe-none me-2" width="16" height="16"></i>
-                            电量报表
-                        </a>
-                    </li>
-                    <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
-                        系统管理
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "PowerStationManagement" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="PowerStationManagement" asp-action="Index">
-                            <i class="bi bi-ev-station-fill pe-none me-2" width="16" height="16"></i>
-                            电站管理
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link @(currentController == "TemplateManagement" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="TemplateManagement" asp-action="Index">
-                            <i class="bi bi-book-half pe-none me-2" width="16" height="16"></i>
-                            模板中心
-                        </a>
-                    </li>
-                    @if (Role == "1") {
-                        <li class=" nav-item" style="font-size: 0.8rem;color: #a9a9a9;">
-                            用户管理
-                        </li>
-                        <li>
-                            <a class="nav-link @(currentController == "Access" && currentAction == "UserManagement" ? "active" : "")"
-                           asp-controller="Access" asp-action="UserManagement">
-                                <i class="bi bi-people-fill pe-none me-2" width="16" height="16"></i>
-                                用户管理
-                            </a>
-                        </li>
-                    }
-                </ul>
-                <hr>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="~/images/userPictures/yanzu.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>@name</strong>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow">
-                        @* <li><a class="dropdown-item" href="#">个人信息</a></li> *@
-                        <li><a class="dropdown-item" asp-controller="Access" asp-action="Logout">退出登录</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <main class="col ms-sm-auto col-lg-10 px-md-4 flex-grow-1 overflow-auto">
-                @RenderBody()
-            </main>
-        </div>
-        <div class="row">
-            <footer class="sticky-footer mt-auto" style="background-color:#c6c7c8">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Master Zhang</span>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-   
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/echarts/echarts.min.js"></script>
-    <script src="~/bootstrap-table/bootstrap-table.min.js"></script>
-    <script src="~/flatpickr/flatpickr.min.js"></script>
-    <script src="~/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/bootstrap-fileinput/js/fileinput.min.js"></script>
-    <script src="~/bootstrap-fileinput/themes/bs5/theme.js"></script>
-    <script src="~/bootstrap_template/dashboard/dashboard.js"></script>
-    <script src="~/bootstrap_template/sidebars/sidebars.js"></script>
-    <script src="~/js/site.js"></script>
 
 
-    @RenderSection("Scripts", required: false)
-    
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/echarts/echarts.min.js"></script>
+	<script src="~/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="~/flatpickr/flatpickr.min.js"></script>
+	<script src="~/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="~/bootstrap-fileinput/js/fileinput.min.js"></script>
+	<script src="~/bootstrap-fileinput/themes/bs5/theme.js"></script>
+	<script src="~/bootstrap_template/dashboard/dashboard.js"></script>
+	<script src="~/bootstrap_template/sidebars/sidebars.js"></script>
+	<script src="~/js/site.js"></script>
+
+
+	@RenderSection("Scripts", required: false)
+
 </body>
 </html>

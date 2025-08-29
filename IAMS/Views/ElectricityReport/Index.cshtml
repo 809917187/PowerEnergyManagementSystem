@@ -7,7 +7,7 @@
 <div class="row pt-2">
     <div class="bd-example m-0 border-0">
         <div class="alert alert-success" role="alert">
-            <h6 class="alert-heading"><i class="bi bi-info-circle-fill bs-primary pr-3"></i>站点汇总展示所有站点报表数据，支持按日展示31天，按月展示一年内数据。</h6>
+            <h6 class="alert-heading"><i class="bi bi-info-circle-fill bs-primary pr-3"></i>站点汇总展示所有站点报表数据@* ，支持按日展示31天，按月展示一年内数据 *@。</h6>
         </div>
     </div>
 </div>
@@ -17,9 +17,9 @@
         <li class="nav-item">
             <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">站点汇总</a>
         </li>
-        <li class="nav-item">
+        @* <li class="nav-item">
             <a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="false">单站报表</a>
-        </li>
+        </li> *@
     </ul>
 
     <!-- Tab panes -->
@@ -27,12 +27,11 @@
         <div class="tab-pane active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
             @* @await Html.PartialAsync("~/Views/ElectricityReport/_StationSummary.cshtml", Model) *@
             @await Html.PartialAsync("~/Views/ElectricityReport/_StationSummary.cshtml")
-
         </div>
-
+@* 
         <div class="tab-pane" id="single" role="tabpanel" aria-labelledby="single-tab">
             @await Html.PartialAsync("~/Views/ElectricityReport/_SingleStationReport.cshtml",@Model.powerStationInfos)
-        </div>
+        </div> *@
     </div>
 </div>
 

@@ -11,131 +11,131 @@ namespace IAMS.Models.DeviceInfo {
         public int TotalAlarm { get; set; }//总告警2
         [Display(Name = "总故障"), PointIndex(3)]
         public int TotalFault { get; set; }//总故障3
-        [Display(AutoGenerateField = false, Name = "单体过压告警一级"), PointIndex(4), Alarm(1)]
+        [Display(Name = "单体过压告警一级"), PointIndex(4), Alarm(1)]
         public int CellOvervoltageAlarmLevel1 { get; set; }//单体过压告警一级4
-        [Display(AutoGenerateField = false, Name = "单体欠压告警一级"), PointIndex(5), Alarm(1)]
+        [Display( Name = "单体欠压告警一级"), PointIndex(5), Alarm(1)]
         public int CellUndervoltageAlarmLevel1 { get; set; }//单体欠压告警一级5
-        [Display(AutoGenerateField = false, Name = "单体过温告警一级"), PointIndex(6), Alarm(1)]
+        [Display( Name = "单体过温告警一级"), PointIndex(6), Alarm(1)]
         public int CellOvertemperatureAlarmLevel1 { get; set; }//单体过温告警一级6
-        [Display(AutoGenerateField = false, Name = "单体低温告警一级"), PointIndex(7), Alarm(1)]
+        [Display( Name = "单体低温告警一级"), PointIndex(7), Alarm(1)]
         public int CellLowTemperatureAlarmLevel1 { get; set; }//单体低温告警一级7
-        [Display(AutoGenerateField = false, Name = "单体压差告警一级"), PointIndex(8), Alarm(1)]
+        [Display( Name = "单体压差告警一级"), PointIndex(8), Alarm(1)]
         public int CellVoltageDifferenceAlarmLevel1 { get; set; }//单体压差告警一级8
-        [Display(AutoGenerateField = false, Name = "充电过流告警一级"), PointIndex(9), Alarm(1)]
+        [Display( Name = "充电过流告警一级"), PointIndex(9), Alarm(1)]
         public int ChargeOvercurrentAlarmLevel1 { get; set; }//充电过流告警一级9
-        [Display(AutoGenerateField = false, Name = "放电过流告警一级"), PointIndex(10), Alarm(1)]
+        [Display( Name = "放电过流告警一级"), PointIndex(10), Alarm(1)]
         public int DischargeOvercurrentAlarmLevel1 { get; set; }//放电过流告警一级10
-        [Display(AutoGenerateField = false, Name = "SOC过低告警一级"), PointIndex(11), Alarm(1)]
+        [Display( Name = "SOC过低告警一级"), PointIndex(11), Alarm(1)]
         public int SocLowAlarmLevel1 { get; set; }//SOC过低告警一级11
-        [Display(AutoGenerateField = false, Name = "SOC差异过大告警一级"), PointIndex(12), Alarm(1)]
+        [Display( Name = "SOC差异过大告警一级"), PointIndex(12), Alarm(1)]
         public int SocDifferenceTooLargeAlarmLevel1 { get; set; }//SOC差异过大告警一级12
-        [Display(AutoGenerateField = false, Name = "绝缘过低告警一级"), PointIndex(13), Alarm(1)]
+        [Display( Name = "绝缘过低告警一级"), PointIndex(13), Alarm(1)]
         public int InsulationLowAlarmLevel1 { get; set; }//绝缘过低告警一级13
-        [Display(AutoGenerateField = false, Name = "单体过压告警二级"), PointIndex(14), Alarm(2)]
+        [Display( Name = "单体过压告警二级"), PointIndex(14), Alarm(2)]
         public int CellOvervoltageAlarmLevel2 { get; set; }//单体过压告警二级14
-        [Display(AutoGenerateField = false, Name = "单体欠压告警二级"), PointIndex(15), Alarm(2)]
+        [Display( Name = "单体欠压告警二级"), PointIndex(15), Alarm(2)]
         public int CellUndervoltageAlarmLevel2 { get; set; }//单体欠压告警二级15
-        [Display(AutoGenerateField = false, Name = "单体过温告警二级"), PointIndex(16), Alarm(2)]
+        [Display( Name = "单体过温告警二级"), PointIndex(16), Alarm(2)]
         public int CellOvertemperatureAlarmLevel2 { get; set; }//单体过温告警二级16
-        [Display(AutoGenerateField = false, Name = "单体低温告警二级"), PointIndex(17), Alarm(2)]
+        [Display( Name = "单体低温告警二级"), PointIndex(17), Alarm(2)]
         public int CellLowTemperatureAlarmLevel2 { get; set; }//单体低温告警二级17
-        [Display(AutoGenerateField = false, Name = "单体压差告警二级"), PointIndex(18), Alarm(2)]
+        [Display( Name = "单体压差告警二级"), PointIndex(18), Alarm(2)]
         public int CellVoltageDifferenceAlarmLevel2 { get; set; }//单体压差告警二级18
-        [Display(AutoGenerateField = false, Name = "充电过流告警二级"), PointIndex(19), Alarm(2)]
+        [Display( Name = "充电过流告警二级"), PointIndex(19), Alarm(2)]
         public int ChargeOvercurrentAlarmLevel2 { get; set; }//充电过流告警二级19
-        [Display(AutoGenerateField = false, Name = "放电过流告警二级"), PointIndex(20), Alarm(2)]
+        [Display( Name = "放电过流告警二级"), PointIndex(20), Alarm(2)]
         public int DischargeOvercurrentAlarmLevel2 { get; set; }//放电过流告警二级20
-        [Display(AutoGenerateField = false, Name = "SOC过低告警二级"), PointIndex(21), Alarm(2)]
+        [Display( Name = "SOC过低告警二级"), PointIndex(21), Alarm(2)]
         public int SocLowAlarmLevel2 { get; set; }//SOC过低告警二级21
-        [Display(AutoGenerateField = false, Name = "SOC差异过大告警二级"), PointIndex(22), Alarm(2)]
+        [Display( Name = "SOC差异过大告警二级"), PointIndex(22), Alarm(2)]
         public int SocDifferenceTooLargeAlarmLevel2 { get; set; }//SOC差异过大告警二级22
-        [Display(AutoGenerateField = false, Name = "绝缘过低告警二级"), PointIndex(23), Alarm(2)]
+        [Display( Name = "绝缘过低告警二级"), PointIndex(23), Alarm(2)]
         public int InsulationLowAlarmLevel2 { get; set; }//绝缘过低告警二级23
-        [Display(AutoGenerateField = false, Name = "单体过压告警三级"), PointIndex(24), Alarm(3)]
+        [Display( Name = "单体过压告警三级"), PointIndex(24), Alarm(3)]
         public int CellOvervoltageAlarmLevel3 { get; set; }//单体过压告警三级24
-        [Display(AutoGenerateField = false, Name = "单体欠压告警三级"), PointIndex(25), Alarm(3)]
+        [Display( Name = "单体欠压告警三级"), PointIndex(25), Alarm(3)]
         public int CellUndervoltageAlarmLevel3 { get; set; }//单体欠压告警三级25
-        [Display(AutoGenerateField = false, Name = "单体过温告警三级"), PointIndex(26), Alarm(3)]
+        [Display( Name = "单体过温告警三级"), PointIndex(26), Alarm(3)]
         public int CellOvertemperatureAlarmLevel3 { get; set; }//单体过温告警三级26
-        [Display(AutoGenerateField = false, Name = "单体低温告警三级"), PointIndex(27), Alarm(3)]
+        [Display( Name = "单体低温告警三级"), PointIndex(27), Alarm(3)]
         public int CellLowTemperatureAlarmLevel3 { get; set; }//单体低温告警三级27
-        [Display(AutoGenerateField = false, Name = "单体压差告警三级"), PointIndex(28), Alarm(3)]
+        [Display( Name = "单体压差告警三级"), PointIndex(28), Alarm(3)]
         public int CellVoltageDifferenceAlarmLevel3 { get; set; }//单体压差告警三级28
-        [Display(AutoGenerateField = false, Name = "充电过流告警三级"), PointIndex(29), Alarm(3)]
+        [Display( Name = "充电过流告警三级"), PointIndex(29), Alarm(3)]
         public int ChargeOvercurrentAlarmLevel3 { get; set; }//充电过流告警三级29
-        [Display(AutoGenerateField = false, Name = "放电过流告警三级"), PointIndex(30), Alarm(3)]
+        [Display( Name = "放电过流告警三级"), PointIndex(30), Alarm(3)]
         public int DischargeOvercurrentAlarmLevel3 { get; set; }//放电过流告警三级30
-        [Display(AutoGenerateField = false, Name = "SOC过低告警三级"), PointIndex(31), Alarm(3)]
+        [Display( Name = "SOC过低告警三级"), PointIndex(31), Alarm(3)]
         public int SocLowAlarmLevel3 { get; set; }//SOC过低告警三级31
-        [Display(AutoGenerateField = false, Name = "SOC差异过大告警三级"), PointIndex(32), Alarm(3)]
+        [Display( Name = "SOC差异过大告警三级"), PointIndex(32), Alarm(3)]
         public int SocDifferenceTooLargeAlarmLevel3 { get; set; }//SOC差异过大告警三级32
-        [Display(AutoGenerateField = false, Name = "绝缘过低告警三级"), PointIndex(33), Alarm(3)]
+        [Display( Name = "绝缘过低告警三级"), PointIndex(33), Alarm(3)]
         public int InsulationLowAlarmLevel3 { get; set; }//绝缘过低告警三级33
-        [Display(AutoGenerateField = false, Name = "电芯温度极限告警"), PointIndex(34), Alarm(4)]
+        [Display( Name = "电芯温度极限告警"), PointIndex(34), Alarm(4)]
         public int CellTemperatureLimitAlarm { get; set; }//电芯温度极限告警34
-        [Display(AutoGenerateField = false, Name = "电芯电压极限告警"), PointIndex(35), Alarm(4)]
+        [Display( Name = "电芯电压极限告警"), PointIndex(35), Alarm(4)]
         public int CellVoltageLimitAlarm { get; set; }//电芯电压极限告警35
-        [Display(AutoGenerateField = false, Name = "簇间环流1级告警"), PointIndex(36), Alarm(1)]
+        [Display( Name = "簇间环流1级告警"), PointIndex(36), Alarm(1)]
         public int InterClusterCirculationAlarmLevel1 { get; set; }//簇间环流1级告警36
-        [Display(AutoGenerateField = false, Name = "簇间环流2级告警"), PointIndex(37), Alarm(2)]
+        [Display( Name = "簇间环流2级告警"), PointIndex(37), Alarm(2)]
         public int InterClusterCirculationAlarmLevel2 { get; set; }//簇间环流2级告警37
-        [Display(AutoGenerateField = false, Name = "簇间环流3级告警"), PointIndex(38), Alarm(3)]
+        [Display( Name = "簇间环流3级告警"), PointIndex(38), Alarm(3)]
         public int InterClusterCirculationAlarmLevel3 { get; set; }//簇间环流3级告警38
-        [Display(AutoGenerateField = false, Name = "簇间电流差1级告警"), PointIndex(39), Alarm(1)]
+        [Display( Name = "簇间电流差1级告警"), PointIndex(39), Alarm(1)]
         public int InterClusterCurrentDifferenceAlarmLevel1 { get; set; }//簇间电流差1级告警39
-        [Display(AutoGenerateField = false, Name = "簇间电流差2级告警"), PointIndex(40), Alarm(2)]
+        [Display( Name = "簇间电流差2级告警"), PointIndex(40), Alarm(2)]
         public int InterClusterCurrentDifferenceAlarmLevel2 { get; set; }//簇间电流差2级告警40
-        [Display(AutoGenerateField = false, Name = "簇间电流差3级告警"), PointIndex(41), Alarm(3)]
+        [Display( Name = "簇间电流差3级告警"), PointIndex(41), Alarm(3)]
         public int InterClusterCurrentDifferenceAlarmLevel3 { get; set; }//簇间电流差3级告警41
-        [Display(AutoGenerateField = false, Name = "组端过压1级告警"), PointIndex(42), Alarm(1)]
+        [Display( Name = "组端过压1级告警"), PointIndex(42), Alarm(1)]
         public int GroupTerminalOvervoltageAlarmLevel1 { get; set; }//组端过压1级告警42
-        [Display(AutoGenerateField = false, Name = "组端过压2级告警"), PointIndex(43), Alarm(2)]
+        [Display( Name = "组端过压2级告警"), PointIndex(43), Alarm(2)]
         public int GroupTerminalOvervoltageAlarmLevel2 { get; set; }//组端过压2级告警43
-        [Display(AutoGenerateField = false, Name = "组端过压3级告警"), PointIndex(44), Alarm(3)]
+        [Display( Name = "组端过压3级告警"), PointIndex(44), Alarm(3)]
         public int GroupTerminalOvervoltageAlarmLevel3 { get; set; }//组端过压3级告警44
-        [Display(AutoGenerateField = false, Name = "组端欠压1级告警"), PointIndex(45), Alarm(1)]
+        [Display( Name = "组端欠压1级告警"), PointIndex(45), Alarm(1)]
         public int GroupTerminalUndervoltageAlarmLevel1 { get; set; }//组端欠压1级告警45
-        [Display(AutoGenerateField = false, Name = "组端欠压2级告警"), PointIndex(46), Alarm(1)]
+        [Display( Name = "组端欠压2级告警"), PointIndex(46), Alarm(1)]
         public int GroupTerminalUndervoltageAlarmLevel2 { get; set; }//组端欠压2级告警46
-        [Display(AutoGenerateField = false, Name = "组端欠压3级告警"), PointIndex(47), Alarm(3)]
+        [Display( Name = "组端欠压3级告警"), PointIndex(47), Alarm(3)]
         public int GroupTerminalUndervoltageAlarmLevel3 { get; set; }//组端欠压3级告警47
-        [Display(AutoGenerateField = false, Name = "极柱过温1级告警"), PointIndex(48), Alarm(1)]
+        [Display( Name = "极柱过温1级告警"), PointIndex(48), Alarm(1)]
         public int PoleOvertemperatureAlarmLevel1 { get; set; }//极柱过温1级告警48
-        [Display(AutoGenerateField = false, Name = "极柱过温2级告警"), PointIndex(49), Alarm(2)]
+        [Display( Name = "极柱过温2级告警"), PointIndex(49), Alarm(2)]
         public int PoleOvertemperatureAlarmLevel2 { get; set; }//极柱过温2级告警49
-        [Display(AutoGenerateField = false, Name = "极柱过温3级告警"), PointIndex(50), Alarm(3)]
+        [Display( Name = "极柱过温3级告警"), PointIndex(50), Alarm(3)]
         public int PoleOvertemperatureAlarmLevel3 { get; set; }//极柱过温3级告警50
-        [Display(AutoGenerateField = false, Name = "AFE温感排线异常"), PointIndex(51), Alarm(4)]
+        [Display( Name = "AFE温感排线异常"), PointIndex(51), Alarm(4)]
         public int AfeTemperatureSensorCableAbnormal { get; set; }//AFE温感排线异常51
-        [Display(AutoGenerateField = false, Name = "AFE电压排线异常"), PointIndex(52), Alarm(4)]
+        [Display( Name = "AFE电压排线异常"), PointIndex(52), Alarm(4)]
         public int AfeVoltageCableAbnormal { get; set; }//AFE电压排线异常52
-        [Display(AutoGenerateField = false, Name = "与电池簇通信告警"), PointIndex(53), Alarm(4)]
+        [Display( Name = "与电池簇通信告警"), PointIndex(53), Alarm(4)]
         public int BatteryClusterCommunicationAlarm { get; set; }//与电池簇通信告警53
-        [Display(AutoGenerateField = false, Name = "主从通讯告警"), PointIndex(54), Alarm(4)]
+        [Display( Name = "主从通讯告警"), PointIndex(54), Alarm(4)]
         public int MasterSlaveCommunicationAlarm { get; set; }//主从通讯告警54
-        [Display(AutoGenerateField = false, Name = "继电器粘连告警"), PointIndex(65), Alarm(4)]
+        [Display( Name = "继电器粘连告警"), PointIndex(65), Alarm(4)]
         public int RelayStickingAlarm { get; set; }//继电器粘连告警65
-        [Display(AutoGenerateField = false, Name = "电池极限故障"), PointIndex(66)]
+        [Display( Name = "电池极限故障"), PointIndex(66)]
         public int BatteryLimitFault { get; set; }//电池极限故障66
-        [Display(AutoGenerateField = false, Name = "熔丝故障"), PointIndex(55)]
+        [Display( Name = "熔丝故障"), PointIndex(55)]
         public int FuseFault { get; set; }//熔丝故障55
-        [Display(AutoGenerateField = false, Name = "断路器故障"), PointIndex(56)]
+        [Display( Name = "断路器故障"), PointIndex(56)]
         public int CircuitBreakerFault { get; set; }//断路器故障56
-        [Display(AutoGenerateField = false, Name = "空调故障"), PointIndex(57)]
+        [Display( Name = "空调故障"), PointIndex(57)]
         public int AirConditionerFault { get; set; }//空调故障57
-        [Display(AutoGenerateField = false, Name = "消防设备故障"), PointIndex(58)]
+        [Display( Name = "消防设备故障"), PointIndex(58)]
         public int FirefightingEquipmentFault { get; set; }//消防设备故障58
-        [Display(AutoGenerateField = false, Name = "消防火警"), PointIndex(59)]
+        [Display( Name = "消防火警"), PointIndex(59)]
         public int FireAlarm { get; set; }//消防火警59
-        [Display(AutoGenerateField = false, Name = "消防喷洒"), PointIndex(60)]
+        [Display( Name = "消防喷洒"), PointIndex(60)]
         public int FireSprinkler { get; set; }//消防喷洒60
-        [Display(AutoGenerateField = false, Name = "AFE故障"), PointIndex(61)]
+        [Display( Name = "AFE故障"), PointIndex(61)]
         public int AfeFault { get; set; }//AFE故障61
-        [Display(AutoGenerateField = false, Name = "高压异常"), PointIndex(62)]
+        [Display( Name = "高压异常"), PointIndex(62)]
         public int HighVoltageAbnormal { get; set; }//高压异常62
-        [Display(AutoGenerateField = false, Name = "预充告警"), PointIndex(63)]
+        [Display( Name = "预充告警"), PointIndex(63)]
         public int PreChargeAlarm { get; set; }//预充告警63
-        [Display(AutoGenerateField = false, Name = "开路故障"), PointIndex(64)]
+        [Display( Name = "开路故障"), PointIndex(64)]
         public int OpenCircuitFault { get; set; }//开路故障64
         [Display(AutoGenerateField = false), PointIndex(67)]
         public int PrechargeRelayStatus { get; set; }//预充继电器状态
@@ -273,7 +273,7 @@ namespace IAMS.Models.DeviceInfo {
         public int[] BatteryTemperature1ToBattery200 { get; set; }//1号~200号电池温度611~810
         [Display(AutoGenerateField = false), PointRange(811, 1000)]
         public int[] Reserved { get; set; }//预留811~1000*/
-        [Display(Name = "高压下电指令"), PointIndex(1001)]
+        [Display(AutoGenerateField = false, Name = "高压下电指令"), PointIndex(1001)]
         public int HighVoltagePowerOffCommand { get; set; }//高压下电指令1001
         [Display(AutoGenerateField = false), PointRange(1001, 1999)]
         public int[] ReservedThresholdAndParameters { get; set; } //预留阈值及参数1001~1999

@@ -23,7 +23,7 @@ namespace IAMS.MQTT {
                 var rootObject = JsonSerializer.Deserialize<DeviceDataFromMqtt>(json);
                 if (rootObject != null) {
                     foreach (var devData in rootObject.devData) {
-
+                        devData.sn = devData.sn + "_" + rootObject.emsSn;
                         if (DeviceStaticInfo.devType2DbTableAndPointLength.ContainsKey(devData.devType)) {
                             int dataLength = DeviceStaticInfo.devType2DbTableAndPointLength[devData.devType].Item2;
                             string targetDbTable = DeviceStaticInfo.devType2DbTableAndPointLength[devData.devType].Item1;

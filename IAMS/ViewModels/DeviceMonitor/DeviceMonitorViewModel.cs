@@ -7,6 +7,7 @@ namespace IAMS.ViewModels.DeviceMonitor {
         public List<PcsModel005> PcsInfos { get; set; }
         public List<PccModel001> GatewayTableModelInfos { get; set; }
         public List<BsuModel003> EnergyStorageStackControlInfos { get; set; }
+        public List<BcuModel004> BcuInfos { get; set; }
     }
 
 }

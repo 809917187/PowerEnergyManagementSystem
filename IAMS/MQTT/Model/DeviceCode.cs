@@ -2,6 +2,7 @@
     public enum DeviceCode {
         PCS = 5,
         PCC = 1,
-        BSU = 3
+        BSU = 3,
+        BCU = 4
     }
 }

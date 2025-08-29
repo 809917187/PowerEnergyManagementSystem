@@ -3,40 +3,73 @@
 @await Html.PartialAsync("_PowerStationAndCabinetSelector",Model.PowerStationInfos)
 
 <div class="row pt-3">
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-pcs-tab" data-bs-toggle="tab" data-bs-target="#nav-pcs" type="button" role="tab" aria-controls="nav-pcs" aria-selected="true">PCS</button>
-            <button class="nav-link" id="nav-energy-stack-tab" data-bs-toggle="tab" data-bs-target="#nav-energy-stack" type="button" role="tab" aria-controls="nav-energy-stack" aria-selected="false">BSU</button>
-            <button class="nav-link" id="nav-anti-reflux-tab" data-bs-toggle="tab" data-bs-target="#nav-anti-reflux" type="button" role="tab" aria-controls="nav-anti-reflux" aria-selected="false">PCC</button>
-        </div>
-    </nav>
-    <div class="tab-content pt-3" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-pcs" role="tabpanel" aria-labelledby="nav-pcs-tab" tabindex="0">
-            @await Html.PartialAsync("~/Views/DeviceMonitor/_PcsDetails.cshtml", @Model.PcsInfos)
-        </div>
-        <div class="tab-pane fade" id="nav-energy-stack" role="tabpanel" aria-labelledby="nav-energy-stack-tab" tabindex="0">
-            @await Html.PartialAsync("~/Views/DeviceMonitor/_EnergyStackDetails.cshtml", @Model.EnergyStorageStackControlInfos)
-        </div>
-        <div class="tab-pane fade" id="nav-anti-reflux" role="tabpanel" aria-labelledby="nav-anti-reflux-tab" tabindex="0">
-            @await Html.PartialAsync("~/Views/DeviceMonitor/_GatewayTableDetails.cshtml", @Model.GatewayTableModelInfos)
-        </div>
-    </div>
+	<nav>
+		<div class="nav nav-tabs" id="nav-tab" role="tablist">
+			<div class="col-11 d-flex">
+				<button class="nav-link active" id="nav-pcs-tab" data-bs-toggle="tab" data-bs-target="#nav-pcs" type="button" role="tab" aria-controls="nav-pcs" aria-selected="true">PCS</button>
+				@* <button class="nav-link" id="nav-energy-stack-tab" data-bs-toggle="tab" data-bs-target="#nav-energy-stack" type="button" role="tab" aria-controls="nav-energy-stack" aria-selected="false">BSU</button> *@
+				<button class="nav-link" id="nav-bcu-tab" data-bs-toggle="tab" data-bs-target="#nav-bcu" type="button" role="tab" aria-controls="nav-bcu" aria-selected="false">BSU</button>
+				<button class="nav-link" id="nav-anti-reflux-tab" data-bs-toggle="tab" data-bs-target="#nav-anti-reflux" type="button" role="tab" aria-controls="nav-anti-reflux" aria-selected="false">PCC</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-primary" id="download_history">下载历史数据</button>
+			</div>
+		</div>
+	</nav>
+	<div class="tab-content pt-3" id="nav-tabContent">
+		<div class="tab-pane fade show active" id="nav-pcs" role="tabpanel" aria-labelledby="nav-pcs-tab" tabindex="0">
+			@await Html.PartialAsync("~/Views/DeviceMonitor/_PcsDetails.cshtml", @Model.PcsInfos)
+		</div>
+		@* <div class="tab-pane fade" id="nav-energy-stack" role="tabpanel" aria-labelledby="nav-energy-stack-tab" tabindex="0">
+		@await Html.PartialAsync("~/Views/DeviceMonitor/_EnergyStackDetails.cshtml", @Model.EnergyStorageStackControlInfos)
+		</div> *@
+		<div class="tab-pane fade" id="nav-bcu" role="tabpanel" aria-labelledby="nav-bcu-tab" tabindex="0">
+			@await Html.PartialAsync("~/Views/DeviceMonitor/_BcuDetails.cshtml", @Model.BcuInfos)
+		</div>
+		<div class="tab-pane fade" id="nav-anti-reflux" role="tabpanel" aria-labelledby="nav-anti-reflux-tab" tabindex="0">
+			@await Html.PartialAsync("~/Views/DeviceMonitor/_GatewayTableDetails.cshtml", @Model.GatewayTableModelInfos)
+		</div>
+	</div>
 
 </div>
 
 
 @section Scripts{
-<script>
-    $(document).ready(function () {
 
-        $('#energy_storage_cabinet_name').change(function() {
-            var val = $(this).val();
-            if (val) { // 如果val不为空
-                window.location.href ='@Url.Action("Index", "DeviceMonitor")?energyStorageCabinetName=' + encodeURIComponent(val);
-            }
-        });
-    });
-</script>
+	<script>
+		$(document).ready(function () {
+
+			$('#energy_storage_cabinet_name').change(function () {
+				var val = $(this).val();
+				if (val) { // 如果val不为空
+					window.location.href = '@Url.Action("Index", "DeviceMonitor")?energyStorageCabinetName=' + encodeURIComponent(val);
+				}
+			});
+
+			$('#download_history').on('click', function () {
+				var sn = $('#energy_storage_cabinet_name').val(); // 获取选中值
+
+				if (!sn) {
+					alert('请选择能量存储柜');
+					return;
+				}
+				var url = '@Url.Action("DownloadHistoryData", "DeviceMonitor")' + '?energyStorageCabinetSn=' + encodeURIComponent(sn);
+
+
+				// 按钮状态：防止重复点击
+				var $btn = $(this);
+				$btn.prop('disabled', true).text('下载中...');
+
+				// 直接跳转下载 ZIP
+				window.location.href = url;
+
+				// 2秒后恢复按钮状态（简单处理，实际可用回调）
+				setTimeout(function () {
+					$btn.prop('disabled', false).text('下载历史数据');
+				}, 2000);
+			});
+		});
+	</script>
 
 
 

@@ -31,17 +31,16 @@ namespace IAMS.Service {
                     PowerStationName = ps.Name
                 };
 
-                List<PccModel001> pcsInfos = _clickHouseService.GetPccModel001s(deviceBaseInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), startDate, dateTime)
-                    .GroupBy(m => new { m.Sn, Date = m.UploadTime.Date }).Select(g => g.OrderByDescending(m => m.UploadTime).First()).ToList();
+                List<PccModel001> pccInfos = _clickHouseService.GetPccModel001s(deviceBaseInfos.Where(s => s.DeviceType == (int)DeviceCode.PCC && s.PowerStationId == ps.Id).Select(s => s.Sn).ToList(), DateTime.Today);
 
-                electricityReportStationSummary.PeakForwardActiveEnergy = pcsInfos.Sum(s => s.PeakForwardActiveEnergy);
-                electricityReportStationSummary.PeakReverseActiveEnergy = pcsInfos.Sum(s => s.PeakReverseActiveEnergy);
-                electricityReportStationSummary.FlatForwardActiveEnergy = pcsInfos.Sum(s => s.FlatForwardActiveEnergy);
-                electricityReportStationSummary.FlatReverseActiveEnergy = pcsInfos.Sum(s => s.FlatReverseActiveEnergy);
-                electricityReportStationSummary.HighForwardActiveEnergy = pcsInfos.Sum(s => s.HighForwardActiveEnergy);
-                electricityReportStationSummary.HighReverseActiveEnergy = pcsInfos.Sum(s => s.HighReverseActiveEnergy);
-                electricityReportStationSummary.ValleyForwardActiveEnergy = pcsInfos.Sum(s => s.ValleyForwardActiveEnergy);
-                electricityReportStationSummary.ValleyReverseActiveEnergy = pcsInfos.Sum(s => s.ValleyReverseActiveEnergy);
+                electricityReportStationSummary.PeakForwardActiveEnergy = pccInfos.Sum(s => s.PeakForwardActiveEnergy);
+                electricityReportStationSummary.PeakReverseActiveEnergy = pccInfos.Sum(s => s.PeakReverseActiveEnergy);
+                electricityReportStationSummary.HighForwardActiveEnergy = pccInfos.Sum(s => s.HighForwardActiveEnergy);
+                electricityReportStationSummary.HighReverseActiveEnergy = pccInfos.Sum(s => s.HighReverseActiveEnergy);
+                electricityReportStationSummary.FlatForwardActiveEnergy = pccInfos.Sum(s => s.FlatForwardActiveEnergy);
+                electricityReportStationSummary.FlatReverseActiveEnergy = pccInfos.Sum(s => s.FlatReverseActiveEnergy);
+                electricityReportStationSummary.ValleyForwardActiveEnergy = pccInfos.Sum(s => s.ValleyForwardActiveEnergy);
+                electricityReportStationSummary.ValleyReverseActiveEnergy = pccInfos.Sum(s => s.ValleyReverseActiveEnergy);
                 ret.Add(electricityReportStationSummary);
             }
 

@@ -12,7 +12,7 @@ namespace IAMS.Service {
             _connectionStringClickHouse = configuration.GetConnectionString("ems_clickhouse");
         }
 
-        public List<OrignialClickHouseData> GetOrignialClickHouseDatasBySn(int devType, List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+        public List<OrignialClickHouseData> GetDailyOrignialClickHouseDatasBySn(int devType, List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
             startDateTime = startDateTime.Date;
             if (!endDateTime.HasValue || endDateTime == null) {
                 endDateTime = startDateTime.AddDays(1).AddTicks(-1);
@@ -68,24 +68,101 @@ namespace IAMS.Service {
             return ret;
         }
 
-        public List<PccModel001> GetPccModel001s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
-            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.PCC, snList, startDateTime, endDateTime);
+		public List<OrignialClickHouseData> GetAllOrignialClickHouseDatasBySn(int devType, List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+			startDateTime = startDateTime.Date;
+			if (!endDateTime.HasValue || endDateTime == null) {
+				endDateTime = startDateTime.AddDays(1).AddTicks(-1);
+			} else {
+				endDateTime = (DateTime)endDateTime.Value.Date.AddDays(1).AddTicks(-1);
+			}
+			List<OrignialClickHouseData> ret = new List<OrignialClickHouseData>();
+			try {
+				string dbTable = DeviceStaticInfo.devType2DbTableAndPointLength[devType].devName;
+				using (ClickHouseConnection connection = new ClickHouseConnection(_connectionStringClickHouse)) {
+					connection.Open();
+
+					// 定义 SQL 查询
+					using (var command = connection.CreateCommand()) {
+						var snListLiteral = string.Join(",", snList.Select(sn => $"'{sn.Replace("'", "''")}'"));
+
+						command.CommandText = $@"
+                            SELECT sn,
+                                   upload_time,
+                                   device_type,
+                                   device_name,
+                                   device_id,
+                                   data
+                            FROM {dbTable}
+                            WHERE sn IN ({snListLiteral})
+                              AND upload_time > '{startDateTime:yyyy-MM-dd HH:mm:ss}'
+                              AND upload_time < '{endDateTime:yyyy-MM-dd HH:mm:ss}'
+                            ORDER BY sn, upload_time;";
+
+						using (var reader = command.ExecuteReader()) {
+							while (reader.Read()) {
+								ret.Add(new OrignialClickHouseData {
+									Sn = reader.GetString(reader.GetOrdinal("sn")),
+									UploadTime = reader.GetDateTime(reader.GetOrdinal("upload_time")),
+									DeviceType = Convert.ToInt32(reader.GetString(reader.GetOrdinal("device_type"))),
+									DeviceName = reader.GetString(reader.GetOrdinal("device_name")),
+									DeviceId = reader.GetString(reader.GetOrdinal("device_id")),
+									PointData = (int[])reader.GetValue(reader.GetOrdinal("data"))
+								});
+							}
+
+						}
+
+					}
+
+				}
+			} catch (Exception ex) {
+				Console.WriteLine($"Error: {ex.Message}");
+			}
+
+			return ret;
+		}
+
+		public List<PccModel001> GetPccModel001s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            var o = this.GetDailyOrignialClickHouseDatasBySn((int)DeviceCode.PCC, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<PccModel001>(o);
         }
 
 
         public List<BsuModel003> GetBsuModel003s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
-            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.BSU, snList, startDateTime, endDateTime);
+            var o = this.GetDailyOrignialClickHouseDatasBySn((int)DeviceCode.BSU, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<BsuModel003>(o);
+        }
+        public List<BcuModel004> GetBcuModel004s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+            var o = this.GetDailyOrignialClickHouseDatasBySn((int)DeviceCode.BCU, snList, startDateTime, endDateTime);
+            return this.PraseDeviceInfo<BcuModel004>(o);
         }
 
         public List<PcsModel005> GetPcsModel005s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
-            var o = this.GetOrignialClickHouseDatasBySn((int)DeviceCode.PCS, snList, startDateTime, endDateTime);
+            var o = this.GetDailyOrignialClickHouseDatasBySn((int)DeviceCode.PCS, snList, startDateTime, endDateTime);
             return this.PraseDeviceInfo<PcsModel005>(o);
         }
 
+		public List<PccModel001> GetAllPccModel001s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+			var o = this.GetAllOrignialClickHouseDatasBySn((int)DeviceCode.PCC, snList, startDateTime, endDateTime);
+			return this.PraseDeviceInfo<PccModel001>(o);
+		}
 
-        public List<T> PraseDeviceInfo<T>(List<OrignialClickHouseData> orignialClickHouseDatas) where T : DeviceBaseInfo, new() {
+
+		public List<BsuModel003> GetAllBsuModel003s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+			var o = this.GetAllOrignialClickHouseDatasBySn((int)DeviceCode.BSU, snList, startDateTime, endDateTime);
+			return this.PraseDeviceInfo<BsuModel003>(o);
+		}
+		public List<BcuModel004> GetAllBcuModel004s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+			var o = this.GetAllOrignialClickHouseDatasBySn((int)DeviceCode.BCU, snList, startDateTime, endDateTime);
+			return this.PraseDeviceInfo<BcuModel004>(o);
+		}
+
+		public List<PcsModel005> GetAllPcsModel005s(List<string> snList, DateTime startDateTime, DateTime? endDateTime = null) {
+			var o = this.GetAllOrignialClickHouseDatasBySn((int)DeviceCode.PCS, snList, startDateTime, endDateTime);
+			return this.PraseDeviceInfo<PcsModel005>(o);
+		}
+
+		public List<T> PraseDeviceInfo<T>(List<OrignialClickHouseData> orignialClickHouseDatas) where T : DeviceBaseInfo, new() {
             List<T> ret = new List<T>();
 
             foreach (OrignialClickHouseData orignialClickHouseData in orignialClickHouseDatas) {
