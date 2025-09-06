@@ -328,10 +328,10 @@ namespace IAMS.Service {
             if (gatewayTableModelInfos == null || templateInfo == null) {
                 return 0;
             } else {
-                return  (decimal)gatewayTableModelInfos.Sum(s => s.PeakForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[1] - templateInfo.TimeFrame2SalePrice[1]) +
-                        (decimal)gatewayTableModelInfos.Sum(s => s.HighForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[2] - templateInfo.TimeFrame2SalePrice[2]) +
-                        (decimal)gatewayTableModelInfos.Sum(s => s.FlatForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[3] - templateInfo.TimeFrame2SalePrice[3]) +
-                        (decimal)gatewayTableModelInfos.Sum(s => s.ValleyForwardActiveEnergy) * (templateInfo.TimeFrame2BuyPrice[4] - templateInfo.TimeFrame2SalePrice[4]);
+                return (decimal)gatewayTableModelInfos.Sum(s => s.PeakForwardActiveEnergy) * (templateInfo.TimeFrame2SalePrice[1] - templateInfo.TimeFrame2BuyPrice[1]) +
+                        (decimal)gatewayTableModelInfos.Sum(s => s.HighForwardActiveEnergy) * (templateInfo.TimeFrame2SalePrice[2] - templateInfo.TimeFrame2BuyPrice[2]) +
+                        (decimal)gatewayTableModelInfos.Sum(s => s.FlatForwardActiveEnergy) * (templateInfo.TimeFrame2SalePrice[3] - templateInfo.TimeFrame2BuyPrice[3]) +
+                        (decimal)gatewayTableModelInfos.Sum(s => s.ValleyForwardActiveEnergy) * (templateInfo.TimeFrame2SalePrice[4] - templateInfo.TimeFrame2BuyPrice[4]);
             }
 
         }
