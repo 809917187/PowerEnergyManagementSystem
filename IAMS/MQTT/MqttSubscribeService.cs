@@ -1,4 +1,5 @@
-﻿using MQTTnet;
+﻿using IAMS.Models.EmsControl;
+using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
 
@@ -9,10 +10,10 @@ namespace IAMS.MQTT {
         private MqttClientOptions _options;
 
         private string _topic = "bluesun/ems/period/+";
-        private string _host = "47.120.14.45";
-        private int _port = 3011;
-        private string username = "Bluesun";
-        private string password = "Bluesun007";
+        public static string _host = "47.120.14.45";
+		public static int _port = 3011;
+		public static string username = "Bluesun";
+		public static string password = "Bluesun007";
 
         public MqttSubscribeService(ILogger<MqttSubscribeService> logger) {
             _logger = logger;
@@ -90,5 +91,6 @@ namespace IAMS.MQTT {
             }
             await base.StopAsync(cancellationToken);
         }
-    }
+
+	}
 }

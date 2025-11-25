@@ -2,6 +2,64 @@
 @model IAMS.ViewModels.StationSystem.StationSystemIndexViewModel
 
 @await Html.PartialAsync("_PowerStationAndCabinetSelector",Model.PowerStationInfos)
+<link href="~/css/station-system/index.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+    .energy-box {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .icon-box img {
+        width: 70px;
+    }
+
+    .dashed-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        border-bottom: 2px dashed #8bb3ff;
+    }
+
+    .vertical-line {
+        border-left: 2px dashed #8bb3ff;
+        height: 100%;
+        margin: 0 auto;
+    }
+
+    .label-text {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .power-value {
+        font-size: 14px;
+        font-weight: bold;
+        color: #00306e;
+    }
+
+    .col-4 {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 水平居中 */
+        justify-content: center; /* 垂直居中 */
+        height: 150px; /* 根据需要调整 */
+        position: relative;
+    }
+
+    .center-col {
+        position: relative;
+        height: 150px;
+    }
+
+    .vertical-line {
+        border-left: 2px dashed #8bb3ff;
+        flex: 1;
+    }
+</style>
 
 <div class="row pt-3">
     <div class="col-9">
@@ -64,28 +122,55 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-12 order-md-last">
-                                        <ul class="list-group mb-3">
-                                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                                <div>
-                                                    <h6 class="my-0">电网：</h6>
+                                    <div class="col-12  energy-box">
+                                        <!-- 顶部：光伏 -->
+                                        <div class="text-center mb-3">
+                                            <div class="icon-box mb-1">
+                                                <i class="fa-solid fa-solar-panel fa-2x text-primary"></i>
+                                            </div>
+                                            <span class="power-value">0 kW</span><br>
+                                            <span class="label-text">Photovoltaic</span>
+                                        </div>
+
+                                        <div class="row text-center mt-4">
+
+                                            <!-- 左侧：电网 -->
+                                            <div class="col-4">
+                                                <div class="label-text">Power grid</div>
+                                                <div class="icon-box mb-2">
+                                                    <i class="fa-solid fa-tower-broadcast fa-2x text-primary"></i>
                                                 </div>
-                                                <span class="text-body-secondary">@Model.PowerGrid kW</span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                                <div>
-                                                    <h6 class="my-0">负载：</h6>
+                                                <div>PowerGrid：<span class="power-value">@Model.PowerGrid kW</span></div>
+                                            </div>
+
+                                            <!-- 中间节点 -->
+                                            <div class="col-4 center-col">
+                                                <div class="dashed-line"></div>
+                                                <div class="vertical-line"></div>
+                                            </div>
+
+
+                                            <!-- 右侧：负载 -->
+                                            <div class="col-4">
+                                                <div class="label-text">Load</div>
+                                                <div class="icon-box mb-2">
+                                                    <i class="fa-solid fa-building fa-2x text-primary"></i>
                                                 </div>
-                                                <span class="text-body-secondary">@Model.Load kW</span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between lh-base">
-                                                <div>
-                                                    <h6 class="my-0">储能：</h6>
-                                                </div>
-                                                <span class="text-body-secondary">@Model.EnergyStorage kW</span>
-                                            </li>
-                                        </ul>
+                                                <div class="power-value">@Model.Load kW</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 底部：储能 -->
+                                        <div class="text-center mt-4">
+                                            <div class="label-text">Energy storage</div>
+                                            <div class="icon-box mb-2">
+                                                <i class="fa-solid fa-battery-three-quarters fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="power-value">@Model.EnergyStorage kW</div>
+                                            <div class="power-value">SOC：@Model.SOC %</div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
 
                             </div>
@@ -105,22 +190,6 @@
                                 <div class="col-12" id="power_trend" style="height:400px;">
                                 </div>
                             </div>
-                            @* <div class="card-body">
-                                <div class="row g-3">
-                                <div class="col-auto">
-                                最大充电功率：<strong>@Model.MaximumAllowedChargePower.ToString("F2")</strong> kW
-                                </div>
-                                <div class="col-auto">
-                                最大放电功率：<strong>@Model.MaximumAllowedDischargePower.ToString("F2")</strong> kW
-                                </div>
-                                <div class="col-auto">
-                                最大负载功率：<strong>XXX</strong> kW
-                                </div>
-                                </div>
-                                <div class="row p-2">
-
-                                </div>
-                                </div> *@
                         </div>
                     </div>
                 </div>

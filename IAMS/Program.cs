@@ -40,6 +40,7 @@ try {
     builder.Services.AddScoped<IMultiSatationOverviewService, MultiSatationOverviewService>();
     builder.Services.AddScoped<IElectricityReportService, ElectricityReportService>();
     builder.Services.AddScoped<IClickHouseService, ClickHouseService>();
+    builder.Services.AddScoped<IEmsControlService, EmsControlService>();
     builder.Services.AddHostedService<MqttSubscribeService>();
 
     var app = builder.Build();

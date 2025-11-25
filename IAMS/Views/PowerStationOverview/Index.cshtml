@@ -192,6 +192,7 @@
                                 <th data-field="name" data-sortable="true">系统编号</th>
                                 <th data-field="status" data-sortable="true">在线状态</th>
                                 <th data-field="city" data-sortable="true">今日放电量(MWh)</th>
+                                <th>穿透</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,6 +203,12 @@
                                     <td>@cabinetInfo.CabinetSn</td>
                                     <td>@cabinetInfo.OnlineStatus</td>
                                     <td>@cabinetInfo.DailyDischargeAmount.ToString("F2")</td>
+                                <td>
+                                    <a href="@($"http://{cabinetInfo.CabinetSn}.bluesunbms.com/login")" target="_blank">
+                                        内部系统
+                                    </a>
+                                </td>
+
                                 </tr>
                             }
 

@@ -1,0 +1,279 @@
+﻿@model IAMS.ViewModels.EmsControl.EmsControlViewModel
+
+@await Html.PartialAsync("_PowerStationAndCabinetSelector",Model.PowerStationInfos)
+
+<div class="row pt-3">
+	<nav>
+		<div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+			<button class="nav-link active" id="nav-debug-tab" data-bs-toggle="tab" data-bs-target="#nav-debug" type="button" role="tab" aria-controls="nav-debug" aria-selected="true">调试模式</button>
+			<button class="nav-link" id="nav-powerusage-tab" data-bs-toggle="tab" data-bs-target="#nav-powerusage" type="button" role="tab" aria-controls="nav-powerusage" aria-selected="false" tabindex="-1">储能模式</button>
+			<button class="nav-link" id="nav-protect-setting-tab" data-bs-toggle="tab" data-bs-target="#nav-protect-setting" type="button" role="tab" aria-controls="nav-protect-setting" aria-selected="false" tabindex="-1">保护设置</button>
+			<button class="nav-link" id="nav-pv-storage-tab" data-bs-toggle="tab" data-bs-target="#nav-pv-storage" type="button" role="tab" aria-controls="nav-pv-storage" aria-selected="false" tabindex="-1">光储模式</button>
+		</div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent">
+
+		<div class="tab-pane fade show active" id="nav-debug" role="tabpanel" aria-labelledby="nav-debug-tab">
+			<form class="row g-3">
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">有功功率</label>
+					<input type="text" class="form-control is-valid" id="activePower" value="@Model.testModeModel.logicCfg.activePower" required="">
+				</div>
+				<div class="col-md-12">
+					<div class="mb-3 form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="test_onOff" @(Model.testModeModel.logicCfg.onOff == 1 ? "checked" : "")>
+						<label class="form-check-label" for="flexSwitchCheckChecked">充放电开关</label>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">无功功率</label>
+					<input type="text" class="form-control is-valid" id="reactivePower" value="@Model.testModeModel.logicCfg.reactivePower" required="">
+				</div>
+				<div class="col-md-12">
+					<div class="mb-3 form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="protectSwitch" @(Model.testModeModel.logicCfg.protectSwitch == 1 ? "checked" : "")>
+						<label class="form-check-label" for="flexSwitchCheckChecked">保护算法开关</label>
+					</div>
+				</div>
+				<div class="col-12 mt-4">
+					<button class="btn btn-primary" type="button" id="test_mode_submit">提交</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="tab-pane fade" id="nav-powerusage" role="tabpanel" aria-labelledby="nav-powerusage-tab">
+			<div class="row power-block">
+				<div class="accordion" id="accordionContainer">
+					@foreach (var item in Model.powerUsageModel.logicCfg.pvTab.template) {
+						<div class="accordion-item">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@item.tltName" aria-expanded="false">
+								@item.tltName
+							</button>
+
+							<div id="collapse_@item.tltName" class="accordion-collapse collapse">
+								<div class="accordion-body">
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="basic-addon1">模板名称</span>
+										<input type="text" class="form-control" value="@item.tltName">
+									</div>
+									<table class="table time-table">
+										<thead>
+											<tr>
+												<th scope="col">开始日期</th>
+												<th scope="col">结束日期</th>
+												<th>#</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var date in item.applyDates) {
+												<tr>
+													<td><input class="form-control date_without_year start_date" type="text" placeholder="MM-DD" value="@date.sDate"></td>
+													<td><input class="form-control date_without_year end_date" type="text" placeholder="MM-DD" value="@date.eDate"></td>
+													<td>
+														<button type="button" class="btn btn-primary btn-add-date-row">新增</button>
+														<button type="button" class="btn btn-danger btn-delete-date-row">删除</button>
+													</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+
+									<table class="table time-table mt-4">
+										<thead>
+											<tr>
+												<th scope="col">开始时间</th>
+												<th scope="col">结束时间</th>
+												<th scope="col">使用电量</th>
+												<th>#</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var tab in item.sTab) {
+												<tr>
+													<td><input type="time" class="form-control" value="@TimeSpan.FromSeconds(tab.sSec).ToString(@"hh\:mm")"></td>
+													<td><input type="time" class="form-control" value="@TimeSpan.FromSeconds(tab.eSec).ToString(@"hh\:mm")"></td>
+													<td><input type="text" class="form-control" value="@tab.pwrKw"></td>
+													<td>
+														<button type="button" class="btn btn-primary btn-add-data-row">新增</button>
+														<button type="button" class="btn btn-danger btn-delete-data-row">删除</button>
+													</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+									<button type="button" class="btn btn-danger btn-delete-row">删除模板</button>
+								</div>
+
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+			<div class="col-12 mt-4">
+				<button class="btn btn-primary add_new_template" type="button" id="btnSubmit">添加新模板</button>
+				<button class="btn btn-primary" type="button" id="btn_powerusage_submit">提交</button>
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="nav-protect-setting" role="tabpanel" aria-labelledby="nav-protect-setting-tab">
+			<form class="row g-3">
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">变压器总容量(KW)</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.transCapacity" id="transCapacity" required="true">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">PCS充放电功率上限</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.maxPower" id="maxPower" required="true">
+				</div>
+				<div class="col-md-12">
+					<div class="mb-3 form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="overLoadSwitch" @(Model.protectSettingModel.logicCfg.overLoadSwitch == 1 ? "checked" : "")>
+						<label class="form-check-label" for="overLoadSwitch">过载开关</label>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">过载预警限流值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.olWarnLimitVal" required="true" id="olWarnLimitVal">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">过载关机值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.olShutdownVal" required="true" id="olShutdownVal">
+				</div>
+				<div class="col-md-12">
+					<div class="mb-3 form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="demandSwitch" @(Model.protectSettingModel.logicCfg.demandSwitch == 1 ? "checked" : "")>
+						<label class="form-check-label" for="demandSwitch">防需量开关</label>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">目标需量</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.targetDemand" required id="targetDemand">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">需量预警限流值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.deWarnLimitVal" required id="deWarnLimitVal">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">需量关机值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.deShutdownVal" required id="deShutdownVal">
+				</div>
+				<div class="col-md-12">
+					<div class="mb-3 form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="backflowSwitch" @(Model.protectSettingModel.logicCfg.backflowSwitch == 1 ? "checked" : "")>
+						<label class="form-check-label" for="flexSwitchCheckChecked">防逆流开关</label>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">防逆流预警限流值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.bfWarnLimitVal" required id="bfWarnLimitVal">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">防逆流关机值</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.bfShutdownVal" required id="bfShutdownVal">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">禁充SOC [55%-100%]</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.socForbidCharge" required id="socForbidCharge">
+				</div>
+				<div class="col-md-12">
+					<label for="validationServer01" class="form-label">禁放SOC [0%-45%]</label>
+					<input type="text" class="form-control" value="@Model.protectSettingModel.logicCfg.socForbidDischarge" required id="socForbidDischarge">
+				</div>
+				<div class="col-12 mt-4">
+					<button class="btn btn-primary" type="button" id="protect_setting_submit">提交</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="tab-pane fade" id="nav-pv-storage" role="tabpanel" aria-labelledby="nav-pv-storage-tab">
+			<div class="col-md-12">
+				<label for="validationServer01" class="form-label">光伏逆变器品牌（型号）</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.pvInverterBrand" id="pvInverterBrand" required="true">
+			</div>
+			<div class="col-md-12">
+				<label for="validationServer01" class="form-label">
+					pcs品牌（型号）
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.pcsBrand" id="pcsBrand" required="true">
+			</div>
+			<div class="col-md-12">
+				<label for="validationServer01" class="form-label">
+					光伏耦合方式 // 0-交流耦合 ，1-直流耦合
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.pvCouplingMethod" id="pvCouplingMethod" required="true">
+			</div>
+			<div class="col-md-12">
+				<div class="mb-3 form-check form-switch">
+					<input class="form-check-input" type="checkbox" role="switch" id="OnThreshold" @(Model.pvStorageModel.logicCfg.OnThreshold == 1 ? "checked" : "")>
+					<label class="form-check-label" for="OnThreshold">
+						开启阈值
+					</label>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="mb-3 form-check form-switch">
+					<input class="form-check-input" type="checkbox" role="switch" id="offThreshold" @(Model.pvStorageModel.logicCfg.offThreshold == 1 ? "checked" : "")>
+					<label class="form-check-label" for="offThreshold">
+						关闭阈值
+					</label>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<label for="pvMaxPower" class="form-label">
+					光伏最大发电功率
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.pvMaxPower" id="pvMaxPower" required="true">
+			</div>
+			<div class="col-md-12">
+				<label for="maxGridPower" class="form-label">
+					送电上网最大功率
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.maxGridPower" id="maxGridPower" required="true">
+			</div>
+			<div class="col-md-12">
+				<label for="transRedunPower" class="form-label">
+					变压器 波动/冗余 功率
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.transRedunPower" id="transRedunPower" required="true">
+			</div>
+			<div class="col-12 mt-4">
+				<button class="btn btn-primary" type="button" id="pv_storage_submit">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@section Scripts{
+	<script src="~/js/EmsControl/index.js"></script>
+	<script>
+		var testModeSubmitUrl = '@Url.Action("TestModeControl", "EmsControl")';
+		var powerUsageSubmitUrl = '@Url.Action("PowerUageControl", "EmsControl")';
+		var protectSettingSubmitUrl = '@Url.Action("ProtectSettingControl", "EmsControl")';
+		var pvStorageControlSubmitUrl = '@Url.Action("PvStorageControl", "EmsControl")';
+		function initDataPicker() {
+			flatpickr(".date_without_year", {
+				dateFormat: "m-d",         // 格式化存储 /显示为 月-日
+				altInput: true,
+				altFormat: "m-d",          // 用户看到的是 月-日
+
+				// 你可以限制年份，使它看起来像“无年份”选择
+
+				onChange: function (selectedDates, dateStr, instance) {
+					// selectedDates 是一个 Date 对象数组
+					// 你可以只用 month/day
+					const d = selectedDates[0];
+					const month = String(d.getMonth() + 1).padStart(2, "0");
+					const day = String(d.getDate()).padStart(2, "0");
+					console.log("月-日:", month + "-" + day);
+				}
+			});
+		}
+		function timeToSecond(t) {
+			let arr = t.split(":");
+			return parseInt(arr[0]) * 3600 + parseInt(arr[1]) * 60;
+		}
+
+	</script>
+}
+
