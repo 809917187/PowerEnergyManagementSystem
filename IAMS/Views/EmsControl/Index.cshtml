@@ -203,20 +203,16 @@
 				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.pvCouplingMethod" id="pvCouplingMethod" required="true">
 			</div>
 			<div class="col-md-12">
-				<div class="mb-3 form-check form-switch">
-					<input class="form-check-input" type="checkbox" role="switch" id="OnThreshold" @(Model.pvStorageModel.logicCfg.OnThreshold == 1 ? "checked" : "")>
-					<label class="form-check-label" for="OnThreshold">
-						开启阈值
-					</label>
-				</div>
+				<label class="form-label">
+					开启阈值
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.onThreshold.ToString("0.00")" id="onThreshold" required>
 			</div>
 			<div class="col-md-12">
-				<div class="mb-3 form-check form-switch">
-					<input class="form-check-input" type="checkbox" role="switch" id="offThreshold" @(Model.pvStorageModel.logicCfg.offThreshold == 1 ? "checked" : "")>
-					<label class="form-check-label" for="offThreshold">
-						关闭阈值
-					</label>
-				</div>
+				<label class="form-label">
+					关闭阈值
+				</label>
+				<input type="text" class="form-control" value="@Model.pvStorageModel.logicCfg.offThreshold.ToString("0.00")" id="offThreshold" required>
 			</div>
 			<div class="col-md-12">
 				<label for="pvMaxPower" class="form-label">

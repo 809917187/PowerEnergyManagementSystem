@@ -19,8 +19,8 @@ namespace IAMS.Models.EmsControl {
 		public int pvInverterBrand { get; set; }
 		public int pcsBrand { get; set; }
 		public int pvCouplingMethod { get; set; }
-		public int OnThreshold { get; set; }
-		public int offThreshold { get; set; }
+		public double onThreshold { get; set; }
+		public double offThreshold { get; set; }
 		public int pvMaxPower { get; set; }
 		public int maxGridPower { get; set; }
 		public int transRedunPower { get; set; }

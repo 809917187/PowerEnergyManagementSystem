@@ -110,25 +110,29 @@ $(document).ready(function () {
         var pvInverterBrand = parseInt($("#pvInverterBrand").val());
         var pcsBrand = parseInt($("#pcsBrand").val());
         var pvCouplingMethod = parseInt($("#pvCouplingMethod").val());
-        var OnThreshold = $("#OnThreshold").is(":checked") ? 1 : 0;
-        var offThreshold = $("#offThreshold").is(":checked") ? 1 : 0;
+        var onThreshold = parseFloat($("#onThreshold").val());
+        var offThreshold = parseFloat($("#offThreshold").val());
         var pvMaxPower = parseInt($("#pvMaxPower").val());
         var maxGridPower = parseInt($("#maxGridPower").val());
         var transRedunPower = parseInt($("#transRedunPower").val());
+
+        var logicCfg = {
+            pvInverterBrand: pvInverterBrand,
+            pcsBrand: pcsBrand,
+            pvCouplingMethod: pvCouplingMethod,
+            onThreshold: onThreshold,
+            offThreshold: offThreshold,
+            pvMaxPower: pvMaxPower,
+            maxGridPower: maxGridPower,
+            transRedunPower: transRedunPower
+        };
 
         var data = {
             sn: sn,
             transaction: 852,
             timeStamp: Math.floor(Date.now() / 1000),
             runMode: 2,
-            pvInverterBrand: pvInverterBrand,
-            pcsBrand: pcsBrand,
-            pvCouplingMethod: pvCouplingMethod,
-            OnThreshold: OnThreshold,
-            offThreshold: offThreshold,
-            pvMaxPower: pvMaxPower,
-            maxGridPower: maxGridPower,
-            transRedunPower: transRedunPower
+            logicCfg: logicCfg
         };
 
         // AJAX 提交
